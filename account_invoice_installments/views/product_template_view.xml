@@ -1,0 +1,29 @@
+<!-- views/product_template_view.xml -->
+<odoo>
+    <record id="product_template_form_installments" model="ir.ui.view">
+        <field name="name">product.template.form.installments</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <!-- Put it on the Sales tab -->
+            <xpath expr="//div[@name='options']" position="inside">
+                <!--           <lable for="installments_allowed" string="Installments Allowed"/>-->
+
+                <span class="d-inline-flex">
+                    <field name="installments_allowed"/>
+                    <label for="installments_allowed"/>
+                </span>
+            </xpath>
+            <xpath expr="//page[@name='general_information']//group" position="inside">
+                <group invisible="installments_allowed == False">
+                    <field name="installment_number" string="No. of Installments"/>
+                    <field name="first_payment" string="First Payment"/>
+                    <field name="installment_amount" string="Installment Amount"/>
+                </group>
+
+            </xpath>
+        </field>
+    </record>
+</odoo>
+        <!--  <div name="options" position='inside'>-->
+        <!--                    <xpath expr="//page[@name='general_information']//field[@name='company_id']" position="after">-->

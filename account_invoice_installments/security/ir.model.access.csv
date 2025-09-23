@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_account_move_installment,access_account_move_installment,model_account_move_installment,,1,1,1,1
+account_invoice_installments.access_installment_payment_wizard,access_installment_payment_wizard,account_invoice_installments.model_installment_payment_wizard,base.group_user,1,1,1,1
