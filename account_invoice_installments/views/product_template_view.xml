@@ -24,6 +24,47 @@
             </xpath>
         </field>
     </record>
+    <record id="product_template_tree_installments" model="ir.ui.view">
+        <field name="name">product.template.tree.installments</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_tree_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='list_price']" position="after">
+                <field name="installments_allowed"/>
+                <field name="installment_number" invisible="installments_allowed == False"/>
+                <field name="first_payment" invisible="installments_allowed == False"/>
+                <field name="installment_amount" invisible="installments_allowed == False"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="sale_order_form_installments" model="ir.ui.view">
+        <field name="name">sale.order.form.installments</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+
+            <!-- A) Inline list (tree) inside the Quotation form -->
+            <xpath expr="//field[@name='order_line']/list" position="inside">
+                <!-- helper to drive attrs -->
+                <field name="installments_allowed" invisible="1"/>
+                <field name="installment_number"
+                       invisible="installments_allowed == False"/>
+                <field name="first_payment"
+                       invisible="installments_allowed == False"/>
+                <field name="installment_amount"
+                       invisible="installments_allowed == False"/>
+            </xpath>
+
+            <!-- B) Popup line form -->
+<!--            <xpath expr="//field[@name='order_line']/form/sheet" position="inside">-->
+<!--                <group string="Installments" >-->
+<!--                    <field name="installments_allowed" invisible="1"/>-->
+<!--                    <field name="installment_number"/>-->
+<!--                    <field name="first_payment"/>-->
+<!--                    <field name="installment_amount"/>-->
+<!--                </group>-->
+<!--            </xpath>-->
+
+        </field>
+    </record>
 </odoo>
-        <!--  <div name="options" position='inside'>-->
-        <!--                    <xpath expr="//page[@name='general_information']//field[@name='company_id']" position="after">-->
