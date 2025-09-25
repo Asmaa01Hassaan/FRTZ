@@ -12,6 +12,21 @@ class ProductTemplate(models.Model):
     first_payment = fields.Float(string="First Payment")
     installment_amount = fields.Float(string="Installment Amount")
 
+
+class SaleOrder(models.Model):
+    _inherit = 'sale.order'
+
+    payment_type = fields.Selection(
+        selection=[
+            ("immediate", "Immediate Payment"),
+            ("regular", "Regular installments"),
+            ("iregular", "Iregular installments"),
+        ],
+        string="Payment Type",
+        default="immediate",
+        tracking=True,
+        copy=False,
+    )
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
@@ -20,6 +35,7 @@ class SaleOrderLine(models.Model):
         related='product_id.product_tmpl_id.installments_allowed',
         store=True,help="Allow  installment for this product.", readonly=False
     )
+
 
     installment_number = fields.Integer(string="No. of Installments")
     first_payment = fields.Float(string="First Payment")

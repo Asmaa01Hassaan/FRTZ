@@ -17,6 +17,8 @@ class AccountMove(models.Model):
     # تاريخ أول/أقرب قسط
     next_due_date = fields.Date(string="Next Due Date")
 
+
+
     # قيمة القسط الواحد (لو اتحددت، هنولّد الأقساط بناءً عليها)
     installment_amount = fields.Monetary(
         string="Installment Amount",
