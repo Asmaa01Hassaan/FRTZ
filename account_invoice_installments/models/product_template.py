@@ -6,7 +6,7 @@ class ProductTemplate(models.Model):
 
     installments_allowed = fields.Boolean(
         string="Installments Allowed",
-        help="If enabled, sales order lines for this product will show installment fields."
+        help="If enabled, sales order lines for this product will show installment fields.",store=True, readonly=False
     )
     installment_number = fields.Integer(string="No. of Installments")
     first_payment = fields.Float(string="First Payment")
@@ -18,7 +18,7 @@ class SaleOrderLine(models.Model):
     # mirror the product’s flag to control visibility in the view
     installments_allowed = fields.Boolean(
         related='product_id.product_tmpl_id.installments_allowed',
-        store=False
+        store=True,help="Allow  installment for this product.", readonly=False
     )
 
     installment_number = fields.Integer(string="No. of Installments")
