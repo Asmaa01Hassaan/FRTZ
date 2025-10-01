@@ -6,8 +6,10 @@
     "depends": ['sale', 'product'],
     "data": [
         # "security/ir.model.access.csv",
+        "data/ir_sequence.xml",
         "views/product_template_view.xml",
-        # "views/account_move_views.xml",
+        "views/sales_orders_view.xml",
+        "views/menu_views.xml",
         # "views/installment_views.xml",
         # "wizard/installment_payment_wizard_views.xml",
     ],

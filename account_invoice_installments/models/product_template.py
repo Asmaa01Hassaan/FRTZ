@@ -22,8 +22,8 @@ class SaleOrder(models.Model):
             ("regular", "Regular installments"),
             ("iregular", "Iregular installments"),
         ],
-        string="Payment Type",
-        default="immediate",
+        string="Payment Plan",
+        # default="immediate",
         tracking=True,
         copy=False,
     )
