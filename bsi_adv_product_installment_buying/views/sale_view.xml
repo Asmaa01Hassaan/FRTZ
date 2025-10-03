@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+   <record id="account_move_view_list" model="ir.ui.view">
+      <field name="name">account.move.list.view.inherit</field>
+      <field name="model">account.move</field>
+      <field name="inherit_id" ref="account.view_move_form" />
+      <field name="priority">10</field>
+      <field name="arch" type="xml">
+         <!--
+               Here, in the account.move inherited list view, we have added 'installment_id' field that will
+         display the appropriate installment in the generated invoice.
+            -->
+         <xpath expr="//form/sheet//group//group//field[@name='invoice_date']" position="after">
+            <field name="is_installment_invoice" invisible='1' />
+         </xpath>
+         <xpath expr="//form/sheet//group//group//field[@name='is_installment_invoice']"
+            position="after">
+            <field name="total_installments"
+               groups="bsi_adv_product_installment_buying.bsi_allowed_installment"
+               invisible="not is_installment_invoice" />
+         </xpath>
+
+         <xpath expr="//form/sheet//group//group//field[@name='total_installments']"
+            position="after">
+            <field name="installment_number"
+               groups="bsi_adv_product_installment_buying.bsi_allowed_installment"
+               invisible="not is_installment_invoice" />
+         </xpath>
+      </field>
+   </record>
+</odoo>

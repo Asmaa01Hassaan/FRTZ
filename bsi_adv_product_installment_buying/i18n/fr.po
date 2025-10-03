@@ -1,0 +1,204 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* bsi_adv_product_installment_buying
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-04-24 11:14+0000\n"
+"PO-Revision-Date: 2023-04-24 11:14+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: bsi_adv_product_installment_buying
+#: model_terms:ir.ui.view,arch_db:bsi_adv_product_installment_buying.report_adv_product_installment_buying_document
+msgid "<span>Pro-Forma Invoice # </span>"
+msgstr "<span>N° de facture pro forma </span>"
+
+#. module: bsi_adv_product_installment_buying
+#: model_terms:ir.ui.view,arch_db:bsi_adv_product_installment_buying.report_adv_product_installment_buying_document
+msgid "<strong>Current Installment</strong>"
+msgstr "<strong>Versement actuel</strong>"
+
+#. module: bsi_adv_product_installment_buying
+#: model_terms:ir.ui.view,arch_db:bsi_adv_product_installment_buying.report_adv_product_installment_buying_document
+msgid "<strong>Expiration:</strong>"
+msgstr "<strong>Expiration :</strong>"
+
+#. module: bsi_adv_product_installment_buying
+#: model_terms:ir.ui.view,arch_db:bsi_adv_product_installment_buying.report_adv_product_installment_buying_document
+msgid "<strong>Order Date:</strong>"
+msgstr "<strong>Date de commande :</strong>"
+
+#. module: bsi_adv_product_installment_buying
+#: model_terms:ir.ui.view,arch_db:bsi_adv_product_installment_buying.report_adv_product_installment_buying_document
+msgid "<strong>Overall Installments</strong>"
+msgstr "<strong>Versements globaux</strong>"
+
+#. module: bsi_adv_product_installment_buying
+#: model_terms:ir.ui.view,arch_db:bsi_adv_product_installment_buying.report_adv_product_installment_buying_document
+msgid "<strong>Quotation Date:</strong>"
+msgstr "<strong>Date du devis :</strong>"
+
+#. module: bsi_adv_product_installment_buying
+#: model_terms:ir.ui.view,arch_db:bsi_adv_product_installment_buying.report_adv_product_installment_buying_document
+msgid "<strong>Salesperson:</strong>"
+msgstr "<strong>Vendeur :</strong>"
+
+#. module: bsi_adv_product_installment_buying
+#: model_terms:ir.ui.view,arch_db:bsi_adv_product_installment_buying.report_adv_product_installment_buying_document
+msgid "<strong>Shipping Address:</strong>"
+msgstr "<strong>Adresse de livraison :</strong>"
+
+#. module: bsi_adv_product_installment_buying
+#: model_terms:ir.ui.view,arch_db:bsi_adv_product_installment_buying.report_adv_product_installment_buying_document
+msgid "<strong>Total Installment Amount</strong>"
+msgstr "<strong>Montant total du versement</strong>"
+
+#. module: bsi_adv_product_installment_buying
+#: model_terms:ir.ui.view,arch_db:bsi_adv_product_installment_buying.report_adv_product_installment_buying_document
+msgid "<strong>Total Installment Due</strong>"
+msgstr "<strong>Versement total dû</strong>"
+
+#. module: bsi_adv_product_installment_buying
+#: model_terms:ir.ui.view,arch_db:bsi_adv_product_installment_buying.report_adv_product_installment_buying_document
+msgid "<strong>Your Reference:</strong>"
+msgstr "<strong>Votre référence :</strong>"
+
+#. module: bsi_adv_product_installment_buying
+#: model:ir.model.fields,help:bsi_adv_product_installment_buying.field_sale_advance_payment_inv__is_genarate_combine_installment_invoices
+msgid ""
+"Active: If multiple installment products (P1: 3 Installments, P2: 5 Installments) are in order, it will generate total invoices of the maximum number of installments. [Ex: Total 5 Invoices]\n"
+"Deactive: If multiple installment products (P1: 3 installments, P2: 5 Installments) are in order, will generate separate invoices for every installment product. [Ex: Total 8 Invoices]"
+msgstr "Actif : Si plusieurs produits de versements (P1 : 3 versements, P2 : 5 versements) sont en commande, il générera des factures totales du nombre maximum de versements. [Ex : Total de 5 factures] Désactivé : si plusieurs produits de versement (P1 : 3 versements, P2 : 5 versements) sont en commande, générera des factures distinctes pour chaque produit de versement. [Ex : 8 factures au total]"
+
+#. module: bsi_adv_product_installment_buying
+#: model_terms:ir.ui.view,arch_db:bsi_adv_product_installment_buying.report_adv_product_installment_buying_document
+msgid "Amount Due"
+msgstr "Montant dû"
+
+#. module: bsi_adv_product_installment_buying
+#: model_terms:ir.ui.view,arch_db:bsi_adv_product_installment_buying.report_adv_product_installment_buying_document
+msgid "Due Date"
+msgstr "Date d'échéance"
+
+#. module: bsi_adv_product_installment_buying
+#: model:ir.model.fields,field_description:bsi_adv_product_installment_buying.field_sale_advance_payment_inv__is_genarate_combine_installment_invoices
+msgid "Genarate combine installment Invoices"
+msgstr "Générer des factures à versements combinés"
+
+#. module: bsi_adv_product_installment_buying
+#: model:ir.actions.report,name:bsi_adv_product_installment_buying.action_report_adv_installment
+msgid "Installment Invoice History"
+msgstr "Historique des factures échelonnées"
+
+#. module: bsi_adv_product_installment_buying
+#: model:ir.model.fields,field_description:bsi_adv_product_installment_buying.field_account_bank_statement_line__installment_number
+#: model:ir.model.fields,field_description:bsi_adv_product_installment_buying.field_account_move__installment_number
+#: model:ir.model.fields,field_description:bsi_adv_product_installment_buying.field_account_payment__installment_number
+#: model_terms:ir.ui.view,arch_db:bsi_adv_product_installment_buying.report_adv_product_installment_buying_document
+msgid "Installment Number"
+msgstr "Numéro de versement"
+
+#. module: bsi_adv_product_installment_buying
+#: model_terms:ir.ui.view,arch_db:bsi_adv_product_installment_buying.report_adv_product_installment_buying_document
+msgid "Invoice Date"
+msgstr "Date de facturation"
+
+#. module: bsi_adv_product_installment_buying
+#: model_terms:ir.ui.view,arch_db:bsi_adv_product_installment_buying.report_adv_product_installment_buying_document
+msgid "Invoice Number"
+msgstr "Numéro de facture"
+
+#. module: bsi_adv_product_installment_buying
+#: model_terms:ir.ui.view,arch_db:bsi_adv_product_installment_buying.report_adv_product_installment_buying_document
+msgid "Invoicing Address:"
+msgstr "Adresse de facturation:"
+
+#. module: bsi_adv_product_installment_buying
+#: model_terms:ir.ui.view,arch_db:bsi_adv_product_installment_buying.report_adv_product_installment_buying_document
+msgid "Invoicing and Shipping Address:"
+msgstr "Adresse de facturation et d'expédition :"
+
+#. module: bsi_adv_product_installment_buying
+#: model:ir.model.fields,field_description:bsi_adv_product_installment_buying.field_account_bank_statement_line__is_installment_inv
+#: model:ir.model.fields,field_description:bsi_adv_product_installment_buying.field_account_move__is_installment_inv
+#: model:ir.model.fields,field_description:bsi_adv_product_installment_buying.field_account_payment__is_installment_inv
+msgid "Is Installment Inv"
+msgstr "Est-ce que l'inv."
+
+#. module: bsi_adv_product_installment_buying
+#: model:ir.model,name:bsi_adv_product_installment_buying.model_account_move
+msgid "Journal Entry"
+msgstr "Écriture comptable"
+
+#. module: bsi_adv_product_installment_buying
+#: model_terms:ir.ui.view,arch_db:bsi_adv_product_installment_buying.report_adv_product_installment_buying_document
+msgid "Order #"
+msgstr "Commande #"
+
+#. module: bsi_adv_product_installment_buying
+#: model_terms:ir.ui.view,arch_db:bsi_adv_product_installment_buying.report_adv_product_installment_buying_document
+msgid "Payment Status"
+msgstr "Statut de paiement"
+
+#. module: bsi_adv_product_installment_buying
+#: model_terms:ir.ui.view,arch_db:bsi_adv_product_installment_buying.report_adv_product_installment_buying_document
+msgid "Quotation #"
+msgstr "Citation #"
+
+#. module: bsi_adv_product_installment_buying
+#: model:ir.model,name:bsi_adv_product_installment_buying.model_sale_advance_payment_inv
+msgid "Sales Advance Payment Invoice"
+msgstr "Facture de paiement d'avance"
+
+#. module: bsi_adv_product_installment_buying
+#: model:ir.model,name:bsi_adv_product_installment_buying.model_sale_order
+msgid "Sales Order"
+msgstr "Bon de commande"
+
+#. module: bsi_adv_product_installment_buying
+#: model_terms:ir.ui.view,arch_db:bsi_adv_product_installment_buying.report_adv_product_installment_buying_document
+msgid "Status"
+msgstr "Statut"
+
+#. module: bsi_adv_product_installment_buying
+#: model_terms:ir.ui.view,arch_db:bsi_adv_product_installment_buying.report_adv_product_installment_buying_document
+msgid "Tax Excluded"
+msgstr "Taxe non comprise"
+
+#. module: bsi_adv_product_installment_buying
+#. odoo-python
+#: code:addons/bsi_adv_product_installment_buying/wizard/sale_advance_payment_inv.py:0
+#, python-format
+msgid ""
+"The product used to invoice a down payment should be of type 'Service'. "
+"Please use another product or update this product."
+msgstr "Le produit utilisé pour facturer un acompte doit être de type 'Service'.Veuillez utiliser un autre produit ou mettre à jour ce produit."
+
+#. module: bsi_adv_product_installment_buying
+#. odoo-python
+#: code:addons/bsi_adv_product_installment_buying/wizard/sale_advance_payment_inv.py:0
+#, python-format
+msgid ""
+"The product used to invoice a down payment should have an invoice policy set"
+" to \"Ordered quantities\". Please update your deposit product to be able to"
+" create a deposit invoice."
+msgstr "Le produit utilisé pour facturer un acompte doit avoir une politique de facturation définie sur \"Quantités commandées\". Veuillez mettre à jour votre produit de dépôt pour pouvoir créer une facture de dépôt."
+
+#. module: bsi_adv_product_installment_buying
+#: model_terms:ir.ui.view,arch_db:bsi_adv_product_installment_buying.report_adv_product_installment_buying_document
+msgid "Total"
+msgstr "Total"
+
+#. module: bsi_adv_product_installment_buying
+#: model:ir.model.fields,field_description:bsi_adv_product_installment_buying.field_account_bank_statement_line__total_installments
+#: model:ir.model.fields,field_description:bsi_adv_product_installment_buying.field_account_move__total_installments
+#: model:ir.model.fields,field_description:bsi_adv_product_installment_buying.field_account_payment__total_installments
+msgid "Total Installments"
+msgstr "Total des versements"

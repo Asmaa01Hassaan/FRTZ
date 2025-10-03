@@ -47,9 +47,9 @@
                 <field name="payment_type"/>
             </xpath>
 
-            <xpath expr="//sheet//field[@name='payment_term_id']" position="attributes">
-                  <attribute name="invisible">payment_type == 'immediate'</attribute>
-            </xpath>
+<!--            <xpath expr="//sheet//field[@name='payment_term_id']" position="attributes">-->
+<!--                  <attribute name="invisible">payment_type == 'immediate'</attribute>-->
+<!--            </xpath>-->
 
             <!-- A) Inline list (tree) inside the Quotation form -->
             <xpath expr="//field[@name='order_line']/list" position="inside">

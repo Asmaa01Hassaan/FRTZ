@@ -7,7 +7,7 @@
     "data": [
         # "security/ir.model.access.csv",
         "data/ir_sequence.xml",
-        "views/product_template_view.xml",
+        # "views/product_template_view.xml",
         "views/sales_orders_view.xml",
         "views/menu_views.xml",
         # "views/installment_views.xml",

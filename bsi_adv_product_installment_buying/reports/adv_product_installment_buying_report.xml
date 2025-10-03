@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="action_report_adv_installment" model="ir.actions.report">
+            <field name="name">Installment Invoice History</field>
+            <field name="model">sale.order</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">bsi_adv_product_installment_buying.adv_product_installment_buying_report_view</field>
+            <field name="report_file">bsi_adv_product_installment_buying.adv_product_installment_buying_report_view</field>
+            <field name="binding_model_id" ref="model_sale_order" />
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+</odoo>

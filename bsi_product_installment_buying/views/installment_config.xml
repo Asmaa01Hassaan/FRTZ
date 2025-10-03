@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_installment_config_tree">
+            <field name="name">installment.config.list</field>
+            <field name="model">installment.config</field>
+            <field name="type">list</field>
+            <field name="arch" type="xml">
+                <!--
+                    Here, we have added the tree view of relevant fields related to installment that specifies the
+                installment details.
+                -->
+                <list string="Installment Configuration">
+                    <field name="name" />
+                    <field name="months" />
+                    <field name="emi" />
+                </list>
+            </field>
+        </record>
+
+        <record id="view_employee_demo_form" model="ir.ui.view">
+            <field name="name">installment.config.form</field>
+            <field name="model">installment.config</field>
+            <field name="arch" type="xml">
+                <!--
+                    Here, we have added the form view of relevant fields related to installment that specifies the
+                installment details.
+                -->
+                <form string="Employees">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" style="margin-bottom:20px;" />
+                                <field name="months" />
+                                <field name="emi" />
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_installment_config_view">
+            <field name="name">Installment Configuration</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">installment.config</field>
+            <field name="view_mode">list,form</field>
+            <field name="view_id" ref="view_installment_config_tree" />
+        </record>
+
+        <!--
+            A menuitem to add the Installment Configurations
+        -->
+        <menuitem id="menuitem_installment_configuration"
+            name="Installment Configuration"
+            action="action_installment_config_view"
+            parent="sale.menu_sale_config"
+            sequence="20" />
+    </data>
+</odoo>
