@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Pricelist item: add Expression option & field -->
+    <record id="view_product_pricelist_item_form_expression" model="ir.ui.view">
+        <field name="name">product.pricelist.item.form.expression</field>
+        <field name="model">product.pricelist.item</field>
+        <field name="inherit_id" ref="product.product_pricelist_item_form_view"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='compute_price']" position="attributes">
+                <attribute name="widget">radio</attribute>
+            </xpath>
+<!--            <xpath expr="//field[@name='compute_price']" position="after">-->
+<!--                <field name="price_expression"-->
+<!--                   modifiers="{'invisible': [('compute_price','!=','expression')]}"/>-->
+
+<!--            </xpath>-->
+
+            <xpath expr="//sheet//group[@name='pricelist_rule_base']" position="after">
+                <group name="pricelist_rule_base2" invisible="compute_price != 'expression'">
+                    <group>
+                        <field name="price_expression"
+                               modifiers="{'invisible': [('compute_price','!=','expression')]}"/>
+
+                        <!--                            <field name="adv_formula" string="Advanced Formula"/>-->
+<!--                            <field name="adv_formula"-->
+<!--                                invisible="base != 'pricelist'"-->
+<!--                                readonly="base != 'pricelist'"-->
+<!--                                required="compute_price == 'adv_formula' and base == 'pricelist'"-->
+<!--                                string="Other Pricelist"/>-->
+                        </group>
+                </group>
+
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Sale Order Line: show Installments field -->
+    <record id="view_order_form_installments_field" model="ir.ui.view">
+        <field name="name">sale.order.form.installments.field</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='order_line']/list/field[@name='name']" position="after">
+                <field name="installment_num" widget="float" string="Installments"/>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/form//field[@name='price_unit']" position="after">
+                <field name="installment_num" widget="float" string="Installments"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

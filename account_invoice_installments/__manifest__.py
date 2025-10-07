@@ -9,6 +9,7 @@
         "data/ir_sequence.xml",
         # "views/product_template_view.xml",
         "views/sales_orders_view.xml",
+        # "views/product_pricelist_item_views.xml",
         "views/menu_views.xml",
         # "views/installment_views.xml",
         # "wizard/installment_payment_wizard_views.xml",

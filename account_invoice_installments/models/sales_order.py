@@ -4,7 +4,17 @@ from odoo import models, fields, api, _
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
-
+    payment_type = fields.Selection(
+        selection=[
+            ("immediate", "Immediate Payment"),
+            ("regular", "Regular installments"),
+            ("iregular", "Iregular installments"),
+        ],
+        string="Payment Plan",
+        # default="immediate",
+        tracking=True,
+        copy=False,
+    )
     order_type = fields.Selection([
         ('standard', 'Standard Sale'),
         ('custom', 'Custom Sale'),

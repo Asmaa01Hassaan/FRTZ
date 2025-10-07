@@ -1,0 +1,26 @@
+<odoo>
+    <record id="view_product_pricelist_item_form_adv_formula" model="ir.ui.view">
+        <field name="name">product.pricelist.item.form.adv.formula</field>
+        <field name="model">product.pricelist.item</field>
+        <!-- Make sure this inherit_id matches your DB's actual form view ext id -->
+        <field name="inherit_id" ref="product.product_pricelist_item_form_view"/>
+        <field name="arch" type="xml">
+
+            <!-- Safer anchor: insert right after compute_price -->
+            <xpath expr="//sheet//group[@name='pricelist_rule_base']" position="after">
+                <group name="pricelist_rule_base2" invisible="compute_price != 'adv_formula'">
+                        <group>
+                            <field name="adv_formula" string="Advanced Formula"/>
+                            <field name="adv_formula"
+                                invisible="base != 'pricelist'"
+                                readonly="base != 'pricelist'"
+                                required="compute_price == 'adv_formula' and base == 'pricelist'"
+                                string="Other Pricelist"/>
+                        </group>
+                </group>
+
+            </xpath>
+
+        </field>
+    </record>
+</odoo>
