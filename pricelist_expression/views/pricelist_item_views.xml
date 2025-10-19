@@ -43,9 +43,11 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='order_line']/list/field[@name='name']" position="after">
                 <field name="installment_num" widget="float" string="Installments"/>
+                <field name="first_payment" widget="float" string="First Payment"/>
             </xpath>
             <xpath expr="//field[@name='order_line']/form//field[@name='price_unit']" position="after">
                 <field name="installment_num" widget="float" string="Installments"/>
+                <field name="first_payment" widget="float" string="First Payment"/>
             </xpath>
         </field>
     </record>

@@ -48,7 +48,7 @@ class SaleOrder(models.Model):
             'res_model': 'sale.order',
             'view_mode': 'form',
             'target': 'current',
-            'context': {'default_order_type': 'standard'},
+            # 'context': {'default_order_type': 'standard'},
         }
 
     def action_create_custom(self):

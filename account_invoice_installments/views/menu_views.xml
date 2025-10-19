@@ -4,10 +4,12 @@
     <menuitem id="menu_sales_root" name="حركات الجمعية" sequence="10" web_icon="account_invoice_installments,static/description/icon.png"/>
 
     <!-- Standard Sales Submenu -->
-    <menuitem id="menu_standard_sales" name="حركات الجمعية" parent="menu_sales_root" sequence="10"/>
-    <menuitem id="menu_standard_orders" name="طلب البيع" parent="menu_standard_sales" action="action_standard_orders" sequence="20"/>
-    <menuitem id="menu_custom_orders" name="طلب بيع مستودع" parent="menu_standard_sales" action="action_custom_orders" sequence="30"/>
-    <menuitem id="menu_wholesale_orders" name="طلب بيع خارجي" parent="menu_standard_sales" action="action_wholesale_orders" sequence="40"/>
-    <menuitem id="menu_subscription_orders" name="طلب بيع خدمة" parent="menu_standard_sales" action="action_subscription_orders" sequence="50"/>
+    <menuitem id="menu_standard_sales" name="Orders" parent="menu_sales_root" sequence="10"/>
+    <menuitem id="menu_standard_sales2" name="Payments" parent="menu_sales_root" sequence="10"/>
+    <menuitem id="menu_standard_orders2" name="payment request" parent="menu_standard_sales2" action="" sequence="20"/>
+    <menuitem id="menu_standard_orders" name="طلب البيع" parent="menu_standard_sales" action="action_standard_orders" sequence="30"/>
+    <menuitem id="menu_custom_orders" name="طلب بيع مستودع" parent="menu_standard_sales" action="action_custom_orders" sequence="40"/>
+    <menuitem id="menu_wholesale_orders" name="طلب بيع خارجي" parent="menu_standard_sales" action="action_wholesale_orders" sequence="50"/>
+    <menuitem id="menu_subscription_orders" name="طلب بيع خدمة" parent="menu_standard_sales" action="action_subscription_orders" sequence="60"/>
 
 </odoo>

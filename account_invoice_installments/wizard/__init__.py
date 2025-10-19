@@ -1,1 +1,0 @@
-from . import installment_payment_wizard
