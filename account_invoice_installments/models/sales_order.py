@@ -15,11 +15,12 @@ class SaleOrder(models.Model):
         tracking=True,
         copy=False,
     )
+    # Standard Sale/,Custom Sale/,Wholesale Order/,Subscription Sale/
     order_type = fields.Selection([
-        ('standard', 'Standard Sale'),
-        ('custom', 'Custom Sale'),
-        ('wholesale', 'Wholesale Order'),
-        ('subscription', 'Subscription Sale'),
+        ('standard', 'طلب البيع'),
+        ('custom', 'طلب بيع مستودع'),
+        ('wholesale', 'طلب بيع خارجي'),
+        ('subscription', 'طلب بيع خدمة'),
     ], string='Order Type', default='standard', required=True, tracking=True)
 
     @api.model_create_multi

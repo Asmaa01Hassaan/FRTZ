@@ -29,6 +29,9 @@
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
              <!-- Insert before payment_term_id wherever it appears (usually Other Info/Invoicing) -->
+            <xpath expr="//sheet//field[@name='date_order']" position="before">
+                <field name="order_type"/>
+            </xpath>
             <xpath expr="//sheet//field[@name='payment_term_id']" position="before">
                 <field name="payment_type"/>
             </xpath>
@@ -53,10 +56,10 @@
         <field name="arch" type="xml">
             <xpath expr="//search" position="inside">
                 <!-- Default filters for each type -->
-                <filter string="Standard Orders" name="standard_orders" domain="[('order_type','=','standard')]"/>
-                <filter string="Custom Orders" name="custom_orders" domain="[('order_type','=','custom')]"/>
-                <filter string="Wholesale Orders" name="wholesale_orders" domain="[('order_type','=','wholesale')]"/>
-                <filter string="Subscription Orders" name="subscription_orders" domain="[('order_type','=','subscription')]"/>
+                <filter string="طلب البيع" name="standard_orders" domain="[('order_type','=','standard')]"/>
+                <filter string="طلب بيع مستودع" name="custom_orders" domain="[('order_type','=','custom')]"/>
+                <filter string="طلب بيع خارجي" name="wholesale_orders" domain="[('order_type','=','wholesale')]"/>
+                <filter string="طلب بيع خدمة" name="subscription_orders" domain="[('order_type','=','subscription')]"/>
 
                 <!-- Group by Order Type -->
                 <filter string="Order Type" name="order_type" context="{'group_by': 'order_type'}"/>

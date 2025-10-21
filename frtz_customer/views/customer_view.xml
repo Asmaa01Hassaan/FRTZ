@@ -1,0 +1,23 @@
+<odoo>
+    <record id="view_partner_form_inherit_customer_ref" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit.customer.ref</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('oe_title')]//h1/field[@name='name']" position="before">
+                <span class="o_form_label fw-bold me-2">Customer</span>
+            </xpath>
+            <xpath expr="//div[hasclass('oe_title')]//h1" position="attributes">
+                <attribute name="class">d-flex align-items-center gap-3</attribute>
+            </xpath>
+            <xpath expr="//div[hasclass('oe_title')]//h1/field[@name='name']" position="after">
+                <field name="customer_number"
+                       style="width: 200px; font-size: 14px;"
+                       placeholder="Customer Code"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
+
+
+

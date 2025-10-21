@@ -38,7 +38,8 @@ class SaleOrderLine(models.Model):
             line.price_unit = price
 
     # 🔁 onchange: نفس معاملة installment_num
-    @api.onchange('installment_num', 'first_payment')  # ✅ ضفنا first_payment
+    @api.onchange('installment_num')
+    @api.onchange('first_payment')  # ✅ ضفنا first_payment
     def _onchange_installment_related(self):
         _dbg("onchange installment_num/first_payment -> recompute price")
         self._recompute_price_from_installments()
