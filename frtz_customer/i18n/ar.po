@@ -1,0 +1,204 @@
+# Translation file for frtz_customer module
+# Copyright (C) 2024 Your Company
+# This file is distributed under the same license as the frtz_customer package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: frtz_customer 18.0.1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-01-01 12:00+0000\n"
+"PO-Revision-Date: 2024-01-01 12:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
+
+#. module: frtz_customer
+#: model:ir.ui.view,arch_db:frtz_customer.view_sale_form_inherit_customer_ref
+msgid "Customer Guarantees"
+msgstr "الكفلاء"
+
+#. module: frtz_customer
+#: model:ir.ui.view,arch_db:frtz_customer.view_sale_form_inherit_customer_ref
+#: page:Customer_Guarantees
+msgid "Customer Guarantees"
+msgstr "الكفلاء"
+
+#. module: frtz_customer
+#: model:ir.model.fields,field_description:frtz_customer.field_sale_order__guarantees_count
+msgid "Guarantees Count"
+msgstr "عدد الكفلاء"
+
+#. module: frtz_customer
+#: model:ir.model.fields,field_description:frtz_customer.field_sale_order__customer_guarantees_ids
+msgid "Customer Guarantees"
+msgstr "كفلاء العملاء"
+
+#. module: frtz_customer
+#: model:ir.model.fields,field_description:frtz_customer.field_res_partner__customer_number
+msgid "Customer Number"
+msgstr "رقم العميل"
+
+#. module: frtz_customer
+#: model:ir.model.fields,field_description:frtz_customer.field_res_partner__name
+msgid "Name"
+msgstr "الاسم"
+
+#. module: frtz_customer
+#: model:ir.model.fields,field_description:frtz_customer.field_res_partner__customer_status
+msgid "Customer Status"
+msgstr "حالة العميل"
+
+#. module: frtz_customer
+#: model:ir.model.fields,field_description:frtz_customer.field_res_partner__customer_rating
+msgid "Customer Rating"
+msgstr "تقييم العميل"
+
+#. module: frtz_customer
+#: model:ir.model.fields,field_description:frtz_customer.field_res_partner__customer_notes
+msgid "Customer Notes"
+msgstr "ملاحظات العميل"
+
+#. module: frtz_customer
+#: model:ir.model.fields,field_description:frtz_customer.field_res_partner__customer_tags
+msgid "Customer Tags"
+msgstr "علامات العميل"
+
+#. module: frtz_customer
+#: model:ir.model.fields,field_description:frtz_customer.field_res_partner__total_orders
+msgid "Total Orders"
+msgstr "إجمالي الطلبات"
+
+#. module: frtz_customer
+#: model:ir.model.fields,field_description:frtz_customer.field_res_partner__total_amount
+msgid "Total Amount"
+msgstr "المبلغ الإجمالي"
+
+#. module: frtz_customer
+#: model:ir.model.fields,field_description:frtz_customer.field_res_partner__last_order_date
+msgid "Last Order Date"
+msgstr "تاريخ آخر طلب"
+
+#. module: frtz_customer
+#: model:ir.model.fields,field_description:frtz_customer.field_res_partner__display_name
+msgid "Display Name"
+msgstr "اسم العرض"
+
+#. module: frtz_customer
+#: model:ir.model.fields,field_description:frtz_customer.field_res_partner__customer_status
+#: selection:res.partner,customer_status:0
+msgid "New Customer"
+msgstr "عميل جديد"
+
+#. module: frtz_customer
+#: model:ir.model.fields,field_description:frtz_customer.field_res_partner__customer_status
+#: selection:res.partner,customer_status:0
+msgid "Active Customer"
+msgstr "عميل نشط"
+
+#. module: frtz_customer
+#: model:ir.model.fields,field_description:frtz_customer.field_res_partner__customer_status
+#: selection:res.partner,customer_status:0
+msgid "Premium Customer"
+msgstr "عميل مميز"
+
+#. module: frtz_customer
+#: model:ir.model.fields,field_description:frtz_customer.field_res_partner__customer_status
+#: selection:res.partner,customer_status:0
+msgid "Inactive Customer"
+msgstr "عميل غير نشط"
+
+#. module: frtz_customer
+#: model:ir.model.fields,field_description:frtz_customer.field_res_partner__customer_rating
+#: selection:res.partner,customer_rating:0
+msgid "1 Star"
+msgstr "نجمة واحدة"
+
+#. module: frtz_customer
+#: model:ir.model.fields,field_description:frtz_customer.field_res_partner__customer_rating
+#: selection:res.partner,customer_rating:0
+msgid "2 Stars"
+msgstr "نجمتان"
+
+#. module: frtz_customer
+#: model:ir.model.fields,field_description:frtz_customer.field_res_partner__customer_rating
+#: selection:res.partner,customer_rating:0
+msgid "3 Stars"
+msgstr "ثلاث نجوم"
+
+#. module: frtz_customer
+#: model:ir.model.fields,field_description:frtz_customer.field_res_partner__customer_rating
+#: selection:res.partner,customer_rating:0
+msgid "4 Stars"
+msgstr "أربع نجوم"
+
+#. module: frtz_customer
+#: model:ir.model.fields,field_description:frtz_customer.field_res_partner__customer_rating
+#: selection:res.partner,customer_rating:0
+msgid "5 Stars"
+msgstr "خمس نجوم"
+
+#. module: frtz_customer
+#: model:ir.actions.act_window,name:frtz_customer.action_customers_enhanced
+msgid "Enhanced Customers"
+msgstr "العملاء المحسنون"
+
+#. module: frtz_customer
+#: model:ir.ui.menu,name:frtz_customer.menu_enhanced_customers
+msgid "Enhanced Customers"
+msgstr "العملاء المحسنون"
+
+#. module: frtz_customer
+#: model:ir.actions.act_window,name:frtz_customer.action_sale_order_enhanced
+msgid "Enhanced Sales Orders"
+msgstr "طلبات البيع المحسنة"
+
+#. module: frtz_customer
+#: model:ir.ui.menu,name:frtz_customer.menu_enhanced_sales_orders
+msgid "Enhanced Sales Orders"
+msgstr "طلبات البيع المحسنة"
+
+#. module: frtz_customer
+#: model:ir.actions.act_window,name:frtz_customer.action_view_customer_orders
+msgid "View Customer Orders"
+msgstr "عرض طلبات العميل"
+
+#. module: frtz_customer
+#: model:ir.actions.act_window,name:frtz_customer.action_generate_customer_number
+msgid "Generate Customer Number"
+msgstr "إنشاء رقم العميل"
+
+#. module: frtz_customer
+#: model:ir.model.fields,help:frtz_customer.field_res_partner__customer_number
+msgid "Unique customer identification number"
+msgstr "رقم تعريف العميل الفريد"
+
+#. module: frtz_customer
+#: model:ir.model.fields,help:frtz_customer.field_res_partner__display_name
+msgid "Full display name with customer number"
+msgstr "اسم العرض الكامل مع رقم العميل"
+
+#. module: frtz_customer
+#: model:ir.model.fields,help:frtz_customer.field_res_partner__customer_notes
+msgid "Internal notes about this customer"
+msgstr "ملاحظات داخلية حول هذا العميل"
+
+#. module: frtz_customer
+#: model:ir.model.fields,help:frtz_customer.field_res_partner__customer_tags
+msgid "Comma-separated tags for customer categorization"
+msgstr "علامات مفصولة بفواصل لتصنيف العملاء"
+
+#. module: frtz_customer
+#: code:addons/frtz_customer/models/res_partner.py:0
+#, python-format
+msgid "Customer Number must be unique!"
+msgstr "رقم العميل يجب أن يكون فريداً!"
+
+#. module: frtz_customer
+#: code:addons/frtz_customer/models/res_partner.py:0
+#, python-format
+msgid "Orders for %s"
+msgstr "طلبات %s"

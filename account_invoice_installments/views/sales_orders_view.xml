@@ -39,13 +39,6 @@
                  <attribute name="invisible">payment_type in ['immediate', 'regular'] </attribute>
             </xpath>
 
-
-            <xpath expr="//notebook" position="inside">
-                <page string="Guarantors">
-
-                </page>
-
-            </xpath>
         </field>
     </record>
 

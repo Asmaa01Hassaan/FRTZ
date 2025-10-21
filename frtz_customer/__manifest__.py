@@ -8,6 +8,10 @@
         "views/customer_view.xml",
         "views/sale_order_view.xml",
     ],
+    "i18n": [
+        "i18n/ar.po",
+        "i18n/frtz_customer.pot",
+    ],
     "license": "LGPL-3",
     "application": False,
 }
