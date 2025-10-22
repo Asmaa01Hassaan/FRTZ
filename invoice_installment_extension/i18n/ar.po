@@ -1,0 +1,172 @@
+# Translation file for invoice_installment_extension module
+# Copyright (C) 2024 Your Company
+# This file is distributed under the same license as the invoice_installment_extension package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: invoice_installment_extension 18.0.1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-01-01 12:00+0000\n"
+"PO-Revision-Date: 2024-01-01 12:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_account_move_line__installment_num
+msgid "Number of Installments"
+msgstr "عدد الأقساط"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_account_move_line__first_payment
+msgid "First Payment Amount"
+msgstr "مبلغ الدفعة الأولى"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_account_move__is_installment_invoice
+msgid "Is Installment Invoice"
+msgstr "فاتورة أقساط"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_account_move__installment_sequence
+msgid "Installment Sequence"
+msgstr "ترتيب القسط"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_account_move__total_installments
+msgid "Total Installments"
+msgstr "إجمالي الأقساط"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_account_move__installment_amount
+msgid "Installment Amount"
+msgstr "مبلغ القسط"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_account_move__remaining_installments
+msgid "Remaining Installments"
+msgstr "الأقساط المتبقية"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,help:invoice_installment_extension.field_account_move__installment_num
+msgid "Number of installments for this invoice"
+msgstr "عدد الأقساط لهذه الفاتورة"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,help:invoice_installment_extension.field_account_move__first_payment
+msgid "First payment amount for installment calculations"
+msgstr "مبلغ الدفعة الأولى لحسابات الأقساط"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,help:invoice_installment_extension.field_account_move__is_installment_invoice
+msgid "Indicates if this is an installment-based invoice"
+msgstr "يشير إلى ما إذا كانت هذه فاتورة مبنية على الأقساط"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,help:invoice_installment_extension.field_account_move__installment_sequence
+msgid "Sequence number of this installment (1, 2, 3, etc.)"
+msgstr "رقم تسلسل هذا القسط (1، 2، 3، إلخ)"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,help:invoice_installment_extension.field_account_move__total_installments
+msgid "Total number of installments for this invoice series"
+msgstr "إجمالي عدد الأقساط لسلسلة الفواتير هذه"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,help:invoice_installment_extension.field_account_move__installment_amount
+msgid "Calculated installment amount"
+msgstr "مبلغ القسط المحسوب"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,help:invoice_installment_extension.field_account_move__remaining_installments
+msgid "Number of remaining installments"
+msgstr "عدد الأقساط المتبقية"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_account_payment_term__is_installment_term
+msgid "Is Installment Payment Term"
+msgstr "شروط دفع الأقساط"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_account_payment_term__installment_count
+msgid "Number of Installments"
+msgstr "عدد الأقساط"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_account_payment_term__first_payment_percentage
+msgid "First Payment Percentage"
+msgstr "نسبة الدفعة الأولى"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,help:invoice_installment_extension.field_account_payment_term__is_installment_term
+msgid "Indicates if this payment term is for installments"
+msgstr "يشير إلى ما إذا كانت شروط الدفع هذه للأقساط"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,help:invoice_installment_extension.field_account_payment_term__installment_count
+msgid "Number of installments for this payment term"
+msgstr "عدد الأقساط لشروط الدفع هذه"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,help:invoice_installment_extension.field_account_payment_term__first_payment_percentage
+msgid "Percentage of first payment"
+msgstr "نسبة الدفعة الأولى"
+
+#. module: invoice_installment_extension
+#: model:ir.ui.view,arch_db:invoice_installment_extension.view_move_form_installment
+msgid "Installment Information"
+msgstr "معلومات الأقساط"
+
+#. module: invoice_installment_extension
+#: model:ir.ui.view,arch_db:invoice_installment_extension.view_move_tree_installment
+msgid "Installments"
+msgstr "الأقساط"
+
+#. module: invoice_installment_extension
+#: model:ir.ui.view,arch_db:invoice_installment_extension.view_move_tree_installment
+msgid "Installment"
+msgstr "قسط"
+
+#. module: invoice_installment_extension
+#: model:ir.ui.view,arch_db:invoice_installment_extension.view_move_filter_installment
+msgid "Installment Invoices"
+msgstr "فواتير الأقساط"
+
+#. module: invoice_installment_extension
+#: model:ir.ui.view,arch_db:invoice_installment_extension.view_move_filter_installment
+msgid "Regular Invoices"
+msgstr "الفواتير العادية"
+
+#. module: invoice_installment_extension
+#: model:ir.ui.view,arch_db:invoice_installment_extension.view_move_filter_installment
+msgid "Installment Status"
+msgstr "حالة الأقساط"
+
+#. module: invoice_installment_extension
+#: model:ir.ui.view,arch_db:invoice_installment_extension.view_payment_term_form_installment
+msgid "Is Installment Term"
+msgstr "شروط الأقساط"
+
+#. module: invoice_installment_extension
+#: model:ir.ui.view,arch_db:invoice_installment_extension.view_payment_term_tree_installment
+msgid "Installment"
+msgstr "قسط"
+
+#. module: invoice_installment_extension
+#: model:ir.ui.view,arch_db:invoice_installment_extension.view_payment_term_filter_installment
+msgid "Installment Term"
+msgstr "شروط الأقساط"
+
+#. module: invoice_installment_extension
+#: model:ir.ui.view,arch_db:invoice_installment_extension.view_payment_term_filter_installment
+msgid "Installment Terms"
+msgstr "شروط الأقساط"
+
+#. module: invoice_installment_extension
+#: model:ir.ui.view,arch_db:invoice_installment_extension.view_payment_term_filter_installment
+msgid "Regular Terms"
+msgstr "الشروط العادية"

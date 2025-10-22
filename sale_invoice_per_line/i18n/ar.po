@@ -1,0 +1,32 @@
+# Translation file for sale_invoice_per_line module
+# Copyright (C) 2024 Your Company
+# This file is distributed under the same license as the sale_invoice_per_line package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: sale_invoice_per_line 18.0.1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-01-01 12:00+0000\n"
+"PO-Revision-Date: 2024-01-01 12:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
+
+#. module: sale_invoice_per_line
+#: model:ir.model.fields,field_description:sale_invoice_per_line.field_sale_order__invoice_per_line
+msgid "Invoice Per Line"
+msgstr "تفعيل الأقساط على مستوى السطر"
+
+#. module: sale_invoice_per_line
+#: model:ir.model.fields,help:sale_invoice_per_line.field_sale_order__invoice_per_line
+msgid "If enabled, 'Create Invoice' will generate a separate invoice for each invoiceable order line."
+msgstr "إذا تم تفعيله، فإن 'إنشاء فاتورة' سينشئ فاتورة منفصلة لكل سطر قابل للفوترة في الطلب."
+
+#. module: sale_invoice_per_line
+#: model:ir.ui.view,arch_db:sale_invoice_per_line.sale_order_form_invoice_per_line
+msgid "Invoice Per Line"
+msgstr "تفعيل الأقساط على مستوى السطر"

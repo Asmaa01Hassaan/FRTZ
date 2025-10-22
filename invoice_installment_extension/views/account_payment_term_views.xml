@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Minimal view for now - will be enhanced after model fields are created -->
+    <record id="view_payment_term_form_installment" model="ir.ui.view">
+        <field name="name">account.payment.term.form.installment</field>
+        <field name="model">account.payment.term</field>
+        <field name="inherit_id" ref="account.view_payment_term_form"/>
+        <field name="arch" type="xml">
+            <!-- Placeholder for future installment fields -->
+        </field>
+    </record>
+</odoo>

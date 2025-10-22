@@ -1,33 +1,34 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "sale_invoice_per_line",
-
-    'summary': "Short (1 phrase/line) summary of the module's purpose",
-
+    'name': "Sale Invoice Per Line",
+    'summary': "Generate separate invoices for each order line",
     'description': """
-Long description of module's purpose
+        This module enhances sale order invoicing with:
+        - Per-line invoice generation option
+        - Separate invoice for each order line
+        - Flexible invoice creation workflow
+        - Integration with installment and pricing modules
+        - Enhanced error handling and logging
     """,
-
-    'author': "My Company",
+    'author': "Your Company",
     'website': "https://www.yourcompany.com",
-
-    # Categories can be used to filter modules in modules listing
-    # Check https://github.com/odoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
-    # for the full list
-    'category': 'Uncategorized',
-    'version': '0.1',
-
-    # any module necessary for this one to work correctly
-    'depends': ['base','sale', 'account','pricelist_expression','account_invoice_installments'],
-
-    # always loaded
+    'category': 'Sales',
+    'version': '18.0.1.0.0',
+    'depends': ['base', 'sale', 'account', 'pricelist_expression', 'account_invoice_installments'],
     'data': [
-        # 'security/ir.model.access.csv',
         'views/sale_order_view_invoice_per_line.xml',
+        'views/account_move.xml',
     ],
-    # only loaded in demonstration mode
+    'i18n': [
+        'i18n/ar.po',
+        'i18n/sale_invoice_per_line.pot',
+    ],
     'demo': [
         'demo/demo.xml',
     ],
+    'license': 'LGPL-3',
+    'installable': True,
+    'application': False,
+    'auto_install': False,
 }
 

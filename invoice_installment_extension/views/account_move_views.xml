@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Account Move Line Form View - Add Installment Fields -->
+    <record id="view_move_line_form_installment" model="ir.ui.view">
+        <field name="name">account.move.line.form.installment</field>
+        <field name="model">account.move.line</field>
+        <field name="inherit_id" ref="account.view_move_line_form"/>
+        <field name="arch" type="xml">
+            <!-- Add installment fields to move line form -->
+            <xpath expr="//field[@name='quantity']" position="after">
+                <field name="installment_num" string="Installments"/>
+                <field name="first_payment" string="First Payment"/>
+            </xpath>
+        </field>
+    </record>
+
+<!--    &lt;!&ndash; Account Move Line Tree View - Add Installment Columns &ndash;&gt;-->
+<!--    <record id="view_move_line_tree_installment" model="ir.ui.view">-->
+<!--        <field name="name">account.move.line.list.installment</field>-->
+<!--        <field name="model">account.move.line</field>-->
+<!--        <field name="inherit_id" ref="account.view_move_line_tree"/>-->
+<!--&lt;!&ndash;        <field name="inherit_id" ref="account.view_move_line_list"/>&ndash;&gt;-->
+<!--        <field name="arch" type="xml">-->
+<!--            <xpath expr="//field[@name='balance']" position="after">-->
+<!--                <field name="installment_num" string="Installments" optional="hide"/>-->
+<!--                <field name="first_payment" string="First Payment" optional="hide"/>-->
+<!--            </xpath>-->
+<!--        </field>-->
+<!--    </record>-->
+
+<!--    &lt;!&ndash; Account Move Form View - Add Installment Fields to Invoice Lines &ndash;&gt;-->
+<!--    <record id="view_move_form_installment_lines" model="ir.ui.view">-->
+<!--        <field name="name">account.move.form.installment.lines</field>-->
+<!--        <field name="model">account.move</field>-->
+<!--        <field name="inherit_id" ref="account.view_move_line_form"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            &lt;!&ndash; Add installment fields to invoice line form in invoice &ndash;&gt;-->
+<!--            <xpath expr="//field[@name='invoice_line_ids']/list/field[@name='quantity']" position="after">-->
+<!--                <field name="installment_num" string="Installments" optional="hide"/>-->
+<!--                <field name="first_payment" string="First Payment" optional="hide"/>-->
+<!--            </xpath>-->
+<!--        </field>-->
+<!--    </record>-->
+</odoo>
