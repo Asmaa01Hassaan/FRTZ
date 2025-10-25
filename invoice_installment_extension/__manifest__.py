@@ -20,7 +20,8 @@
         'sale',
         'account_invoice_installments',
         'pricelist_expression',
-        'sale_invoice_per_line'
+        'sale_invoice_per_line',
+        'frtz_customer'
     ],
     'data': [
         'security/ir.model.access.csv',
@@ -29,6 +30,7 @@
         'views/account_payment_term_views.xml',
         'views/payment_term_wizard_views.xml',
         'views/installment_list_views.xml',
+        'views/res_partner_installment_views.xml',
         'views/menu_views.xml',
     ],
     'i18n': [

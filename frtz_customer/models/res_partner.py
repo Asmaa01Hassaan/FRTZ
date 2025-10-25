@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 
 
 class FrtzCustomer(models.Model):
@@ -6,12 +6,7 @@ class FrtzCustomer(models.Model):
 
     # Removed sale_order_customer_id field as it's no longer needed
     # The relationship is now handled through Many2many in sale.order
-    customer_number = fields.Char(
-        string='Customer Number',
-        size = 5,
-        copy=False,
-        index=True
-    )
+    # Using standard 'ref' field instead of custom customer_number
 
     display_name = fields.Char(
         string='Display Name',
@@ -23,13 +18,15 @@ class FrtzCustomer(models.Model):
         ('active', 'Active'),
         ('suspended', 'Suspended'),
     ], string='Status', default='active')
+    
+    # Installment Information - Moved to invoice_installment_extension module
 
-    @api.depends('name', 'customer_number')
+    @api.depends('name', 'ref')
     def _compute_display_name(self):
         for partner in self:
             name = partner.name or ''
-            if partner.customer_number:
-                name = f"{partner.customer_number} {name}"
+            if partner.ref:
+                name = f"{partner.ref} {name}"
             partner.display_name = name
 
     def name_get(self):
@@ -41,12 +38,12 @@ class FrtzCustomer(models.Model):
     @api.model
     def name_search(self, name='', args=None, operator='ilike', limit=100):
         """
-        Override name_search to include customer_number
+        Override name_search to include ref
         """
         args = args or []
         domain = []
         if name:
-            domain = ['|', ('name', 'ilike', name), ('customer_number', 'ilike', name)]
+            domain = ['|', ('name', 'ilike', name), ('ref', 'ilike', name)]
         records = self.search(domain + args, limit=limit)
         return records.name_get()
 

@@ -12,7 +12,7 @@
                     <field name="customer_guarantees_ids" nolabel="1">
                         <list>
                             <field name="name"/>
-                            <field name="customer_number"/>
+                            <field name="ref"/>
                         </list>
                 </field>
                </page>

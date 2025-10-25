@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Customer Form View - Add Installment Information Page -->
+    <record id="view_partner_form_installment" model="ir.ui.view">
+        <field name="name">res.partner.form.installment</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <!-- Add installment information page to customer form -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Installment Information" invisible="not has_installments">
+                    <field name="has_installments" invisible="1"/>
+                    
+                    <group>
+                        <group>
+                            <field name="installment_count"/>
+                            <field name="paid_installment_count"/>
+                            <field name="pending_installment_count"/>
+                            <field name="overdue_installment_count"/>
+                        </group>
+                        <group>
+                            <field name="total_installment_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="total_paid_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="total_remaining_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                        </group>
+                    </group>
+                    
+                    <group>
+                        <button name="action_view_installments" 
+                                string="View All Installments" 
+                                type="object" 
+                                class="btn-primary"/>
+                    </group>
+                    
+                    <group string="Recent Installments">
+                        <field name="installment_list_ids" nolabel="1" context="{'list_view_ref': 'invoice_installment_extension.view_installment_list_list'}" limit="10"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Customer List View - Add Installment Info -->
+    <record id="view_partner_list_installment" model="ir.ui.view">
+        <field name="name">res.partner.list.installment</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='email']" position="after">
+                <field name="has_installments" widget="boolean_toggle"/>
+                <field name="installment_count" optional="hide"/>
+                <field name="paid_installment_count" optional="hide"/>
+                <field name="pending_installment_count" optional="hide"/>
+                <field name="overdue_installment_count" optional="hide"/>
+                <field name="total_remaining_amount" widget="monetary" options="{'currency_field': 'currency_id'}" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

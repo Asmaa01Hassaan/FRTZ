@@ -53,16 +53,24 @@
         <field name="model">account.move</field>
         <field name="inherit_id" ref="account.view_move_form"/>
         <field name="arch" type="xml">
-            <!-- Add installment list section to invoice form -->
-            <xpath expr="//div[@name='due_date']" position="after">
-                <group name="installment_info" string="Installment Information" invisible="not has_installments">
+            <!-- Add installment information page to invoice form -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Installment Information" invisible="not has_installments">
+                    <field name="has_installments" invisible="1"/>
+                    
                     <group>
-                        <field name="has_installments" invisible="1"/>
-                        <field name="installment_count"/>
-                        <field name="paid_installment_count"/>
-                        <field name="pending_installment_count"/>
-                        <field name="overdue_installment_count"/>
+                        <group>
+                            <field name="installment_count"/>
+                            <field name="paid_installment_count"/>
+                            <field name="pending_installment_count"/>
+                            <field name="overdue_installment_count"/>
+                        </group>
+                        <group>
+                            <field name="total_paid_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="total_remaining_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                        </group>
                     </group>
+                    
                     <group>
                         <button name="action_generate_installment_list" 
                                 string="Generate Installment List" 
@@ -75,7 +83,11 @@
                                 class="btn-secondary"
                                 invisible="not has_installments"/>
                     </group>
-                </group>
+                    
+                    <group string="Installment Details">
+                        <field name="installment_list_ids" nolabel="1" context="{'list_view_ref': 'invoice_installment_extension.view_installment_list_list'}"/>
+                    </group>
+                </page>
             </xpath>
         </field>
     </record>
@@ -92,6 +104,8 @@
                 <field name="paid_installment_count" optional="hide"/>
                 <field name="pending_installment_count" optional="hide"/>
                 <field name="overdue_installment_count" optional="hide"/>
+                <field name="total_paid_amount" widget="monetary" options="{'currency_field': 'currency_id'}" optional="hide"/>
+                <field name="total_remaining_amount" widget="monetary" options="{'currency_field': 'currency_id'}" optional="hide"/>
             </xpath>
         </field>
     </record>

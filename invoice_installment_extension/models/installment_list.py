@@ -44,7 +44,19 @@ class InstallmentList(models.Model):
     days_overdue = fields.Integer(string='Days Overdue', compute='_compute_days_overdue')
     
     # Related Information
-    partner_id = fields.Many2one('res.partner', string='Customer', related='invoice_id.partner_id', store=True)
+    partner_id = fields.Many2one('res.partner', string='Customer', required=True)
+    customer_name = fields.Char(string='Customer Name', related='partner_id.name', store=True)
+    customer_number = fields.Char(string='Customer Number', related='partner_id.ref', store=True)
+    customer_guarantees_names = fields.Char(string='Customer Guarantees', compute='_compute_customer_guarantees_names', store=True)
+    
+    @api.depends('invoice_id.customer_guarantees_ids.name')
+    def _compute_customer_guarantees_names(self):
+        for installment in self:
+            if installment.invoice_id and installment.invoice_id.customer_guarantees_ids:
+                names = installment.invoice_id.customer_guarantees_ids.mapped('name')
+                installment.customer_guarantees_names = ', '.join(names)
+            else:
+                installment.customer_guarantees_names = ''
     
     @api.depends('sequence', 'amount', 'due_date')
     def _compute_display_name(self):
@@ -132,6 +144,10 @@ class AccountMove(models.Model):
     pending_installment_count = fields.Integer(string='Pending Installments', compute='_compute_installment_count', store=True)
     overdue_installment_count = fields.Integer(string='Overdue Installments', compute='_compute_installment_count', store=True)
     
+    # Installment payment totals
+    total_paid_amount = fields.Monetary(string='Total Paid', currency_field='currency_id', compute='_compute_installment_totals', store=True)
+    total_remaining_amount = fields.Monetary(string='Remaining Amount', currency_field='currency_id', compute='_compute_installment_totals', store=True)
+    
     @api.depends('installment_list_ids')
     def _compute_has_installments(self):
         for move in self:
@@ -144,6 +160,16 @@ class AccountMove(models.Model):
             move.paid_installment_count = len(move.installment_list_ids.filtered(lambda i: i.state == 'paid'))
             move.pending_installment_count = len(move.installment_list_ids.filtered(lambda i: i.state == 'pending'))
             move.overdue_installment_count = len(move.installment_list_ids.filtered(lambda i: i.state == 'overdue'))
+    
+    @api.depends('installment_list_ids.state', 'installment_list_ids.amount', 'amount_total')
+    def _compute_installment_totals(self):
+        for move in self:
+            # Calculate total paid amount from paid installments
+            paid_installments = move.installment_list_ids.filtered(lambda i: i.state == 'paid')
+            move.total_paid_amount = sum(paid_installments.mapped('amount'))
+            
+            # Calculate remaining amount
+            move.total_remaining_amount = move.amount_total - move.total_paid_amount
     
     def action_view_installment_list(self):
         """Open installment list view"""
