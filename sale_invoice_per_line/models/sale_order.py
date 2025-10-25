@@ -48,8 +48,6 @@ class SaleOrder(models.Model):
                     inv_vals.update({
                         "installment_num": float(installment_num_val),
                         "first_payment": float(first_payment_val),
-                        "installment_num": float(installment_num_val),
-                        "first_payment": float(first_payment_val),
                     })
 
                     # Create invoice record

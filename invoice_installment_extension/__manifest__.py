@@ -24,8 +24,12 @@
     ],
     'data': [
         'security/ir.model.access.csv',
+        'data/installment_data.xml',
         'views/account_move_views.xml',
-        # 'views/account_payment_term_views.xml',
+        'views/account_payment_term_views.xml',
+        'views/payment_term_wizard_views.xml',
+        'views/installment_list_views.xml',
+        'views/menu_views.xml',
     ],
     'i18n': [
         'i18n/ar.po',

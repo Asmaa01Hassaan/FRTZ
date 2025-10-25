@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Installment Payment Sequence -->
+    <record id="seq_installment_payment" model="ir.sequence">
+        <field name="name">Installment Payment</field>
+        <field name="code">installment.payment</field>
+        <field name="prefix">PAY</field>
+        <field name="padding">4</field>
+        <field name="number_next">1</field>
+        <field name="number_increment">1</field>
+    </record>
+
+    <!-- Installment Schedule Sequence -->
+    <record id="seq_installment_schedule" model="ir.sequence">
+        <field name="name">Installment Schedule</field>
+        <field name="code">installment.schedule</field>
+        <field name="prefix">SCH</field>
+        <field name="padding">4</field>
+        <field name="number_next">1</field>
+        <field name="number_increment">1</field>
+    </record>
+
+    <!-- Default Payment Methods -->
+    <record id="payment_method_cash" model="account.payment.method">
+        <field name="name">Cash</field>
+        <field name="code">cash</field>
+        <field name="payment_type">inbound</field>
+    </record>
+
+    <record id="payment_method_bank_transfer" model="account.payment.method">
+        <field name="name">Bank Transfer</field>
+        <field name="code">bank_transfer</field>
+        <field name="payment_type">inbound</field>
+    </record>
+
+    <record id="payment_method_check" model="account.payment.method">
+        <field name="name">Check</field>
+        <field name="code">check</field>
+        <field name="payment_type">inbound</field>
+    </record>
+</odoo>

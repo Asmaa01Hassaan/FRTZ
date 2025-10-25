@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Payment Term Generation Wizard Form View -->
+        <record id="view_payment_term_generation_wizard_form" model="ir.ui.view">
+            <field name="name">payment.term.generation.wizard.form</field>
+            <field name="model">payment.term.generation.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Generate Payment Term">
+                    <header>
+                        <button name="action_generate_payment_term" 
+                                string="Generate Payment Term" 
+                                type="object" 
+                                class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <field name="invoice_id" readonly="1"/>
+                            <field name="total_amount" readonly="1"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                        
+                        <separator string="Installment Configuration"/>
+                        <group>
+                            <field name="installment_num" required="1"/>
+                            <field name="payment_interval"/>
+                        </group>
+                        
+                        <separator string="First Payment Configuration"/>
+                        <group>
+                            <field name="first_payment_type" widget="radio" options="{'horizontal': true}"/>
+                        </group>
+                        
+                        <group name="percentage_config" invisible="first_payment_type != 'percentage'">
+                            <field name="first_payment_percentage" 
+                                   string="First Payment %" 
+                                   widget="percentage"/>
+                            <field name="first_payment_amount" 
+                                   string="Calculated Amount" 
+                                   readonly="1"/>
+                        </group>
+                        
+                        <group name="fixed_config" invisible="first_payment_type != 'fixed'">
+                            <field name="first_payment_amount" 
+                                   string="First Payment Amount"/>
+                            <field name="first_payment_percentage" 
+                                   string="Calculated %" 
+                                   readonly="1"/>
+                        </group>
+                        
+                        <separator string="Payment Schedule Preview"/>
+                        <div class="alert alert-info" role="alert">
+                            <strong>Payment Schedule:</strong>
+                            <p>Configure the installment details above to see the payment schedule.</p>
+                            <p><strong>Note:</strong> The payment term will be generated based on your settings.</p>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Payment Term Generation Wizard Action -->
+        <record id="action_payment_term_generation_wizard" model="ir.actions.act_window">
+            <field name="name">Generate Payment Term</field>
+            <field name="res_model">payment.term.generation.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="view_payment_term_generation_wizard_form"/>
+        </record>
+    </data>
+</odoo>

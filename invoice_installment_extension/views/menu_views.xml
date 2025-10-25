@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Installment Management Menu -->
+    <menuitem id="menu_installment_management"
+              name="Installment Management"
+              sequence="100"
+              web_icon="invoice_installment_extension,static/description/icon.png"/>
+
+    <!-- Installment List Menu -->
+    <menuitem id="menu_installment_list"
+              name="Installment List"
+              parent="menu_installment_management"
+              action="action_installment_list"
+              sequence="10"/>
+
+    <!-- Accounting Menu Integration -->
+    <menuitem id="menu_accounting_installment_list"
+              name="Installment List"
+              parent="account.menu_finance"
+              action="action_installment_list"
+              sequence="50"/>
+</odoo>

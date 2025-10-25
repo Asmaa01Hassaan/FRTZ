@@ -27,7 +27,7 @@ class AccountPaymentTerm(models.Model):
     )
 
     @api.model
-    def create_installment_term(self, installment_num, first_payment=0, total_amount=0):
+    def create_installment_term(self, installment_num, first_payment=0, total_amount=0, payment_interval=30):
         """Create a payment term for installments"""
         try:
             payment_term_lines = []
@@ -38,8 +38,8 @@ class AccountPaymentTerm(models.Model):
                 payment_term_lines.append({
                     'value': 'percent',
                     'value_amount': first_payment_percentage,
-                    'days': 0,
-                    'option': 'day_after_invoice_date',
+                    'nb_days': 0,
+                    'delay_type': 'days_after',
                 })
 
             # Regular installments
@@ -54,8 +54,8 @@ class AccountPaymentTerm(models.Model):
                     payment_term_lines.append({
                         'value': 'percent',
                         'value_amount': installment_percentage,
-                        'days': (i + 1) * 30,  # 30 days between installments
-                        'option': 'day_after_invoice_date',
+                        'nb_days': (i + 1) * payment_interval,  # Configurable days between installments
+                        'delay_type': 'days_after',
                     })
 
             # Create payment term

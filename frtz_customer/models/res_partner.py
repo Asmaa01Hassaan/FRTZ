@@ -19,6 +19,11 @@ class FrtzCustomer(models.Model):
         store=True
     )
 
+    status = fields.Selection([
+        ('active', 'Active'),
+        ('suspended', 'Suspended'),
+    ], string='Status', default='active')
+
     @api.depends('name', 'customer_number')
     def _compute_display_name(self):
         for partner in self:

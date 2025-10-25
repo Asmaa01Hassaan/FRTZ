@@ -170,3 +170,73 @@ msgstr "شروط الأقساط"
 #: model:ir.ui.view,arch_db:invoice_installment_extension.view_payment_term_filter_installment
 msgid "Regular Terms"
 msgstr "الشروط العادية"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_payment_term_generation_wizard__invoice_id
+msgid "Invoice"
+msgstr "الفاتورة"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_payment_term_generation_wizard__installment_num
+msgid "Number of Installments"
+msgstr "عدد الأقساط"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_payment_term_generation_wizard__first_payment_type
+msgid "First Payment Type"
+msgstr "نوع الدفعة الأولى"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_payment_term_generation_wizard__first_payment_percentage
+msgid "First Payment Percentage"
+msgstr "نسبة الدفعة الأولى"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_payment_term_generation_wizard__first_payment_amount
+msgid "First Payment Amount"
+msgstr "مبلغ الدفعة الأولى"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_payment_term_generation_wizard__payment_interval
+msgid "Payment Interval (Days)"
+msgstr "فترة الدفع (بالأيام)"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_payment_term_generation_wizard__total_amount
+msgid "Total Amount"
+msgstr "المبلغ الإجمالي"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,selection:invoice_installment_extension.field_payment_term_generation_wizard__first_payment_type
+msgid "Percentage"
+msgstr "نسبة مئوية"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,selection:invoice_installment_extension.field_payment_term_generation_wizard__first_payment_type
+msgid "Fixed Amount"
+msgstr "مبلغ ثابت"
+
+#. module: invoice_installment_extension
+#: model:ir.actions.act_window,name:invoice_installment_extension.action_payment_term_generation_wizard
+msgid "Generate Payment Term"
+msgstr "إنشاء شروط الدفع"
+
+#. module: invoice_installment_extension
+#: model:ir.ui.view,arch_db:invoice_installment_extension.view_payment_term_generation_wizard_form
+msgid "Generate Payment Term"
+msgstr "إنشاء شروط الدفع"
+
+#. module: invoice_installment_extension
+#: model:ir.ui.view,arch_db:invoice_installment_extension.view_payment_term_generation_wizard_form
+msgid "Installment Configuration"
+msgstr "إعدادات الأقساط"
+
+#. module: invoice_installment_extension
+#: model:ir.ui.view,arch_db:invoice_installment_extension.view_payment_term_generation_wizard_form
+msgid "First Payment Configuration"
+msgstr "إعدادات الدفعة الأولى"
+
+#. module: invoice_installment_extension
+#: model:ir.ui.view,arch_db:invoice_installment_extension.view_payment_term_generation_wizard_form
+msgid "Payment Schedule Preview"
+msgstr "معاينة جدول الدفع"

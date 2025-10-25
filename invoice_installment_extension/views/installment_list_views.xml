@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Installment List Form View -->
+    <record id="view_installment_list_form" model="ir.ui.view">
+        <field name="name">installment.list.form</field>
+        <field name="model">installment.list</field>
+        <field name="arch" type="xml">
+            <form string="Installment Payment">
+                <header>
+                    <button name="action_mark_paid" 
+                            string="Mark Paid" 
+                            type="object" 
+                            class="btn-primary"
+                            invisible="state != 'pending'"/>
+                    <button name="action_mark_overdue" 
+                            string="Mark Overdue" 
+                            type="object" 
+                            class="btn-warning"
+                            invisible="state != 'pending'"/>
+                    <button name="action_cancel" 
+                            string="Cancel" 
+                            type="object" 
+                            class="btn-secondary"
+                            invisible="state == 'paid'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="pending,paid,overdue"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="display_name"/>
+                        </h1>
+                    </div>
+                    
+                    <group>
+                        <group>
+                            <field name="invoice_id"/>
+                            <field name="sequence"/>
+                            <field name="amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="due_date"/>
+                            <field name="paid_date"/>
+                            <field name="payment_method_id"/>
+                            <field name="payment_reference"/>
+                        </group>
+                    </group>
+                    
+                    <group>
+                        <group>
+                            <field name="is_late"/>
+                            <field name="days_overdue"/>
+                        </group>
+                        <group>
+                            <field name="partner_id"/>
+                        </group>
+                    </group>
+                    
+                    <group>
+                        <field name="notes" placeholder="Installment notes..."/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Installment List List View -->
+    <record id="view_installment_list_list" model="ir.ui.view">
+        <field name="name">installment.list.list</field>
+        <field name="model">installment.list</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence"/>
+                <field name="invoice_id"/>
+                <field name="amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <field name="due_date"/>
+                <field name="paid_date"/>
+                <field name="state" widget="badge" decoration-success="state == 'paid'" decoration-danger="state == 'overdue'" decoration-warning="state == 'pending'"/>
+                <field name="is_late"/>
+                <field name="days_overdue"/>
+                <field name="payment_reference"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Installment List Search View -->
+    <record id="view_installment_list_search" model="ir.ui.view">
+        <field name="name">installment.list.search</field>
+        <field name="model">installment.list</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="invoice_id"/>
+                <field name="partner_id"/>
+                <filter string="Pending" name="pending" domain="[('state', '=', 'pending')]"/>
+                <filter string="Paid" name="paid" domain="[('state', '=', 'paid')]"/>
+                <filter string="Overdue" name="overdue" domain="[('state', '=', 'overdue')]"/>
+                <filter string="Cancelled" name="cancelled" domain="[('state', '=', 'cancelled')]"/>
+                <filter string="Late Payments" name="late" domain="[('is_late', '=', True)]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Invoice" name="invoice" context="{'group_by': 'invoice_id'}"/>
+                    <filter string="Customer" name="partner" context="{'group_by': 'partner_id'}"/>
+                    <filter string="Status" name="state" context="{'group_by': 'state'}"/>
+                    <filter string="Due Date" name="due_date" context="{'group_by': 'due_date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Installment List Actions -->
+    <record id="action_installment_list" model="ir.actions.act_window">
+        <field name="name">Installment List</field>
+        <field name="res_model">installment.list</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_installment_list_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                View installment payments!
+            </p>
+            <p>
+                Track individual installment payments and their status.
+            </p>
+        </field>
+    </record>
+</odoo>

@@ -1,3 +1,6 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_account_move_installment,account.move.installment,account.model_account_move,account.group_account_user,1,1,1,0
 access_account_payment_term_installment,account.payment.term.installment,account.model_account_payment_term,account.group_account_user,1,1,1,0
+access_payment_term_wizard,payment.term.generation.wizard,model_payment_term_generation_wizard,account.group_account_user,1,1,1,1
+access_installment_list_user,installment.list.user,model_installment_list,account.group_account_user,1,1,1,0
+access_installment_list_manager,installment.list.manager,model_installment_list,account.group_account_manager,1,1,1,1

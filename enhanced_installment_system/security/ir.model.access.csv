@@ -1,0 +1,10 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_installment_schedule_user,installment.schedule.user,model_installment_schedule,base.group_user,1,1,1,0
+access_installment_schedule_manager,installment.schedule.manager,model_installment_schedule,account.group_account_manager,1,1,1,1
+access_installment_payment_user,installment.payment.user,model_installment_payment,base.group_user,1,1,1,0
+access_installment_payment_manager,installment.payment.manager,model_installment_payment,account.group_account_manager,1,1,1,1
+access_installment_generation_wizard_user,installment.generation.wizard.user,model_installment_generation_wizard,base.group_user,1,1,1,0
+access_installment_schedule_preview_user,installment.schedule.preview.user,model_installment_schedule_preview,base.group_user,1,1,1,0
+access_installment_template_user,installment.template.user,model_installment_template,base.group_user,1,1,1,0
+access_installment_reminder_user,installment.reminder.user,model_installment_reminder,base.group_user,1,1,1,0
+access_payment_adjustment_wizard_user,installment.payment.adjustment.wizard.user,model_installment_payment_adjustment_wizard,base.group_user,1,1,1,0

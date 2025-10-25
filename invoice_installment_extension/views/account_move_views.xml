@@ -14,31 +14,85 @@
         </field>
     </record>
 
-<!--    &lt;!&ndash; Account Move Line Tree View - Add Installment Columns &ndash;&gt;-->
-<!--    <record id="view_move_line_tree_installment" model="ir.ui.view">-->
-<!--        <field name="name">account.move.line.list.installment</field>-->
-<!--        <field name="model">account.move.line</field>-->
-<!--        <field name="inherit_id" ref="account.view_move_line_tree"/>-->
-<!--&lt;!&ndash;        <field name="inherit_id" ref="account.view_move_line_list"/>&ndash;&gt;-->
-<!--        <field name="arch" type="xml">-->
-<!--            <xpath expr="//field[@name='balance']" position="after">-->
-<!--                <field name="installment_num" string="Installments" optional="hide"/>-->
-<!--                <field name="first_payment" string="First Payment" optional="hide"/>-->
-<!--            </xpath>-->
-<!--        </field>-->
-<!--    </record>-->
+    <!-- Account Move Form View - Add Installment Fields to Invoice Header -->
+    <record id="view_move_form_installment_header" model="ir.ui.view">
+        <field name="name">account.move.form.installment.header</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <!-- Add installment fields to invoice header -->
+            <xpath expr="//field[@name='invoice_payment_term_id']" position="after">
+                <field name="installment_num" string="Installments"/>
+                <field name="first_payment" string="First Payment"/>
+                <button name="action_generate_payment_term" 
+                        string="Generate Payment Term" 
+                        type="object" 
+                        class="btn-primary"
+                        invisible="installment_num &lt;= 0"/>
+            </xpath>
+        </field>
+    </record>
 
-<!--    &lt;!&ndash; Account Move Form View - Add Installment Fields to Invoice Lines &ndash;&gt;-->
-<!--    <record id="view_move_form_installment_lines" model="ir.ui.view">-->
-<!--        <field name="name">account.move.form.installment.lines</field>-->
-<!--        <field name="model">account.move</field>-->
-<!--        <field name="inherit_id" ref="account.view_move_line_form"/>-->
-<!--        <field name="arch" type="xml">-->
-<!--            &lt;!&ndash; Add installment fields to invoice line form in invoice &ndash;&gt;-->
-<!--            <xpath expr="//field[@name='invoice_line_ids']/list/field[@name='quantity']" position="after">-->
-<!--                <field name="installment_num" string="Installments" optional="hide"/>-->
-<!--                <field name="first_payment" string="First Payment" optional="hide"/>-->
-<!--            </xpath>-->
-<!--        </field>-->
-<!--    </record>-->
+    <!-- Account Move Form View - Add Installment Fields to Invoice Lines -->
+    <record id="view_move_form_installment_lines" model="ir.ui.view">
+        <field name="name">account.move.form.installment.lines</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <!-- Add installment fields to invoice line form in invoice -->
+            <xpath expr="//field[@name='invoice_line_ids']/list/field[@name='quantity']" position="after">
+                <field name="installment_num" string="Installments" optional="hide"/>
+                <field name="first_payment" string="First Payment" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Account Move Form View - Add Installment List Section -->
+    <record id="view_move_form_installment_list" model="ir.ui.view">
+        <field name="name">account.move.form.installment.list</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <!-- Add installment list section to invoice form -->
+            <xpath expr="//div[@name='due_date']" position="after">
+                <group name="installment_info" string="Installment Information" invisible="not has_installments">
+                    <group>
+                        <field name="has_installments" invisible="1"/>
+                        <field name="installment_count"/>
+                        <field name="paid_installment_count"/>
+                        <field name="pending_installment_count"/>
+                        <field name="overdue_installment_count"/>
+                    </group>
+                    <group>
+                        <button name="action_generate_installment_list" 
+                                string="Generate Installment List" 
+                                type="object" 
+                                class="btn-primary"
+                                invisible="has_installments"/>
+                        <button name="action_view_installment_list" 
+                                string="View Installment List" 
+                                type="object" 
+                                class="btn-secondary"
+                                invisible="not has_installments"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Account Move List View - Add Installment Info -->
+    <record id="view_move_list_installment_info" model="ir.ui.view">
+        <field name="name">account.move.list.installment.info</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='state']" position="after">
+                <field name="has_installments" widget="boolean_toggle"/>
+                <field name="installment_count" optional="hide"/>
+                <field name="paid_installment_count" optional="hide"/>
+                <field name="pending_installment_count" optional="hide"/>
+                <field name="overdue_installment_count" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
 </odoo>

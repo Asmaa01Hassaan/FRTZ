@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Main Menu -->
+    <menuitem id="menu_installment_management" 
+              name="Installment Management" 
+              sequence="100" 
+              web_icon="enhanced_installment_system,static/description/icon.png"/>
+
+    <!-- Installment Schedules Menu -->
+    <menuitem id="menu_installment_schedules" 
+              name="Payment Schedules" 
+              parent="menu_installment_management" 
+              action="action_installment_schedule" 
+              sequence="10"/>
+
+    <!-- Installment Payments Menu -->
+    <menuitem id="menu_installment_payments" 
+              name="Payment Records" 
+              parent="menu_installment_management" 
+              action="action_installment_payment" 
+              sequence="20"/>
+
+    <!-- Installment Templates Menu -->
+    <menuitem id="menu_installment_templates" 
+              name="Payment Templates" 
+              parent="menu_installment_management" 
+              action="action_installment_template"
+              sequence="30"/>
+
+    <!-- Installment Reminders Menu -->
+    <menuitem id="menu_installment_reminders" 
+              name="Payment Reminders" 
+              parent="menu_installment_management" 
+              action="action_installment_reminder"
+              sequence="40"/>
+</odoo>

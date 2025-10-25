@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Installment List Sequence -->
+    <record id="seq_installment_list" model="ir.sequence">
+        <field name="name">Installment List</field>
+        <field name="code">installment.list</field>
+        <field name="prefix">INST</field>
+        <field name="padding">4</field>
+        <field name="number_next">1</field>
+        <field name="number_increment">1</field>
+    </record>
+</odoo>
