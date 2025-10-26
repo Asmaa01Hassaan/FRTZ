@@ -24,23 +24,23 @@ class SaleOrder(models.Model):
         for order in self:
             order.guarantees_count = len(order.customer_guarantees_ids)
 
-    @api.model_create_multi
-    def create(self, vals_list):
-        for vals in vals_list:
-            partner_id = vals.get('partner_id')
-            if partner_id:
-                partner = self.env['res.partner'].browse(partner_id)
-                if partner.status == 'suspended':
-                    raise UserError(_("This Customer Is Suspended"))
-        return super(SaleOrder, self).create(vals_list)
-
-    def write(self, vals):
-        """Prevent saving (updating) Sale Orders if customer is suspended."""
-        for order in self:
-            # Check partner if changed or even if not changed
-            partner = self.env['res.partner'].browse(
-                vals.get('partner_id', order.partner_id.id)
-            )
-            if partner.status == 'suspended':
-                raise UserError(_("This Customer Is Suspended"))
-        return super(SaleOrder, self).write(vals)
+    # @api.model_create_multi
+    # def create(self, vals_list):
+    #     for vals in vals_list:
+    #         partner_id = vals.get('partner_id')
+    #         if partner_id:
+    #             partner = self.env['res.partner'].browse(partner_id)
+    #             if partner.status == 'suspended':
+    #                 raise UserError(_("This Customer Is Suspended"))
+    #     return super(SaleOrder, self).create(vals_list)
+    #
+    # def write(self, vals):
+    #     """Prevent saving (updating) Sale Orders if customer is suspended."""
+    #     for order in self:
+    #         # Check partner if changed or even if not changed
+    #         partner = self.env['res.partner'].browse(
+    #             vals.get('partner_id', order.partner_id.id)
+    #         )
+    #         if partner.status == 'suspended':
+    #             raise UserError(_("This Customer Is Suspended"))
+    #     return super(SaleOrder, self).write(vals)
