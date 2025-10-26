@@ -31,10 +31,11 @@
                                 type="object" 
                                 class="btn-primary"/>
                     </group>
-                    
-                    <group string="Recent Installments">
-                        <field name="installment_list_ids" nolabel="1" context="{'list_view_ref': 'invoice_installment_extension.view_installment_list_list'}" limit="10"/>
-                    </group>
+<!--                    <field name="view_installments" string="view_installments"/>-->
+<!--                    -->
+<!--                    <group string="Recent Installments" invisible="view_installments == 'False'">-->
+<!--                        <field name="installment_list_ids" nolabel="1" context="{'list_view_ref': 'invoice_installment_extension.view_installment_list_list'}" limit="10"/>-->
+<!--                    </group>-->
                 </page>
             </xpath>
         </field>

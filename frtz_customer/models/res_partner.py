@@ -18,7 +18,8 @@ class FrtzCustomer(models.Model):
         ('active', 'Active'),
         ('suspended', 'Suspended'),
     ], string='Status', default='active')
-    
+    view_installments = fields.Boolean(string='View Installments', default=False , store=True)
+
     # Installment Information - Moved to invoice_installment_extension module
 
     @api.depends('name', 'ref')

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from email.policy import default
 
 from odoo import models, fields, api, _
 
@@ -9,6 +10,7 @@ class ResPartner(models.Model):
     # Installment Information
     installment_list_ids = fields.One2many('installment.list', 'partner_id', string='Installment List')
     has_installments = fields.Boolean(string='Has Installments', compute='_compute_installment_info', store=True)
+    view_installments = fields.Boolean(string='View Installments', default=False , store=True)
     installment_count = fields.Integer(string='Total Installments', compute='_compute_installment_info', store=True)
     paid_installment_count = fields.Integer(string='Paid Installments', compute='_compute_installment_info', store=True)
     pending_installment_count = fields.Integer(string='Pending Installments', compute='_compute_installment_info', store=True)
