@@ -15,9 +15,9 @@
                        style="width: 200px; font-size: 14px;"
                        placeholder="Customer Code"/>
             </xpath>
-            <xpath expr="//field[@name='category_id']" position="after">
-                <field name="status"/>
-            </xpath>
+<!--            <xpath expr="//field[@name='category_id']" position="after">-->
+<!--                <field name="status"/>-->
+<!--            </xpath>-->
         </field>
     </record>
 </odoo>
