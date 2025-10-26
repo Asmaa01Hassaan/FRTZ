@@ -5,8 +5,8 @@
     "author": "Your Company",
     "depends": ['base','sale'],
     "data": [
-        "views/customer_view.xml",
-        "views/sale_order_view.xml",
+        # "views/customer_view.xml",
+        # "views/sale_order_view.xml",
     ],
     "i18n": [
         "i18n/ar.po",
