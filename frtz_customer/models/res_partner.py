@@ -1,7 +1,7 @@
 from odoo import api, fields, models, _
 
 
-class FrtzCustomer(models.Model):
+class ResPartner(models.Model):
     _inherit = 'res.partner'
 
     # Removed sale_order_customer_id field as it's no longer needed
