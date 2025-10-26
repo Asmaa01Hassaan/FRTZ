@@ -19,6 +19,8 @@ class AccountMove(models.Model):
         default=0.0,
         help="First payment amount for installment calculations"
     )
+    view_generate = fields.Boolean(string='View generate', default=False, groups="base.group_allow_export" )
+
 
     @api.model
     def create(self, vals):

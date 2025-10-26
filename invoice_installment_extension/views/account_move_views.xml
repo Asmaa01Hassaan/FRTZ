@@ -24,11 +24,12 @@
             <xpath expr="//field[@name='invoice_payment_term_id']" position="after">
                 <field name="installment_num" string="Installments"/>
                 <field name="first_payment" string="First Payment"/>
+                <field name="view_generate" string="view generate" groups="base.group_allow_export,base.group_no_one"/>
                 <button name="action_generate_payment_term" 
                         string="Generate Payment Term" 
                         type="object" 
                         class="btn-primary"
-                        invisible="installment_num &lt;= 0"/>
+                        invisible="installment_num &lt;= 0 or not view_generate"/>
             </xpath>
         </field>
     </record>
@@ -58,18 +59,18 @@
                 <page string="Installment Information" invisible="not has_installments">
                     <field name="has_installments" invisible="1"/>
                     
-                    <group>
-                        <group>
-                            <field name="installment_count"/>
-                            <field name="paid_installment_count"/>
-                            <field name="pending_installment_count"/>
-                            <field name="overdue_installment_count"/>
-                        </group>
-                        <group>
-                            <field name="total_paid_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
-                            <field name="total_remaining_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
-                        </group>
-                    </group>
+<!--                    <group>-->
+<!--                        <group>-->
+<!--                            <field name="installment_count"/>-->
+<!--                            <field name="paid_installment_count"/>-->
+<!--                            <field name="pending_installment_count"/>-->
+<!--                            <field name="overdue_installment_count"/>-->
+<!--                        </group>-->
+<!--                        <group>-->
+<!--                            <field name="total_paid_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>-->
+<!--                            <field name="total_remaining_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>-->
+<!--                        </group>-->
+<!--                    </group>-->
                     
                     <group>
                         <button name="action_generate_installment_list" 
