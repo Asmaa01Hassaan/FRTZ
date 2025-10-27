@@ -13,8 +13,8 @@
     "depends": ['sale', 'product'],
     "data": [
         "data/ir_sequence.xml",
-        "views/menu_views.xml",
         "views/sales_orders_view.xml",
+        "views/menu_views.xml",
     ],
     "i18n": [
         "i18n/ar.po",
