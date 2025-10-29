@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_adv_product_installment_buying_document">
+        <t t-call="web.external_layout">
+            <t t-set="address">
+                <div t-field="docs.partner_id"
+                    t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}' />
+                <p t-if="docs.partner_id.vat"><t
+                        t-esc="docs.company_id.country_id.vat_label or 'Tax ID'" />: <span
+                        t-field="docs.partner_id.vat" /></p>
+            </t>
+            <t
+                t-if="docs.partner_shipping_id == docs.partner_invoice_id
+                                and docs.partner_invoice_id != docs.partner_id
+                                or docs.partner_shipping_id != docs.partner_invoice_id">
+                <t t-set="information_block">
+                    <strong t-if="docs.partner_shipping_id == docs.partner_invoice_id">Invoicing and
+                        Shipping Address:</strong>
+                    <strong t-if="docs.partner_shipping_id != docs.partner_invoice_id">Invoicing
+                        Address:</strong>
+                    <div t-field="docs.partner_invoice_id"
+                        t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}' />
+                    <t t-if="docs.partner_shipping_id != docs.partner_invoice_id">
+                        <strong>Shipping Address:</strong>
+                        <div t-field="docs.partner_shipping_id"
+                            t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}' />
+                    </t>
+                </t>
+            </t>
+
+            <div class="page">
+                <div class="oe_structure" />
+
+                <h2 class="mt16">
+                    <t t-if="not (env.context.get('proforma', False) or is_pro_forma)">
+                        <span t-if="docs.state not in ['draft','sent']">Order # </span>
+                        <span t-if="docs.state in ['draft','sent']">Quotation # </span>
+                    </t>
+                    <t t-if="env.context.get('proforma', False) or is_pro_forma">
+                        <span>Pro-Forma Invoice # </span>
+                    </t>
+                    <span t-field="docs.name" />
+                </h2>
+
+                <div class="row mt32 mb32">
+                    <div t-if="docs.client_order_ref" class="col-auto col-3 mw-100 mb-2">
+                        <strong>Your Reference:</strong>
+                        <p class="m-0" t-field="docs.client_order_ref" />
+                    </div>
+                    <div t-if="docs.date_order and docs.state not in ['draft','sent']"
+                        class="col-auto col-3 mw-100 mb-2">
+                        <strong>Order Date:</strong>
+                        <p class="m-0" t-field="docs.date_order" />
+                    </div>
+                    <div t-if="docs.date_order and docs.state in ['draft','sent']"
+                        class="col-auto col-3 mw-100 mb-2">
+                        <strong>Quotation Date:</strong>
+                        <p class="m-0" t-field="docs.date_order" t-options='{"widget": "date"}' />
+                    </div>
+                    <div t-if="docs.validity_date and docs.state in ['draft', 'sent']"
+                        class="col-auto col-3 mw-100 mb-2" name="expiration_date">
+                        <strong>Expiration:</strong>
+                        <p class="m-0" t-field="docs.validity_date" />
+                    </div>
+                    <div t-if="docs.user_id.name" class="col-auto col-3 mw-100 mb-2">
+                        <strong>Salesperson:</strong>
+                        <p class="m-0" t-field="docs.user_id" />
+                    </div>
+                </div>
+
+                <div class="row mt32 mb32" style="margin-top:50px;text-align:center">
+
+                    <div t-if="docs.overall_installments" class="col-auto col-3 mw-100 mb-2">
+                        <strong>Overall Installments</strong>
+                        <p class="m-0" t-field="docs.overall_installments" />
+                    </div>
+                    <div t-if="docs.current_installment" class="col-auto col-3 mw-100 mb-2">
+                        <strong>Current Installment</strong>
+                        <p class="m-0" t-field="docs.current_installment" />
+                    </div>
+                    <div t-if="docs.total_installment_amount" class="col-auto col-3 mw-100 mb-2">
+                        <strong>Total Installment Amount</strong>
+                        <p class="m-0" t-field="docs.total_installment_amount" />
+                    </div>
+                    <div t-if="docs.total_installment_due" class="col-auto col-3 mw-100 mb-2">
+                        <strong>Total Installment Due</strong>
+                        <p class="m-0" t-field="docs.total_installment_due" />
+                    </div>
+
+                </div>
+
+                <table class="table table-sm o_main_table" style="margin-top:50px;text-align:center">
+                    <thead style="display: table-row-group">
+                        <tr>
+                            <th name="installment_number"
+                                style="border-collapse: collapse;border-left: 1.5px solid;border-left-color: ##000000;border-top: 1.5px solid;"
+                                class="text-left">Installment Number</th>
+                            <th name="name"
+                                style="border-collapse: collapse;border-left: 1.5px solid;border-left-color: ##000000;border-top: 1.5px solid"
+                                class="text-left">Invoice Number</th>
+                            <th name="invoice_date"
+                                style="border-collapse: collapse;border-left: 1.5px solid;border-left-color: ##000000;border-top: 1.5px solid"
+                                class="text-left">Invoice Date</th>
+                            <th name="invoice_date_due"
+                                style="border-collapse: collapse;border-left: 1.5px solid;border-left-color: ##000000;border-top: 1.5px solid"
+                                class="text-left">Due Date</th>
+                            <th name="amount_untaxed_signed"
+                                style="border-collapse: collapse;border-left: 1.5px solid;border-left-color: ##000000;border-top: 1.5px solid"
+                                class="text-left">Tax Excluded</th>
+                            <th name="amount_total_signed"
+                                style="border-collapse: collapse;border-left: 1.5px solid;border-left-color: ##000000;border-top: 1.5px solid"
+                                class="text-left">Total</th>
+                            <th name="amount_residual_signed"
+                                style="border-collapse: collapse;border-left: 1.5px solid;border-left-color: ##000000;border-top: 1.5px solid"
+                                class="text-left">Amount Due</th>
+                            <th name="payment_state"
+                                style="border-collapse: collapse;border-left: 1.5px solid;border-left-color: ##000000;border-top: 1.5px solid"
+                                class="text-left">Payment Status</th>
+                            <th name="state"
+                                style="border-collapse: collapse;border-left: 1.5px solid;border-right: 1.5px solid;border-left-color: ##000000;border-top: 1.5px solid"
+                                class="text-left">Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody class="sale_tbody">
+                        <tr
+                            t-foreach="docs.bsi_account_move.sorted(key=lambda x: x.installment_number)"
+                            t-as="line">
+                            <t t-if="line.payment_state in ['paid']">
+                                <t t-set="style" t-value="'color:green'" />
+                            </t>
+
+                            <t
+                                t-if="line.payment_state in ['not_paid'] and 'currennt date > invoice date'">
+                                <t t-set="style" t-value="'color:red'" />
+                            </t>
+
+                            <td
+                                style="border-collapse: collapse;border-left: 1.5px solid;border-left-color: ##000000;border-bottom: 1.5px solid;border-top: 1.5px solid;">
+                                <span t-field="line.installment_number" t-att-style="style" />
+                            </td>
+                            <td
+                                style="border-collapse: collapse;border-left: 1.5px solid;border-left-color: ##000000;border-bottom: 1.5px solid;border-top: 1.5px solid">
+                                <span t-field="line.name" t-att-style="style" />
+                            </td>
+                            <td
+                                style="border-collapse: collapse;border-left: 1.5px solid;border-left-color: ##000000;border-bottom: 1.5px solid;border-top: 1.5px solid">
+                                <span t-field="line.invoice_date" t-att-style="style" />
+                            </td>
+                            <td
+                                style="border-collapse: collapse;border-left: 1.5px solid;border-left-color: ##000000;border-bottom: 1.5px solid;border-top: 1.5px solid">
+                                <span t-field="line.invoice_date_due" t-att-style="style" />
+                            </td>
+                            <td
+                                style="border-collapse: collapse;border-left: 1.5px solid;border-left-color: ##000000;border-bottom: 1.5px solid;border-top: 1.5px solid">
+                                <span t-field="line.amount_untaxed_signed" t-att-style="style" />
+                            </td>
+                            <td
+                                style="border-collapse: collapse;border-left: 1.5px solid;border-left-color: ##000000;border-bottom: 1.5px solid;border-top: 1.5px solid">
+                                <span t-field="line.amount_total_signed" t-att-style="style" />
+                            </td>
+                            <td
+                                style="border-collapse: collapse;border-left: 1.5px solid;border-left-color: ##000000;border-bottom: 1.5px solid;border-top: 1.5px solid">
+                                <span t-field="line.amount_residual_signed" t-att-style="style" />
+                            </td>
+                            <td
+                                style="border-collapse: collapse;border-left: 1.5px solid;border-left-color: ##000000;border-bottom: 1.5px solid;border-top: 1.5px solid">
+                                <t t-if="line.payment_state in ['not_paid']">
+                                    <span t-field="line.payment_state" style="color:red;" />
+                                </t>
+                                <t t-if="line.payment_state in ('paid', 'reversed')">
+                                    <span t-field="line.payment_state" style="color:green;" />
+                                </t>
+                                <t t-if="line.payment_state in ('partial', 'in_payment')">
+                                    <span t-field="line.payment_state" style="color:orange;" />
+                                </t>
+                            </td>
+                            <td
+                                style="border-collapse: collapse;border-left: 1.5px solid;border-right: 1.5px solid;border-left-color: ##000000;border-bottom: 1.5px solid;border-top: 1.5px solid">
+                                <t t-if="line.state in ['posted']">
+                                    <span t-field="line.state" style="color:green;" />
+                                </t>
+                                <t t-if="line.state in ['cancel']">
+                                    <span t-field="line.state" style="color:red;" />
+                                </t>
+                                <t t-if="line.state in ['draft']">
+                                    <span t-field="line.state" style="color:blue;" />
+                                </t>
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+            </div>
+        </t>
+    </template>
+
+    <template id="adv_product_installment_buying_report_view">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="O">
+                <t
+                    t-call="bsi_adv_product_installment_buying.report_adv_product_installment_buying_document" />
+            </t>
+        </t>
+    </template>
+</odoo>

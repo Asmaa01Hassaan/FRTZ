@@ -1,0 +1,7 @@
+<odoo>
+	<data>
+		<record id="bsi_allowed_installment" model="res.groups">
+		    <field name="name">Allow Product Installments</field>
+		</record>
+	</data>
+</odoo>
