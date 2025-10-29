@@ -24,12 +24,88 @@
             <xpath expr="//field[@name='invoice_payment_term_id']" position="after">
                 <field name="installment_num" string="Installments"/>
                 <field name="first_payment" string="First Payment"/>
-                <field name="view_generate" string="view generate" groups="base.group_allow_export,base.group_no_one"/>
-                <button name="action_generate_payment_term" 
-                        string="Generate Payment Term" 
-                        type="object" 
+                <!--                <field name="view_generate" string="view generate" groups="base.group_allow_export,base.group_no_one"/>-->
+                <button name="action_generate_payment_term"
+                        string="Generate Payment Term"
+                        type="object"
                         class="btn-primary"
                         invisible="installment_num &lt;= 0 or not view_generate"/>
+            </xpath>
+            <xpath expr="//button[@name='action_generate_payment_term']" position="attributes">
+                <attribute name="invisible">hide_buttons_setting == True</attribute>
+            </xpath>
+        </field>
+    </record>
+    <!-- Sale Order Form View - Hide Send by Email and Preview buttons -->
+    <record id="view_order_form_inherit_hide_buttons" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.hide.buttons</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <!-- Add hidden field for button visibility control -->
+            <xpath expr="//form" position="inside">
+                <field name="hide_buttons_setting" invisible="1" readonly="1"/>
+            </xpath>
+            
+            <!-- Hide Send by Email button (primary) -->
+            <xpath expr="//button[@id='send_by_email_primary']" position="attributes">
+                <attribute name="invisible">hide_buttons_setting == True</attribute>
+            </xpath>
+            
+            <!-- Hide Send by Email button (secondary) -->
+            <xpath expr="//button[@id='send_by_email']" position="attributes">
+                <attribute name="invisible">hide_buttons_setting == True</attribute>
+            </xpath>
+            
+            <!-- Hide Preview button -->
+            <xpath expr="//button[@name='action_preview_sale_order']" position="attributes">
+                <attribute name="invisible">hide_buttons_setting == True</attribute>
+            </xpath>
+            
+            <!-- Hide all action_quotation_send buttons -->
+            <xpath expr="//button[@name='action_quotation_send']" position="attributes">
+                <attribute name="invisible">hide_buttons_setting == True</attribute>
+            </xpath>
+            
+            <!-- Hide Quotation Sent state from statusbar -->
+            <xpath expr="//field[@name='state']" position="attributes">
+                <attribute name="statusbar_visible">draft,sale</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Sale Order List View - Hide Quotation Sent state from filters -->
+    <record id="view_order_tree_hide_sent_state" model="ir.ui.view">
+        <field name="name">sale.order.tree.hide.sent.state</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_tree"/>
+        <field name="arch" type="xml">
+            <!-- Add hidden field for state visibility control -->
+            <xpath expr="//list" position="inside">
+                <field name="hide_buttons_setting" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Sale Order Search View - Hide Quotation Sent from filters -->
+    <record id="view_sales_order_filter_hide_sent" model="ir.ui.view">
+        <field name="name">sale.order.search.hide.sent</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+        <field name="arch" type="xml">
+            <!-- Add hidden field for filter visibility control -->
+            <xpath expr="//search" position="inside">
+                <field name="hide_buttons_setting" invisible="1"/>
+            </xpath>
+            
+            <!-- Hide Quotation Sent from status filter -->
+            <xpath expr="//filter[@name='draft']" position="attributes">
+                <attribute name="domain">[('state', 'in', ('draft', 'sale'))]</attribute>
+            </xpath>
+            
+            <!-- Update Quotations filter to exclude sent state -->
+            <xpath expr="//filter[@name='draft']" position="attributes">
+                <attribute name="domain">[('state', 'in', ('draft', 'sale'))]</attribute>
             </xpath>
         </field>
     </record>
@@ -45,6 +121,19 @@
                 <field name="installment_num" string="Installments" optional="hide"/>
                 <field name="first_payment" string="First Payment" optional="hide"/>
             </xpath>
+            <xpath expr="//form" position="inside">
+                <field name="hide_buttons_setting" invisible="1"/>
+            </xpath>
+            <xpath expr="//button[@name='action_print_pdf']" position="attributes">
+                <attribute name="invisible">hide_buttons_setting == True</attribute>
+            </xpath>
+            <xpath expr="//button[contains(@name, 'action_invoice_sent')]" position="attributes">
+                <attribute name="invisible">hide_buttons_setting == True</attribute>
+            </xpath>
+            <xpath expr="//button[@name='preview_invoice']" position="attributes">
+                <attribute name="invisible">hide_buttons_setting == True</attribute>
+            </xpath>
+
         </field>
     </record>
 
@@ -58,35 +147,36 @@
             <xpath expr="//notebook" position="inside">
                 <page string="Installment Information" invisible="not has_installments">
                     <field name="has_installments" invisible="1"/>
-                    
-<!--                    <group>-->
-<!--                        <group>-->
-<!--                            <field name="installment_count"/>-->
-<!--                            <field name="paid_installment_count"/>-->
-<!--                            <field name="pending_installment_count"/>-->
-<!--                            <field name="overdue_installment_count"/>-->
-<!--                        </group>-->
-<!--                        <group>-->
-<!--                            <field name="total_paid_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>-->
-<!--                            <field name="total_remaining_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>-->
-<!--                        </group>-->
-<!--                    </group>-->
-                    
+
+                    <!--                    <group>-->
+                    <!--                        <group>-->
+                    <!--                            <field name="installment_count"/>-->
+                    <!--                            <field name="paid_installment_count"/>-->
+                    <!--                            <field name="pending_installment_count"/>-->
+                    <!--                            <field name="overdue_installment_count"/>-->
+                    <!--                        </group>-->
+                    <!--                        <group>-->
+                    <!--                            <field name="total_paid_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>-->
+                    <!--                            <field name="total_remaining_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>-->
+                    <!--                        </group>-->
+                    <!--                    </group>-->
+
                     <group>
-                        <button name="action_generate_installment_list" 
-                                string="Generate Installment List" 
-                                type="object" 
+                        <button name="action_generate_installment_list"
+                                string="Generate Installment List"
+                                type="object"
                                 class="btn-primary"
                                 invisible="has_installments"/>
-                        <button name="action_view_installment_list" 
-                                string="View Installment List" 
-                                type="object" 
+                        <button name="action_view_installment_list"
+                                string="View Installment List"
+                                type="object"
                                 class="btn-secondary"
                                 invisible="not has_installments"/>
                     </group>
-                    
+
                     <group string="Installment Details">
-                        <field name="installment_list_ids" nolabel="1" context="{'list_view_ref': 'invoice_installment_extension.view_installment_list_list'}"/>
+                        <field name="installment_list_ids" nolabel="1"
+                               context="{'list_view_ref': 'invoice_installment_extension.view_installment_list_list'}"/>
                     </group>
                 </page>
             </xpath>
@@ -105,8 +195,10 @@
                 <field name="paid_installment_count" optional="hide"/>
                 <field name="pending_installment_count" optional="hide"/>
                 <field name="overdue_installment_count" optional="hide"/>
-                <field name="total_paid_amount" widget="monetary" options="{'currency_field': 'currency_id'}" optional="hide"/>
-                <field name="total_remaining_amount" widget="monetary" options="{'currency_field': 'currency_id'}" optional="hide"/>
+                <field name="total_paid_amount" widget="monetary" options="{'currency_field': 'currency_id'}"
+                       optional="hide"/>
+                <field name="total_remaining_amount" widget="monetary" options="{'currency_field': 'currency_id'}"
+                       optional="hide"/>
             </xpath>
         </field>
     </record>

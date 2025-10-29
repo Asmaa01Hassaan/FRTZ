@@ -1,10 +1,56 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api, _
+from odoo.exceptions import ValidationError, UserError
 import logging
 
 _logger = logging.getLogger(__name__)
 
+
+class SaleOrder(models.Model):
+    _inherit = 'sale.order'
+    hide_buttons_setting = fields.Boolean(compute='_compute_hide_sale_buttons_setting', store=False)
+
+    @api.depends_context('uid')
+    def _compute_hide_sale_buttons_setting(self):
+        param = self.env['ir.config_parameter'].sudo().get_param('sale.hide_send_preview_buttons', default=False)
+        for rec in self:
+            rec.hide_buttons_setting = param
+
+    @api.model
+    def create(self, vals):
+        """Ensure hide_buttons_setting is computed on new records"""
+        record = super().create(vals)
+        record._compute_hide_sale_buttons_setting()
+        return record
+
+    @api.model
+    def default_get(self, fields_list):
+        """Set the hide flag on brand new (unsaved) records so buttons are hidden immediately."""
+        res = super().default_get(fields_list)
+        if 'hide_buttons_setting' in fields_list:
+            param = self.env['ir.config_parameter'].sudo().get_param('sale.hide_send_preview_buttons', default=False)
+            res['hide_buttons_setting'] = bool(param)
+        return res
+
+    @api.model
+    def fields_view_get(self, view_id=None, view_type='form', toolbar=False, submenu=False):
+        """Keep standard behavior; rely on field-based invisibility instead of context."""
+        return super().fields_view_get(view_id, view_type, toolbar, submenu)
+
+    def action_quotation_send(self):
+        """Override to prevent sending quotations when hide setting is enabled."""
+        hide_buttons = self.env['ir.config_parameter'].sudo().get_param('sale.hide_send_preview_buttons', default=False)
+        if hide_buttons:
+            raise ValidationError(_("Sending quotations is disabled by system configuration."))
+        return super().action_quotation_send()
+
+    def write(self, vals):
+        """Block transitions to 'sent' if setting is enabled."""
+        hide_buttons = self.env['ir.config_parameter'].sudo().get_param('sale.hide_send_preview_buttons', default=False)
+        if 'state' in vals and vals['state'] == 'sent' and hide_buttons:
+            raise ValidationError(_("Changing state to 'Quotation Sent' is disabled by system configuration."))
+        return super().write(vals)
 
 class AccountMove(models.Model):
     _inherit = 'account.move'
@@ -20,7 +66,13 @@ class AccountMove(models.Model):
         help="First payment amount for installment calculations"
     )
     view_generate = fields.Boolean(string='View generate', default=False, groups="base.group_allow_export" )
+    hide_buttons_setting = fields.Boolean(compute='_compute_hide_buttons_setting')
 
+    @api.depends()
+    def _compute_hide_buttons_setting(self):
+        param = self.env['ir.config_parameter'].sudo().get_param('account.hide_buttons', default=False)
+        for rec in self:
+            rec.hide_buttons_setting = param
 
     @api.model
     def create(self, vals):

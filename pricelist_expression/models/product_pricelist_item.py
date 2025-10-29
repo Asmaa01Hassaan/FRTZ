@@ -3,7 +3,7 @@ from odoo import fields, models, _
 from odoo.tools.safe_eval import safe_eval
 from odoo.exceptions import ValidationError
 import logging
-
+import math
 _logger = logging.getLogger(__name__)
 
 class ProductPricelistItem(models.Model):
@@ -16,7 +16,17 @@ class ProductPricelistItem(models.Model):
 
     price_expression = fields.Char(
         string="Expression",
-        help="Python expression that returns the final unit price. Available variables: price, cost, qty, installment_num, first_payment, round()",
+        help=(
+            "Python expression that returns the final unit price.\n"
+            "Available variables:\n"
+            "price → base price\n"
+            "cost → standard cost\n"
+            "qty → quantity\n"
+            "installment_num → number of installments\n"
+            "first_payment → first payment amount\n"
+            "ceil(x) → round up to next integer\n"
+            "round(x, n) → normal rounding"
+        ),
     )
 
     def _compute_price(self, *args, **kwargs):
@@ -35,6 +45,7 @@ class ProductPricelistItem(models.Model):
                     "installment_num": float(self.env.context.get("installment_num", 0.0) or 0.0),
                     "first_payment": float(self.env.context.get("first_payment", 0.0) or 0.0),
                     "round": round,
+                    "ceil": math.ceil,
                 }
                 
                 new_price = float(safe_eval(self.price_expression, env, nocopy=True))
