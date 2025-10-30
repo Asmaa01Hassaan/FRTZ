@@ -17,6 +17,12 @@ class SaleOrderLine(models.Model):
         default=0.0,
         help="First payment amount for installment calculations"
     )
+    # related لسهولة استخدامها في الـview بدون deep path
+    is_immediate_term = fields.Boolean(
+        related='order_id.is_immediate_term',
+        store=False,
+        readonly=True,
+    )
 
     def _get_pricelist_context(self):
         """Build pricing context with installment information"""
@@ -98,3 +104,17 @@ class SaleOrderLine(models.Model):
         _logger.debug(f"Final price: {price} for product {self.product_id.id}, "
                      f"qty={self.product_uom_qty}, item_id={getattr(self.pricelist_item_id, 'id', False)}")
         return price
+class SaleOrder(models.Model):
+    _inherit = 'sale.order'
+
+    is_immediate_term = fields.Boolean(
+        compute='_compute_is_immediate_term',
+        store=False
+    )
+
+    @api.depends('payment_term_id')
+    def _compute_is_immediate_term(self):
+        for rec in self:
+            # لو اسم شرط السداد عندك مختلف، غيّره هنا
+            rec.is_immediate_term = bool(rec.payment_type and rec.payment_type == 'immediate')
+

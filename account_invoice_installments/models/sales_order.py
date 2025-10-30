@@ -5,7 +5,7 @@ from odoo.exceptions import ValidationError
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
-    
+    vendor_name_id = fields.Many2one('res.partner', string='Vendor Name')
     payment_type = fields.Selection(
         selection=[
             ("immediate", "Immediate Payment"),

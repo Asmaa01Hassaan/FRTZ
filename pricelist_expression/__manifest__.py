@@ -13,7 +13,7 @@
     "version": "18.0.1.0.0",
     "category": "Sales/Price Lists",
     "author": "Your Company",
-    "depends": ["product", "sale"],
+    "depends": ["product", "sale", "account_invoice_installments"],
     "data": [
         "views/pricelist_item_views.xml",
         "security/ir.model.access.csv"
