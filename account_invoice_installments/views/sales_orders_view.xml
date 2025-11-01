@@ -29,9 +29,9 @@
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
             <!-- Insert before payment_term_id wherever it appears (usually Other Info/Invoicing) -->
-            <xpath expr="//sheet//field[@name='date_order']" position="before">
-                <field name="order_type"/>
-            </xpath>
+<!--            <xpath expr="//sheet//field[@name='date_order']" position="before">-->
+<!--                <field name="order_type"/>-->
+<!--            </xpath>-->
             <xpath expr="//sheet//field[@name='payment_term_id']" position="before">
                 <field name="payment_type"/>
             </xpath>

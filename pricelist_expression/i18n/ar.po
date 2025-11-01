@@ -19,7 +19,7 @@ msgstr ""
 #. module: pricelist_expression
 #: model:ir.model.fields,field_description:pricelist_expression.field_sale_order_line__installment_num
 msgid "Installments"
-msgstr "اقساط"
+msgstr "عدد الاقساط"
 
 #. module: pricelist_expression
 #: model:ir.model.fields,field_description:pricelist_expression.field_sale_order_line__first_payment
@@ -60,7 +60,7 @@ msgstr "التعبير"
 #. module: pricelist_expression
 #: model:ir.ui.view,arch_db:pricelist_expression.view_order_form_installments_field
 msgid "Installments"
-msgstr "اقساط"
+msgstr "عدد الاقساط"
 
 #. module: pricelist_expression
 #: model:ir.ui.view,arch_db:pricelist_expression.view_order_form_installments_field
@@ -71,7 +71,7 @@ msgstr "الدفعة الاولى"
 #: model:ir.ui.view,arch_db:pricelist_expression.view_order_form_installments_field
 #: field:sale.order.line,installment_num:string
 msgid "Installments"
-msgstr "اقساط"
+msgstr "عدد الاقساط"
 
 #. module: pricelist_expression
 #: model:ir.ui.view,arch_db:pricelist_expression.view_order_form_installments_field

@@ -167,3 +167,43 @@ msgstr "طلب بيع خدمة"
 #: model:ir.ui.menu,name:account_invoice_installments.menu_standard_orders2
 msgid "Payment Request"
 msgstr "طلب الدفع"
+
+#. module: account_invoice_installments
+#: model:ir.ui.menu,name:account_invoice_installments.menu_product_parent
+msgid "Product"
+msgstr "المنتج"
+
+#. module: account_invoice_installments
+#: model:ir.ui.menu,name:account_invoice_installments.menu_products
+msgid "Products"
+msgstr "المنتجات"
+
+#. module: account_invoice_installments
+#: model:ir.ui.menu,name:account_invoice_installments.menu_product_variants
+msgid "Product Variants"
+msgstr "متغيرات المنتج"
+
+#. module: account_invoice_installments
+#: model:ir.ui.menu,name:account_invoice_installments.menu_pricelist
+msgid "Price List"
+msgstr "قائمة الأسعار"
+
+#. module: account_invoice_installments
+#: model:ir.ui.menu,name:account_invoice_installments.menu_payment_term
+msgid "Payment Term"
+msgstr "شروط الدفع"
+
+#. module: account_invoice_installments
+#: model:ir.ui.menu,name:account_invoice_installments.menu_partner_parent
+msgid "Partners"
+msgstr "الشركاء"
+
+#. module: account_invoice_installments
+#: model:ir.ui.menu,name:account_invoice_installments.menu_customers
+msgid "Customers"
+msgstr "العملاء"
+
+#. module: account_invoice_installments
+#: model:ir.ui.menu,name:account_invoice_installments.menu_companies
+msgid "Companies"
+msgstr "الشركات"

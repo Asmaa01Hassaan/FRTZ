@@ -5,7 +5,7 @@
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
             <xpath expr="//page[@name='other_information']" position="after">
-               <page name="Customer_Guarantees" string="Customer Guarantees">
+                <page name="Customer_Guarantees" string="Customer Guarantees">
                     <group>
                         <field name="guarantees_count" readonly="1"/>
                     </group>
@@ -14,8 +14,8 @@
                             <field name="name"/>
                             <field name="ref"/>
                         </list>
-                </field>
-               </page>
+                    </field>
+                </page>
             </xpath>
         </field>
     </record>

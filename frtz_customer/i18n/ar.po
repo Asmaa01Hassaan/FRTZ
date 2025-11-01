@@ -19,13 +19,13 @@ msgstr ""
 #. module: frtz_customer
 #: model:ir.ui.view,arch_db:frtz_customer.view_sale_form_inherit_customer_ref
 msgid "Customer Guarantees"
-msgstr "الكفلاء"
+msgstr "الكفلاء "
 
 #. module: frtz_customer
 #: model:ir.ui.view,arch_db:frtz_customer.view_sale_form_inherit_customer_ref
 #: page:Customer_Guarantees
 msgid "Customer Guarantees"
-msgstr "الكفلاء"
+msgstr "الكفلاء "
 
 #. module: frtz_customer
 #: model:ir.model.fields,field_description:frtz_customer.field_sale_order__guarantees_count
@@ -202,3 +202,38 @@ msgstr "رقم العميل يجب أن يكون فريداً!"
 #, python-format
 msgid "Orders for %s"
 msgstr "طلبات %s"
+
+#. module: frtz_customer
+#: model:ir.ui.view,arch_db:frtz_customer.view_partner_form_installment_info
+msgid "Installment Information"
+msgstr "معلومات الأقساط"
+
+#. module: frtz_customer
+#: model:ir.ui.view,arch_db:frtz_customer.view_partner_form_installment_info
+msgid "Installment Statistics"
+msgstr "إحصائيات الأقساط"
+
+#. module: frtz_customer
+#: model:ir.ui.view,arch_db:frtz_customer.view_partner_form_installment_info
+msgid "Payment Totals"
+msgstr "إجمالي المدفوعات"
+
+#. module: frtz_customer
+#: model:ir.ui.view,arch_db:frtz_customer.view_partner_form_installment_info
+msgid "View All Installments"
+msgstr "عرض جميع الأقساط"
+
+#. module: frtz_customer
+#: model:ir.ui.view,arch_db:frtz_customer.view_partner_form_inherit_customer_ref
+msgid "Customer"
+msgstr "العميل"
+
+#. module: frtz_customer
+#: model:ir.ui.view,arch_db:frtz_customer.view_partner_form_inherit_customer_ref
+msgid "Customer Code"
+msgstr "رمز العميل"
+
+#. module: frtz_customer
+#: model:ir.ui.view,arch_db:frtz_customer.view_partner_form_inherit_customer_ref
+msgid "Company Name"
+msgstr "اسم الشركة"
