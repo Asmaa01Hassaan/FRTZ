@@ -87,3 +87,44 @@ class AccountPaymentTerm(models.Model):
                         term.first_payment_percentage = 0
                 else:
                     term.first_payment_percentage = 0
+
+    @api.model
+    def action_create_regular_installment_term(self):
+        """Create or get the 'Regular Installment' payment term"""
+        # Check if Regular Installment payment term already exists
+        payment_term = self.env['account.payment.term'].search([('name', '=', 'Regular Installment')], limit=1)
+        
+        if payment_term:
+            return {
+                'type': 'ir.actions.act_window',
+                'name': _('Regular Installment'),
+                'res_model': 'account.payment.term',
+                'res_id': payment_term.id,
+                'view_mode': 'form',
+                'target': 'current',
+            }
+        
+        # Create Regular Installment payment term
+        payment_term = self.env['account.payment.term'].create({
+            'name': 'Regular Installment',
+            'note': 'Payment due at the end of next month from invoice date (100% of total amount)',
+            'line_ids': [(0, 0, {
+                'value': 'percent',
+                'value_amount': 100.0,
+                'delay_type': 'days_after_end_of_next_month',
+                'nb_days': 0,
+            })],
+        })
+        
+        _logger.info("Created 'Regular Installment' payment term via button action")
+        
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': _('Success'),
+                'message': _('Regular Installment payment term has been created successfully.'),
+                'type': 'success',
+                'sticky': False,
+            }
+        }

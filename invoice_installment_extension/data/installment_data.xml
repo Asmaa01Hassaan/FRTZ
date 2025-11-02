@@ -9,4 +9,12 @@
         <field name="number_next">1</field>
         <field name="number_increment">1</field>
     </record>
+
+    <!-- Regular Installment Payment Term -->
+    <!-- Payment due exactly at the end of next month from invoice date (100% of total amount) -->
+    <record id="payment_term_regular_installment" model="account.payment.term">
+        <field name="name">Regular Installment</field>
+        <field name="note">Payment due at the end of next month from invoice date (100% of total amount)</field>
+        <field name="line_ids" eval="[Command.clear(), Command.create({'value': 'percent', 'value_amount': 100.0, 'delay_type': 'days_after_end_of_next_month', 'nb_days': 0})]"/>
+    </record>
 </odoo>

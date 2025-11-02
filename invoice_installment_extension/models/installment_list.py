@@ -87,6 +87,18 @@ class InstallmentList(models.Model):
         if vals.get('name', _('New')) == _('New'):
             vals['name'] = self.env['ir.sequence'].next_by_code('installment.list') or _('New')
         return super().create(vals)
+
+    def write(self, vals):
+        """Override write to check if invoice should be marked as paid"""
+        result = super().write(vals)
+        
+        # If state is being changed to 'paid', check if invoice should be marked as paid
+        if 'state' in vals and vals['state'] == 'paid':
+            for installment in self:
+                if installment.invoice_id:
+                    installment.invoice_id._check_and_mark_paid_from_installments()
+        
+        return result
     
     def action_mark_paid(self):
         """Mark installment as paid"""
@@ -99,9 +111,10 @@ class InstallmentList(models.Model):
             'paid_date': fields.Date.today(),
         })
         
-        # Check if all installments are paid
-        if all(i.state == 'paid' for i in self.invoice_id.installment_list_ids):
-            _logger.info(f"All installments paid for invoice {self.invoice_id.name}")
+        # Check if all installments are paid and mark invoice as paid
+        invoice = self.invoice_id
+        if invoice:
+            invoice._check_and_mark_paid_from_installments()
     
     def action_mark_overdue(self):
         """Mark installment as overdue"""

@@ -30,8 +30,17 @@
                         type="object"
                         class="btn-primary"
                         invisible="installment_num &lt;= 0 or not view_generate"/>
+                <button name="action_create_regular_installment_term"
+                        string="Generate Regular Installment"
+                        type="object"
+                        class="btn-secondary"
+                        icon="fa-cog"
+                        help="Create or view the Regular Installment payment term (100% due at end of next month)"/>
             </xpath>
             <xpath expr="//button[@name='action_generate_payment_term']" position="attributes">
+                <attribute name="invisible">hide_buttons_setting == True</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_create_regular_installment_term']" position="attributes">
                 <attribute name="invisible">hide_buttons_setting == True</attribute>
             </xpath>
         </field>
