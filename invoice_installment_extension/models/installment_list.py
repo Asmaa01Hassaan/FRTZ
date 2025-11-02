@@ -88,18 +88,6 @@ class InstallmentList(models.Model):
             vals['name'] = self.env['ir.sequence'].next_by_code('installment.list') or _('New')
         return super().create(vals)
 
-    def write(self, vals):
-        """Override write to check if invoice should be marked as paid"""
-        result = super().write(vals)
-        
-        # If state is being changed to 'paid', check if invoice should be marked as paid
-        if 'state' in vals and vals['state'] == 'paid':
-            for installment in self:
-                if installment.invoice_id:
-                    installment.invoice_id._check_and_mark_paid_from_installments()
-        
-        return result
-    
     def action_mark_paid(self):
         """Mark installment as paid"""
         self.ensure_one()
@@ -110,11 +98,6 @@ class InstallmentList(models.Model):
             'state': 'paid',
             'paid_date': fields.Date.today(),
         })
-        
-        # Check if all installments are paid and mark invoice as paid
-        invoice = self.invoice_id
-        if invoice:
-            invoice._check_and_mark_paid_from_installments()
     
     def action_mark_overdue(self):
         """Mark installment as overdue"""
@@ -161,6 +144,21 @@ class AccountMove(models.Model):
     total_paid_amount = fields.Monetary(string='Total Paid', currency_field='currency_id', compute='_compute_installment_totals', store=True)
     total_remaining_amount = fields.Monetary(string='Remaining Amount', currency_field='currency_id', compute='_compute_installment_totals', store=True)
     
+    # Nearest due installment
+    nearest_due_installment_amount = fields.Monetary(
+        string='Nearest Due Installment Amount',
+        currency_field='currency_id',
+        compute='_compute_nearest_due_installment',
+        store=True,
+        help='Amount of the installment with the nearest due date'
+    )
+    nearest_due_installment_date = fields.Date(
+        string='Nearest Due Installment Date',
+        compute='_compute_nearest_due_installment',
+        store=True,
+        help='Due date of the installment with the nearest due date'
+    )
+    
     @api.depends('installment_list_ids')
     def _compute_has_installments(self):
         for move in self:
@@ -183,6 +181,53 @@ class AccountMove(models.Model):
             
             # Calculate remaining amount
             move.total_remaining_amount = move.amount_total - move.total_paid_amount
+
+    @api.depends('installment_list_ids', 'installment_list_ids.state', 'installment_list_ids.due_date', 'installment_list_ids.amount')
+    def _compute_nearest_due_installment(self):
+        """Compute the installment with nearest due date from installment_list_ids"""
+        for move in self:
+            # Initialize with default values
+            move.nearest_due_installment_amount = 0.0
+            move.nearest_due_installment_date = False
+            
+            # Check if installment_list_ids exists and has records
+            if not move.installment_list_ids:
+                continue
+            
+            # Get all pending/overdue installments (not paid, not cancelled)
+            # Access the records directly from installment_list_ids
+            pending_installments = move.installment_list_ids.filtered(
+                lambda i: i.state in ('pending', 'overdue')
+            )
+            
+            if not pending_installments:
+                continue
+            
+            # Filter those with due_date (ensure due_date is not False/None)
+            installments_with_due_date = pending_installments.filtered(
+                lambda i: i.due_date and i.due_date != False
+            )
+            
+            if not installments_with_due_date:
+                continue
+            
+            # Sort by due_date (ascending - nearest first)
+            try:
+                # Sort installments by due_date
+                sorted_installments = installments_with_due_date.sorted(key=lambda i: i.due_date)
+                
+                if sorted_installments:
+                    nearest_installment = sorted_installments[0]
+                    
+                    # Get values directly from the installment record
+                    move.nearest_due_installment_amount = nearest_installment.amount
+                    move.nearest_due_installment_date = nearest_installment.due_date
+                    
+                    _logger.debug(f"Invoice {move.name}: Nearest due installment - Amount: {nearest_installment.amount}, Date: {nearest_installment.due_date}")
+            except Exception as e:
+                _logger.error(f"Error computing nearest due installment for invoice {move.name}: {e}")
+                import traceback
+                _logger.error(traceback.format_exc())
     
     def action_view_installment_list(self):
         """Open installment list view"""

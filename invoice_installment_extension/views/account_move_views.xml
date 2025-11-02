@@ -20,6 +20,17 @@
         <field name="model">account.move</field>
         <field name="inherit_id" ref="account.view_move_form"/>
         <field name="arch" type="xml">
+            <!-- Add green ribbon widget when all installments are paid -->
+
+            <xpath expr="//widget[@name='web_ribbon']" position="after">
+                <field name="pending_installment_count" invisible="1"/>
+                <field name="has_installments" invisible="1"/>
+                <div invisible="pending_installment_count != 0 or not has_installments" style="font-size: 0.55em;">
+                    <widget name="web_ribbon" 
+                            title="All Installments Paid" 
+                            bg_color="text-bg-success"/>
+                </div>
+            </xpath>
             <!-- Add installment fields to invoice header -->
             <xpath expr="//field[@name='invoice_payment_term_id']" position="after">
                 <field name="installment_num" string="Installments"/>
@@ -157,18 +168,20 @@
                 <page string="Installment Information" invisible="not has_installments">
                     <field name="has_installments" invisible="1"/>
 
-                    <!--                    <group>-->
-                    <!--                        <group>-->
-                    <!--                            <field name="installment_count"/>-->
-                    <!--                            <field name="paid_installment_count"/>-->
-                    <!--                            <field name="pending_installment_count"/>-->
-                    <!--                            <field name="overdue_installment_count"/>-->
-                    <!--                        </group>-->
-                    <!--                        <group>-->
-                    <!--                            <field name="total_paid_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>-->
-                    <!--                            <field name="total_remaining_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>-->
-                    <!--                        </group>-->
-                    <!--                    </group>-->
+                                        <group>
+                                            <group>
+                                                <field name="installment_count"/>
+                                                <field name="paid_installment_count"/>
+                                                <field name="pending_installment_count"/>
+                                                <field name="overdue_installment_count"/>
+                                            </group>
+                                            <group>
+                                                <field name="total_paid_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                                <field name="total_remaining_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                                <field name="nearest_due_installment_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                                <field name="nearest_due_installment_date"/>
+                                            </group>
+                                        </group>
 
                     <group>
                         <button name="action_generate_installment_list"

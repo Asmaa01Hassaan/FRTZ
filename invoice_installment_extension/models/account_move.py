@@ -246,110 +246,6 @@ class AccountMove(models.Model):
                 
         return result
 
-    def _check_and_mark_paid_from_installments(self):
-        """Check if all installments are paid and mark invoice as paid if so"""
-        self.ensure_one()
-        
-        # Only process invoices that are posted
-        if self.state != 'posted':
-            return
-        
-        # Check if invoice is already fully paid
-        if self.payment_state in ('paid', 'in_payment'):
-            return
-        
-        # Verify all installments are paid
-        all_installments = self.installment_list_ids.filtered(lambda i: i.state != 'cancelled')
-        if not all_installments:
-            return
-        
-        paid_installments = all_installments.filtered(lambda i: i.state == 'paid')
-        if len(paid_installments) != len(all_installments):
-            return
-        
-        # All installments are paid, mark invoice as paid
-        self._mark_invoice_paid_from_installments()
-
-    def _mark_invoice_paid_from_installments(self):
-        """Mark invoice as paid when all installments are paid"""
-        self.ensure_one()
-        
-        # Only process customer invoices that are posted
-        if self.move_type not in ('out_invoice', 'in_invoice') or self.state != 'posted':
-            return
-        
-        # Check if invoice is already fully paid
-        if self.payment_state in ('paid', 'in_payment'):
-            return
-        
-        # Verify all installments are paid
-        all_installments = self.installment_list_ids.filtered(lambda i: i.state != 'cancelled')
-        if not all_installments:
-            return
-        
-        paid_installments = all_installments.filtered(lambda i: i.state == 'paid')
-        if len(paid_installments) != len(all_installments):
-            return
-        
-        # All installments are paid, create a payment to reconcile the invoice
-        try:
-            # Calculate total paid amount
-            total_paid = sum(paid_installments.mapped('amount'))
-            
-            if total_paid <= 0:
-                return
-            
-            # Get journal for payments
-            if self.move_type == 'out_invoice':
-                # Customer invoice - use payment journal
-                payment_journal = self.env['account.journal'].search([
-                    ('type', '=', 'bank'),
-                    ('company_id', '=', self.company_id.id)
-                ], limit=1)
-                if not payment_journal:
-                    payment_journal = self.env['account.journal'].search([
-                        ('type', 'in', ('bank', 'cash')),
-                        ('company_id', '=', self.company_id.id)
-                    ], limit=1)
-            else:
-                # Vendor bill - use bank journal
-                payment_journal = self.env['account.journal'].search([
-                    ('type', '=', 'bank'),
-                    ('company_id', '=', self.company_id.id)
-                ], limit=1)
-            
-            if not payment_journal:
-                _logger.warning(f"No payment journal found for company {self.company_id.name}")
-                return
-            
-            # Create payment
-            payment_vals = {
-                'payment_type': 'inbound' if self.move_type == 'out_invoice' else 'outbound',
-                'partner_type': 'customer' if self.move_type == 'out_invoice' else 'supplier',
-                'partner_id': self.partner_id.id,
-                'amount': total_paid,
-                'currency_id': self.currency_id.id,
-                'journal_id': payment_journal.id,
-                'date': fields.Date.today(),
-                'ref': f"Installment payments for {self.name}",
-                'invoice_ids': [(4, self.id)],
-            }
-            
-            payment = self.env['account.payment'].create(payment_vals)
-            payment.action_post()
-            
-            # Reconcile the payment with invoice
-            (payment.move_id.line_ids + self.line_ids).filtered(
-                lambda line: line.account_id == payment.destination_account_id
-                and not line.reconciled
-            ).reconcile()
-            
-            _logger.info(f"Invoice {self.name} marked as paid from installments. Payment {payment.name} created and reconciled.")
-            
-        except Exception as e:
-            _logger.error(f"Error marking invoice {self.name} as paid from installments: {e}")
-            # Don't raise error, just log it
-
     def _auto_generate_installments(self):
         """Automatically generate installment list from payment terms after invoice confirmation"""
         for move in self:
@@ -549,6 +445,19 @@ class AccountMove(models.Model):
             })
         
         return installment_list
+
+
+    def action_view_installment_invoice(self):
+        """Open invoice form view from payment installment list"""
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Invoice'),
+            'res_model': 'account.move',
+            'res_id': self.id,
+            'view_mode': 'form',
+            'target': 'current',
+        }
 
 
 class AccountMoveLine(models.Model):
