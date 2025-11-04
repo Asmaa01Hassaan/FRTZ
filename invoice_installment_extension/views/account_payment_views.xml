@@ -9,7 +9,7 @@
             <!-- Add notebook page for Transions -->
             <xpath expr="//notebook[@name='payment_notebook']" position="inside">
                 <!-- Transions Page -->
-                <page string="Transions" name="transions"
+                <page string="Transaction" name="transions"
                       invisible="not partner_id or partner_type != 'customer'">
                     <!-- Date filter and payment summary -->
                     <group>
@@ -35,10 +35,10 @@
                     </group>
                     
                     <field name="control_payment_ids" nolabel="1">
-                        <list string="Transions" editable="bottom" create="1" delete="1">
-<!--                            <field name="invoice_id" required="1" options="{'no_create': True, 'no_create_edit': True}" invisible="1"/>-->
-                            <field name="invoice_name" string="Transion" readonly="1"/>
-                            <field name="invoice_date" string="Transion Date" readonly="1"/>
+                        <list string="Transaction" editable="bottom" create="1" delete="1">
+                            <field name="invoice_id" required="1" options="{'no_create': True, 'no_create_edit': True}"   string="Transaction" />
+<!--                            <field name="invoice_name" readonly="1"/>-->
+                            <field name="invoice_date" string="Transaction Date" readonly="1"/>
                             <field name="amount_total" 
                                    widget="monetary" 
                                    options="{'currency_field': 'currency_id'}" 
