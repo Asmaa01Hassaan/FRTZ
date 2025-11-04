@@ -182,6 +182,19 @@
                                                 <field name="nearest_due_installment_date"/>
                                             </group>
                                         </group>
+                                        <group string="Due Amount Calculation">
+                                            <group>
+                                                <field name="due_date_filter" string="Date for Pay" options="{'datepicker': {'min_date': False}}"/>
+                                                <field name="due_amount" widget="monetary" options="{'currency_field': 'currency_id'}" readonly="1"/>
+                                                <field name="to_pay_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                                <button name="action_pay_installments" 
+                                                        string="Pay Installment" 
+                                                        type="object" 
+                                                        class="btn-primary"
+                                                        invisible="not due_date_filter or not to_pay_amount or to_pay_amount &lt;= 0"
+                                                        icon="fa-money"/>
+                                            </group>
+                                        </group>
 
                     <group>
                         <button name="action_generate_installment_list"

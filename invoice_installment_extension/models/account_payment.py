@@ -1,98 +1,357 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api, _
-import logging
-
-_logger = logging.getLogger(__name__)
+from odoo.exceptions import UserError
 
 
 class AccountPayment(models.Model):
     _inherit = 'account.payment'
 
-    invoice_ids_with_pending_installments = fields.One2many(
-        'account.move',
-        compute='_compute_invoice_ids_with_pending_installments',
-        string='Invoices with Pending Installments',
-        help='Invoices for the selected customer that have pending installments',
-        readonly=True,
+    # Date filter for all selected invoices
+    payment_due_date_filter = fields.Date(
+        string='Date for Pay',
+        help='Date filter for calculating due amount on all selected invoices'
     )
     
-    selected_installment_invoice_ids = fields.Many2many(
+    # Many2many field for all unpaid invoices
+    available_invoice_ids = fields.Many2many(
         'account.move',
-        'payment_installment_invoice_rel',
+        'payment_available_invoice_rel',
+        'payment_id',
+        'invoice_id',
+        string='Available Invoices',
+        help='All unpaid invoices for the selected customer',
+        domain="[('partner_id', '=', partner_id), ('move_type', '=', 'out_invoice'), ('state', '=', 'posted'), ('payment_state', '!=', 'paid')]"
+    )
+    
+    # Many2many field for selected invoices
+    selected_invoice_ids = fields.Many2many(
+        'account.move',
+        'payment_selected_invoice_rel',
         'payment_id',
         'invoice_id',
         string='Selected Invoices',
-        help='Selected invoices with pending installments',
-        domain="[('id', 'in', invoice_ids_with_pending_installments)]",
+        help='Invoices selected for payment',
+        domain="[('id', 'in', available_invoice_ids)]"
     )
     
-    total_selected_nearest_due_amount = fields.Monetary(
-        string='Total Nearest Due Amount',
-        currency_field='currency_id',
-        compute='_compute_total_selected_nearest_due_amount',
-        help='Sum of nearest due installment amounts from selected invoices',
+    # One2many field for invoice to pay records (only for selected invoices)
+    payment_invoice_line_ids = fields.One2many(
+        'payment.invoice.to.pay',
+        'payment_id',
+        string='Invoice Payment Lines',
+        help='Invoices selected for payment with amounts to pay',
+        domain="[('invoice_id', 'in', selected_invoice_ids)]"
     )
     
-    payment_amount_after_nearest_due = fields.Monetary(
-        string='Payment Amount After Nearest Due',
-        currency_field='currency_id',
-        compute='_compute_total_selected_nearest_due_amount',
-        help='Payment amount minus sum of selected invoices nearest due installment amounts',
+    # One2many field for control payment records
+    control_payment_ids = fields.One2many(
+        'control.payment',
+        'payment_id',
+        string='Control Payments',
+        help='Control payment records for invoices'
     )
-
-    @api.depends('partner_id')
-    def _compute_invoice_ids_with_pending_installments(self):
-        """Compute invoices with pending installments for the selected partner"""
+    
+    # Computed fields
+    total_invoice_to_pay = fields.Monetary(
+        string='Total Invoice To Pay',
+        currency_field='currency_id',
+        compute='_compute_total_invoice_to_pay',
+        help='Sum of all to_pay_amount for selected invoices'
+    )
+    
+    payment_remaining_amount = fields.Monetary(
+        string='Remaining Amount',
+        currency_field='currency_id',
+        compute='_compute_total_invoice_to_pay',
+        help='Payment amount minus total invoice to pay'
+    )
+    
+    # Computed fields for control payments
+    total_control_to_pay = fields.Monetary(
+        string='Total Control To Pay',
+        currency_field='currency_id',
+        compute='_compute_total_control_to_pay',
+        help='Sum of all to_pay for control payment records'
+    )
+    
+    control_payment_remaining_amount = fields.Monetary(
+        string='Control Remaining Amount',
+        currency_field='currency_id',
+        compute='_compute_total_control_to_pay',
+        help='Payment amount minus total control to pay'
+    )
+    
+    @api.depends('payment_invoice_line_ids.to_pay_amount', 'amount')
+    def _compute_total_invoice_to_pay(self):
+        """Compute total invoice to pay and remaining amount"""
         for payment in self:
-            if payment.partner_id and payment.partner_type == 'customer':
-                # Get all customer invoices with pending installments
-                invoices = self.env['account.move'].search([
-                    ('partner_id', '=', payment.partner_id.id),
-                    ('move_type', '=', 'out_invoice'),
-                    ('state', '=', 'posted'),
-                    ('pending_installment_count', '>', 0),
-                ])
-                payment.invoice_ids_with_pending_installments = invoices
-            else:
-                payment.invoice_ids_with_pending_installments = False
-
+            total = sum(payment.payment_invoice_line_ids.mapped('to_pay_amount'))
+            payment.total_invoice_to_pay = total
+            payment.payment_remaining_amount = (payment.amount or 0.0) - total
+    
+    @api.depends('control_payment_ids.to_pay', 'amount')
+    def _compute_total_control_to_pay(self):
+        """Compute total control to pay and remaining amount"""
+        for payment in self:
+            total = sum(payment.control_payment_ids.mapped('to_pay'))
+            payment.total_control_to_pay = total
+            payment.control_payment_remaining_amount = (payment.amount or 0.0) - total
+    
+    @api.onchange('partner_id', 'partner_type')
+    def _onchange_partner_load_invoices(self):
+        """Load unpaid invoices when partner is selected"""
+        if self.partner_id and self.partner_type == 'customer':
+            # Get all unpaid invoices for the customer with remaining amount > 0
+            invoices = self.env['account.move'].search([
+                ('partner_id', '=', self.partner_id.id),
+                ('move_type', '=', 'out_invoice'),
+                ('state', '=', 'posted'),
+                ('payment_state', '!=', 'paid'),
+                ('total_remaining_amount', '!=', 0),
+            ])
+            # Set available invoices and select all by default
+            self.available_invoice_ids = [(6, 0, invoices.ids)]
+            self.selected_invoice_ids = [(6, 0, invoices.ids)]  # Select all by default
+            # Update payment_invoice_line_ids for selected invoices
+            self._update_payment_invoice_lines()
+            # Update control_payment_ids for all available invoices
+            self._update_control_payment_lines()
+        elif not self.partner_id or self.partner_type != 'customer':
+            # Clear everything if partner is removed or not customer
+            self.available_invoice_ids = [(5, 0, 0)]
+            self.selected_invoice_ids = [(5, 0, 0)]
+            self.payment_invoice_line_ids = [(5, 0, 0)]
+            self.control_payment_ids = [(5, 0, 0)]
+    
+    def _update_payment_invoice_lines(self):
+        """Update payment_invoice_line_ids based on selected_invoice_ids"""
+        if not self.selected_invoice_ids:
+            self.payment_invoice_line_ids = [(5, 0, 0)]
+            return
+        
+        # Get existing invoice IDs in payment_invoice_line_ids
+        existing_invoice_ids = self.payment_invoice_line_ids.mapped('invoice_id').ids
+        
+        # Create lines for newly selected invoices
+        to_create = []
+        for invoice in self.selected_invoice_ids:
+            if invoice.id not in existing_invoice_ids:
+                to_create.append((0, 0, {
+                    'invoice_id': invoice.id,
+                    'to_pay_amount': 0.0,
+                    'due_date_filter': self.payment_due_date_filter or invoice.due_date_filter or False,
+                }))
+        
+        # Remove lines for deselected invoices
+        to_remove = self.payment_invoice_line_ids.filtered(
+            lambda l: l.invoice_id.id not in self.selected_invoice_ids.ids
+        )
+        to_remove_ids = [(2, line.id) for line in to_remove]
+        
+        # Update lines
+        if to_create or to_remove_ids:
+            current_lines = self.payment_invoice_line_ids.filtered(
+                lambda l: l.invoice_id.id in self.selected_invoice_ids.ids
+            )
+            # Keep existing lines and add new ones
+            self.payment_invoice_line_ids = [(6, 0, current_lines.ids)] + to_create
+    
+    def _update_control_payment_lines(self):
+        """Update control_payment_ids based on available_invoice_ids"""
+        if not self.available_invoice_ids:
+            self.control_payment_ids = [(5, 0, 0)]
+            return
+        
+        # Get existing invoice IDs in control_payment_ids
+        existing_invoice_ids = self.control_payment_ids.mapped('invoice_id').ids
+        
+        # Create lines for newly available invoices
+        to_create = []
+        for invoice in self.available_invoice_ids:
+            if invoice.id not in existing_invoice_ids:
+                to_create.append((0, 0, {
+                    'invoice_id': invoice.id,
+                    'to_pay': 0.0,
+                    'due_date': self.payment_due_date_filter or invoice.due_date_filter or False,
+                }))
+        
+        # Remove lines for invoices no longer available
+        to_remove = self.control_payment_ids.filtered(
+            lambda l: l.invoice_id.id not in self.available_invoice_ids.ids
+        )
+        to_remove_ids = [(2, line.id) for line in to_remove]
+        
+        # Update lines
+        if to_create or to_remove_ids:
+            current_lines = self.control_payment_ids.filtered(
+                lambda l: l.invoice_id.id in self.available_invoice_ids.ids
+            )
+            # Keep existing lines and add new ones
+            self.control_payment_ids = [(6, 0, current_lines.ids)] + to_create
+    
+    @api.onchange('payment_due_date_filter')
+    def _onchange_payment_due_date_filter(self):
+        """Update due_date_filter for all invoice lines and control payment lines"""
+        if self.payment_due_date_filter:
+            # Update payment_invoice_line_ids
+            for line in self.payment_invoice_line_ids:
+                line.due_date_filter = self.payment_due_date_filter
+                # Trigger recomputation of due_amount
+                if line.invoice_id:
+                    line.invoice_id.due_date_filter = self.payment_due_date_filter
+                    line.invoice_id._compute_due_amount()
+                    line._compute_due_amount()
+            
+            # Update control_payment_ids
+            for line in self.control_payment_ids:
+                line.due_date = self.payment_due_date_filter
+                if line.invoice_id:
+                    line.invoice_id.due_date_filter = self.payment_due_date_filter
+                    line.invoice_id._compute_due_amount()
+                    line._compute_due_amount()
+    
+    @api.onchange('selected_invoice_ids')
+    def _onchange_selected_invoice_ids(self):
+        """Update payment_invoice_line_ids when selected invoices change"""
+        self._update_payment_invoice_lines()
+    
     def write(self, vals):
-        """Override write to update memo when invoices are selected"""
+        """Override write to sync selected_invoice_ids and due_date_filter"""
+        # Sync payment_due_date_filter to invoice lines and control payment lines if it's being updated
+        if 'payment_due_date_filter' in vals:
+            for payment in self:
+                # Update payment_invoice_line_ids
+                if payment.payment_invoice_line_ids:
+                    for line in payment.payment_invoice_line_ids:
+                        line.due_date_filter = vals['payment_due_date_filter']
+                        if line.invoice_id:
+                            line.invoice_id.due_date_filter = vals['payment_due_date_filter']
+                            line.invoice_id._compute_due_amount()
+                
+                # Update control_payment_ids
+                if payment.control_payment_ids:
+                    for line in payment.control_payment_ids:
+                        line.due_date = vals['payment_due_date_filter']
+                        if line.invoice_id:
+                            line.invoice_id.due_date_filter = vals['payment_due_date_filter']
+                            line.invoice_id._compute_due_amount()
+                            line._compute_due_amount()
+        
         result = super().write(vals)
         
-        # Update memo when selected invoices change
-        if 'selected_installment_invoice_ids' in vals:
+        # After write, update payment_invoice_line_ids if selected_invoice_ids changed
+        if 'selected_invoice_ids' in vals:
             for payment in self:
-                if payment.selected_installment_invoice_ids:
-                    invoice_names = ', '.join(payment.selected_installment_invoice_ids.mapped('name'))
-                    payment.memo = invoice_names
-                elif not payment.selected_installment_invoice_ids:
-                    # Clear memo if no invoices selected (optional - you can remove this line if you want to keep memo)
-                    pass
+                payment._update_payment_invoice_lines()
+        
+        # Trigger recomputation of control totals if control_payment_ids changed
+        if 'control_payment_ids' in vals:
+            for payment in self:
+                payment._compute_total_control_to_pay()
         
         return result
-
-    @api.depends('selected_installment_invoice_ids', 'selected_installment_invoice_ids.nearest_due_installment_amount', 'amount')
-    def _compute_total_selected_nearest_due_amount(self):
-        """Compute sum of nearest due amounts from selected invoices"""
-        for payment in self:
-            if payment.selected_installment_invoice_ids:
-                # Sum of nearest_due_installment_amount from selected invoices
-                total_nearest_due = sum(payment.selected_installment_invoice_ids.mapped('nearest_due_installment_amount'))
-                payment.total_selected_nearest_due_amount = total_nearest_due
+    
+    def action_process_installment_payments(self):
+        """Process installment payments for all selected invoices"""
+        self.ensure_one()
+        
+        if not self.payment_invoice_line_ids:
+            raise UserError(_("Please select at least one invoice to pay"))
+        
+        if not self.payment_due_date_filter:
+            raise UserError(_("Please select a date for pay"))
+        
+        # Validate total equals payment amount
+        total_to_pay = sum(self.payment_invoice_line_ids.mapped('to_pay_amount'))
+        if total_to_pay != self.amount:
+            raise UserError(_(
+                "Total invoice to pay amount (%s) must equal the payment amount (%s)."
+            ) % (total_to_pay, self.amount))
+        
+        processed_count = 0
+        errors = []
+        
+        for line in self.payment_invoice_line_ids.filtered(lambda l: l.to_pay_amount > 0):
+            try:
+                # Update invoice with payment values
+                line.invoice_id.write({
+                    'to_pay_amount': line.to_pay_amount,
+                    'due_date_filter': self.payment_due_date_filter,
+                })
                 
-                # Payment amount minus sum of nearest due amounts
-                payment.payment_amount_after_nearest_due = payment.amount - total_nearest_due if payment.amount else 0.0
-            else:
-                payment.total_selected_nearest_due_amount = 0.0
-                payment.payment_amount_after_nearest_due = payment.amount or 0.0
-
-    @api.onchange('selected_installment_invoice_ids')
-    def _onchange_selected_installment_invoice_ids(self):
-        """Update memo field with selected invoice names"""
-        if self.selected_installment_invoice_ids:
-            invoice_names = ', '.join(self.selected_installment_invoice_ids.mapped('name'))
-            # Set memo with selected invoice names
-            self.memo = invoice_names
+                # Process the installment payment
+                line.invoice_id.action_pay_installments()
+                processed_count += 1
+            except Exception as e:
+                errors.append(f"{line.invoice_id.name}: {str(e)}")
+        
+        if errors:
+            error_message = _("Errors occurred while processing payments:\n%s") % '\n'.join(errors)
+            raise UserError(error_message)
+        
+        if processed_count > 0:
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': _('Success'),
+                    'message': _('Payment processed for %d invoice(s) successfully.') % processed_count,
+                    'type': 'success',
+                    'sticky': False,
+                }
+            }
+        
+        return False
+    
+    def action_process_control_payments(self):
+        """Process installment payments for all control payment records"""
+        self.ensure_one()
+        
+        if not self.control_payment_ids:
+            raise UserError(_("Please select at least one invoice to pay"))
+        
+        if not self.payment_due_date_filter:
+            raise UserError(_("Please select a date for pay"))
+        
+        total_to_pay = sum(self.control_payment_ids.mapped('to_pay'))
+        if total_to_pay != self.amount:
+            raise UserError(_(
+                "Total control to pay amount (%s) must equal the payment amount (%s)."
+            ) % (total_to_pay, self.amount))
+        
+        processed_count = 0
+        errors = []
+        
+        for line in self.control_payment_ids.filtered(lambda l: l.to_pay > 0):
+            try:
+                # Update invoice with payment values
+                line.invoice_id.write({
+                    'to_pay_amount': line.to_pay,
+                    'due_date_filter': line.due_date or self.payment_due_date_filter,
+                })
+                
+                # Process the installment payment
+                line.invoice_id.action_pay_installments()
+                processed_count += 1
+            except Exception as e:
+                errors.append(f"{line.invoice_id.name}: {str(e)}")
+        
+        if errors:
+            error_message = _("Errors occurred while processing payments:\n%s") % '\n'.join(errors)
+            raise UserError(error_message)
+        
+        if processed_count > 0:
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': _('Success'),
+                    'message': _('Payment processed for %d invoice(s) successfully.') % processed_count,
+                    'type': 'success',
+                    'sticky': False,
+                }
+            }
+        
+        return False
 

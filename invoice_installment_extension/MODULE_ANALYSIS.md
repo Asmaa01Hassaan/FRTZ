@@ -1,424 +1,394 @@
-# Invoice Installment Extension - Module Analysis
+# Invoice Installment Extension Module - Analysis
 
-## 📋 Overview
-
-The **Invoice Installment Extension** module is a comprehensive Odoo 18 addon that extends invoice management with automated installment payment functionality. It enables businesses to manage invoices with multiple payment installments, automatically generates payment terms, and provides tracking and reporting capabilities for installment-based sales.
-
----
-
-## 🎯 Core Functionality
-
-### **1. Installment Management**
-- **Installment Fields**: Adds `installment_num` (number of installments) and `first_payment` (first payment amount) fields to invoices
-- **Automatic Payment Term Generation**: Creates payment terms automatically based on installment data
-- **Installment List Tracking**: Maintains detailed records of each installment payment
-
-### **2. Payment Term Automation**
-- **Auto-Generation**: Automatically creates payment terms when installment data is entered
-- **Flexible Configuration**: Supports different first payment types (percentage or fixed amount)
-- **Payment Intervals**: Configurable days between payments (default: 30 days)
-
-### **3. Installment Tracking**
-- **State Management**: Tracks installment status (Pending, Paid, Overdue, Cancelled)
-- **Due Date Calculation**: Automatically calculates due dates based on payment intervals
-- **Overdue Detection**: Identifies and marks overdue installments
+## Module Overview
+**Name:** `invoice_installment_extension`  
+**Version:** 18.0.1.0.0  
+**Category:** Accounting/Invoicing  
+**Purpose:** Enhanced invoice management with comprehensive installment support, automatic payment term generation, and installment tracking.
 
 ---
 
-## 🏗️ Module Architecture
-
-### **Models (Python Files)**
-
-#### **1. account_move.py** - Invoice Extensions
-**Purpose**: Extends `account.move` (Invoice) model with installment functionality
-
-**Key Features**:
-- **Fields Added**:
-  - `installment_num`: Number of installments
-  - `first_payment`: First payment amount
-  - `hide_buttons_setting`: Configuration to hide buttons
-  - `installment_list_ids`: Related installment records
-  
-- **Automatic Behaviors**:
-  - **On Create**: Auto-generates payment terms if `installment_num > 0`
-  - **On Write**: Re-generates payment terms if installment data changes
-  - **On Post (Confirm)**: Auto-generates installment list records
-
-- **Generation Methods**:
-  - `_auto_generate_payment_terms()`: Creates payment terms from installment data
-  - `_auto_generate_installments()`: Creates installment list from payment terms
-  - `_generate_from_payment_terms()`: Extracts installments from payment term lines
-  - `_generate_from_installment_num()`: Creates installments when no payment terms exist
-
-**Sale Order Extensions**:
-- Hides "Send by Email" and "Preview" buttons based on configuration
-- Prevents state transition to "sent" when configuration is enabled
-- Removes "Quotation Sent" state from statusbar
-
-#### **2. account_move_line.py** - Invoice Line Extensions
-**Purpose**: Extends invoice lines with installment data from sale order lines
-
-**Key Features**:
-- Transfers `installment_num` and `first_payment` from sale order lines to invoice lines
-- Automatically syncs installment data when invoice lines are created/updated
-
-#### **3. account_payment_term.py** - Payment Term Extensions
-**Purpose**: Extends payment terms with installment-specific functionality
-
-**Key Methods**:
-- `create_installment_term()`: Factory method to create payment terms for installments
-  - Parameters: `installment_num`, `first_payment`, `total_amount`, `payment_interval`
-  - Creates payment term lines with percentages and due dates
-  - Supports first payment (if specified) and regular installments
-
-**Fields Added**:
-- `is_installment_term`: Boolean flag to identify installment payment terms
-- `installment_count`: Number of installments
-- `first_payment_percentage`: Percentage of first payment
-
-#### **4. installment_list.py** - Installment Tracking Model
-**Purpose**: Core model for tracking individual installment payments
-
-**Key Features**:
-- **Fields**:
-  - Basic info: `name`, `sequence`, `invoice_id`, `partner_id`
-  - Payment: `amount`, `currency_id`, `due_date`, `paid_date`
-  - Status: `state` (pending/paid/overdue/cancelled)
-  - Payment details: `payment_method_id`, `payment_reference`, `notes`
-  
-- **Computed Fields**:
-  - `display_name`: Formatted display name
-  - `is_late`: Boolean flag for overdue installments
-  - `days_overdue`: Number of days past due date
-  
-- **Actions**:
-  - `action_mark_paid()`: Mark installment as paid
-  - `action_mark_overdue()`: Mark as overdue
-  - `action_cancel()`: Cancel installment
-  
-- **Cron Job**: `_cron_check_overdue_installments()` - Automatically marks overdue installments
-
-**Account Move Extensions** (in same file):
-- Adds installment list relationship and computed statistics:
-  - `installment_count`, `paid_installment_count`, `pending_installment_count`, `overdue_installment_count`
-  - `total_paid_amount`, `total_remaining_amount`
-
-#### **5. payment_term_wizard.py** - Payment Term Generation Wizard
-**Purpose**: Interactive wizard to manually generate payment terms
-
-**Features**:
-- Allows configuring installment parameters
-- First payment can be percentage or fixed amount
-- Calculates payment intervals
-- Validates input before generation
-
-#### **6. res_partner.py** - Customer Installment Tracking
-**Purpose**: Extends customers/partners with installment information
-
-**Key Features**:
-- Tracks all installments for a customer
-- Computed statistics: counts and totals for installments
-- Action to view all customer installments
-
-#### **7. res_config_settings.py** - Configuration Settings
-**Purpose**: System configuration for hiding buttons
-
-**Settings**:
-- Hide buttons in invoices
-- Hide "Send by Email" and "Preview" buttons in sale orders
+## Dependencies
+- `base`
+- `account`
+- `sale`
+- `account_invoice_installments`
+- `pricelist_expression`
+- `sale_invoice_per_line`
+- `frtz_customer`
 
 ---
 
-## 🔄 Workflow & Process Flow
+## Core Models
 
-### **Invoice Creation with Installments**
+### 1. **AccountMove (account.move)** - Invoice Model Extension
+**File:** `models/account_move.py`
 
-1. **Invoice Creation**:
-   ```
-   User creates invoice → Sets installment_num and first_payment
-   ```
+#### Key Fields:
+- `installment_num` (Float): Number of installments for the invoice
+- `first_payment` (Monetary): First payment amount for installment calculations
+- `view_generate` (Boolean): Controls visibility of generate buttons (for export group)
+- `hide_buttons_setting` (Boolean): Computed field for hiding buttons based on config
+- `to_pay_amount` (Monetary): Amount to be distributed among installments
+- `amount_to_pay` (Monetary): Computed field equal to `to_pay_amount` (readonly)
+- `installment_list_ids` (One2many): Related installments (inherited from base module)
+- `has_installments` (Boolean): Computed field indicating if invoice has installments
+- `installment_count`, `paid_installment_count`, `pending_installment_count`, `overdue_installment_count`: Count fields
+- `total_paid_amount`, `total_remaining_amount`: Monetary totals
+- `nearest_due_installment_amount`, `nearest_due_installment_date`: Nearest due installment info
+- `due_date_filter` (Date): Date filter for calculating due amounts
+- `due_amount` (Monetary): Computed total of installments due on/before `due_date_filter`
 
-2. **Automatic Payment Term Generation**:
-   ```
-   create() or write() → _auto_generate_payment_terms()
-   → account.payment.term.create_installment_term()
-   → Creates payment term with lines
-   → Assigns to invoice.invoice_payment_term_id
-   ```
+#### Key Methods:
+1. **`_auto_generate_payment_terms()`**: Automatically creates payment terms based on `installment_num`
+   - Creates "Regular Installment" payment term if needed
+   - Auto-assigns "Regular Installment" when `installment_num == 1` and `first_payment == 0`
 
-3. **Invoice Confirmation**:
-   ```
-   action_post() → _auto_generate_installments()
-   → Generates installment.list records
-   → Creates records with due dates and amounts
-   ```
+2. **`action_generate_payment_term()`**: Opens wizard to manually generate payment terms
 
-4. **Payment Tracking**:
-   ```
-   Installments tracked individually
-   → States: pending → paid/overdue
-   → Statistics updated automatically
-   ```
+3. **`action_create_regular_installment_term()`**: Creates/gets "Regular Installment" payment term (100% due at end of next month)
 
-### **Sale Order Integration**
+4. **`action_post()`**: Override to auto-generate installments after invoice confirmation
 
-1. **Data Flow**:
-   ```
-   Sale Order Line (installment_num, first_payment)
-   → Invoice Line (transferred automatically)
-   → Invoice Header (aggregated)
-   → Payment Terms (auto-generated)
-   → Installment List (on confirmation)
-   ```
+5. **`_auto_generate_installments()`**: Generates installment list automatically
+   - For "Regular Installment" payment term: Uses `_generate_from_installment_num_with_payment_term()`
+   - For other payment terms: Uses `_generate_from_payment_terms()` or `_generate_from_installment_num()`
 
----
+6. **`_generate_from_payment_terms()`**: Creates installments from payment term lines
+   - Uses payment term line's `_get_due_date()` for accurate due date calculation
+   - Handles `days_after_end_of_next_month` delay type
 
-## 🎨 User Interface Components
+7. **`_generate_from_installment_num_with_payment_term()`**: Generates installments based on `installment_num` but uses payment term for due date calculation
+   - First installment uses payment term's base due date
+   - Subsequent installments add months incrementally
 
-### **Views**
+8. **`_generate_from_installment_num()`**: Fallback method using fixed 30-day intervals
 
-1. **Invoice Form Views**:
-   - Adds installment fields to invoice header
-   - "Generate Payment Term" button (conditional)
-   - Installment Information tab with statistics
-   - Installment List view with all installments
+9. **`action_pay_installments()`**: Distributes `to_pay_amount` among eligible installments
+   - Prioritizes `partial_paid` installments first, then `pending` by due date
+   - Updates installment states and paid amounts
 
-2. **Payment Term Wizard**:
-   - Form wizard for manual payment term generation
-   - Configurable first payment (percentage/fixed)
-   - Payment interval settings
+10. **`_compute_due_amount()`**: Computes total remaining amount of installments due on/before `due_date_filter`
 
-3. **Installment List Views**:
-   - List view showing all installments
-   - Form view for installment details
-   - Statistics and totals
+11. **`_compute_nearest_due_installment()`**: Finds nearest pending/partial_paid/overdue installment
 
-4. **Partner/Customer Views**:
-   - Installment Information tab
-   - Statistics: counts, totals, payment status
-   - Link to view all customer installments
+12. **`_compute_installment_count()`**: Counts installments by state
 
-5. **Sale Order Views**:
-   - Hides "Send by Email" and "Preview" buttons (configurable)
-   - Removes "Quotation Sent" state from statusbar
+13. **`_compute_installment_totals()`**: Calculates total paid and remaining amounts
 
-### **Menu Structure** (via dependency on account_invoice_installments)
-- Integrated into FRTZ menu system
-- Access to installment-related views
+#### Sale Order Extension:
+- `hide_buttons_setting`: Controls visibility of send/preview buttons
+- Blocks `action_quotation_send()` when config enabled
+- Blocks state transition to 'sent' when config enabled
 
 ---
 
-## 🔧 Key Methods Explained
+### 2. **InstallmentList (installment.list)** - Installment Tracking Model
+**File:** `models/installment_list.py`
 
-### **Payment Term Creation**
-```python
-create_installment_term(installment_num, first_payment, total_amount, payment_interval)
-```
-- **Input**: Installment count, first payment, total amount, days between payments
-- **Process**:
-  1. Calculates first payment percentage (if first_payment > 0)
-  2. Calculates remaining installments and amount per installment
-  3. Creates payment term lines with percentages and due dates
-  4. Returns payment term record
-- **Output**: Payment term with installment structure
+#### Key Fields:
+- `name` (Char): Installment reference (auto-generated from sequence)
+- `sequence` (Integer): Installment sequence number
+- `invoice_id` (Many2one): Related invoice
+- `amount` (Monetary): Installment amount
+- `due_date` (Date): Due date
+- `paid_date` (Date): Date when paid
+- `paid_amount` (Monetary): Amount paid (supports partial payments)
+- `remaining_amount` (Monetary): Computed `amount - paid_amount`
+- `state` (Selection): Status (`pending`, `partial_paid`, `paid`, `overdue`, `cancelled`)
+- `is_late` (Boolean): Computed field for overdue status
+- `days_overdue` (Integer): Computed days overdue
+- `customer_guarantees_names` (Char): Related customer guarantees names
 
-### **Installment Generation**
-```python
-_auto_generate_installments()
-```
-- **Trigger**: When invoice is confirmed (posted)
-- **Process**:
-  1. Checks if installments already exist
-  2. Clears existing if any
-  3. Generates from payment terms (if available) OR from installment_num field
-  4. Creates installment.list records with amounts and due dates
-- **Output**: List of installment records
+#### Key Methods:
+1. **`action_mark_paid()`**: Marks installment as fully paid
+2. **`action_mark_partial_paid()`**: Marks installment as partially paid or updates partial payment
+3. **`action_mark_overdue()`**: Marks installment as overdue
+4. **`action_cancel()`**: Cancels installment
+5. **`_compute_remaining_amount()`**: Calculates remaining amount
+6. **`_compute_is_late()`**: Checks if installment is overdue
+7. **`_compute_days_overdue()`**: Calculates days overdue
+8. **`_cron_check_overdue_installments()`**: Scheduled action to mark overdue installments
 
-### **Payment Term Generation from Installments**
-```python
-_generate_from_payment_terms(move)
-```
-- **Process**:
-  1. Iterates through payment term lines
-  2. Calculates amounts (percentage or fixed)
-  3. Calculates due dates based on nb_days
-  4. Creates installment records
-- **Output**: List of installment dictionaries
-
-### **Installment Generation without Payment Terms**
-```python
-_generate_from_installment_num(move)
-```
-- **Process**:
-  1. Calculates amount per installment
-  2. Handles first payment (if specified)
-  3. Creates equal installments for remaining amount
-  4. Sets due dates with 30-day intervals
-- **Output**: List of installment dictionaries
+#### Features:
+- Automatic sequence generation
+- Partial payment support with `partial_paid` state
+- Automatic overdue detection via cron job
+- Customer guarantee tracking
 
 ---
 
-## 📊 Data Relationships
+### 3. **AccountPaymentTerm (account.payment.term)** - Payment Term Extension
+**File:** `models/account_payment_term.py`
 
-```
-account.move (Invoice)
-├── installment_num (Float)
-├── first_payment (Monetary)
-├── invoice_payment_term_id (Many2one) → account.payment.term
-└── installment_list_ids (One2many) → installment.list
+#### Key Fields:
+- `is_installment_term` (Boolean): Indicates if term is for installments
+- `installment_count` (Integer): Number of installments
+- `first_payment_percentage` (Float): First payment percentage
 
-installment.list
-├── invoice_id (Many2one) → account.move
-├── partner_id (Many2one) → res.partner
-├── payment_term_id (Many2one) → account.payment.term (related)
-└── state (Selection: pending/paid/overdue/cancelled)
-
-res.partner (Customer)
-└── installment_list_ids (One2many) → installment.list
-
-account.move.line (Invoice Line)
-├── installment_num (Float) [from sale order line]
-└── first_payment (Monetary) [from sale order line]
-
-account.payment.term
-├── is_installment_term (Boolean)
-├── installment_count (Integer)
-└── first_payment_percentage (Float)
-```
+#### Key Methods:
+1. **`create_installment_term()`**: Creates payment term for installments
+   - Supports first payment (fixed amount or percentage)
+   - Creates regular installments with configurable intervals
+   - Returns created payment term
 
 ---
 
-## 🔐 Security & Access Control
+### 4. **PaymentTermGenerationWizard (payment.term.generation.wizard)** - Payment Term Wizard
+**File:** `models/payment_term_wizard.py`
 
-- **Access Rights**: Defined in `security/ir.model.access.csv`
-- **Group Permissions**: Some features restricted to specific user groups
-- **Button Visibility**: Configurable via system settings
+#### Purpose:
+Wizard for manually generating payment terms with customizable settings.
 
----
+#### Key Fields:
+- `invoice_id`: Related invoice
+- `installment_num`: Number of installments
+- `first_payment_type`: Percentage or Fixed Amount
+- `first_payment_percentage`: Percentage value
+- `first_payment_amount`: Fixed amount value
+- `payment_interval`: Days between payments
 
-## 🌍 Internationalization
-
-- **Arabic Translation**: Full `ar.po` file with translations
-- **Translation Support**: All user-facing strings are translatable
-
----
-
-## ⚙️ Configuration
-
-### **System Settings**:
-1. **Hide Invoice Buttons**: Toggle to hide certain invoice buttons
-2. **Hide Sale Order Buttons**: Toggle to hide "Send by Email" and "Preview" buttons
-3. **Hide Quotation Sent State**: Removes "sent" state from sale order workflow
-
-### **Payment Term Settings**:
-- **Payment Interval**: Configurable days between installments (default: 30)
-- **First Payment Type**: Percentage or Fixed Amount
-- **Automatic Generation**: Enabled by default when installment_num is set
+#### Key Methods:
+- **`action_generate_payment_term()`**: Generates and assigns payment term to invoice
 
 ---
 
-## 🔄 Integration Points
+### 5. **PaymentInvoiceWizard (payment.invoice.wizard)** - Payment Invoice Wizard
+**File:** `models/payment_invoice_wizard.py`
 
-### **Dependencies**:
-1. **account_invoice_installments**: Base installment functionality
-2. **pricelist_expression**: Expression-based pricing with installment support
-3. **sale_invoice_per_line**: Per-line invoice generation
-4. **frtz_customer**: Customer management with guarantees
+#### Purpose:
+Wizard for paying multiple invoices from a payment form. Shows unpaid invoices for a customer and allows batch payment processing.
 
-### **Integration Flow**:
-```
-Sale Order (pricelist_expression)
-  ↓ (with installment_num, first_payment)
-Invoice Creation (sale_invoice_per_line)
-  ↓ (transfers installment data)
-Invoice (invoice_installment_extension)
-  ↓ (auto-generates payment terms)
-Payment Terms (account.payment.term)
-  ↓ (on invoice confirmation)
-Installment List (installment.list)
-  ↓ (tracking and payment)
-Customer Records (res.partner)
-```
+#### Key Fields:
+- `payment_id`: Related payment
+- `partner_id`: Customer (related)
+- `invoice_ids`: One2many to wizard lines
+- `total_due_amount`: Sum of all due amounts
+- `total_to_pay`: Sum of all to_pay amounts
 
----
+#### Wizard Line Model (`payment.invoice.wizard.line`):
+- `invoice_id`: Invoice
+- `invoice_name`, `invoice_date`, `amount_total`, `total_remaining_amount`: Invoice fields
+- `due_date_filter`: Date filter
+- `due_amount`: Computed due amount
+- `to_pay`: Amount to pay for this invoice
 
-## 📈 Business Logic
-
-### **Installment Calculation Logic**:
-
-**Scenario 1: With First Payment**
-```
-Total Amount: 10,000
-First Payment: 2,000
-Installments: 5
-
-Calculation:
-- First Payment: 2,000 (20%)
-- Remaining: 8,000
-- Remaining Installments: 4
-- Amount per Installment: 8,000 / 4 = 2,000 each
-```
-
-**Scenario 2: Equal Installments**
-```
-Total Amount: 10,000
-First Payment: 0
-Installments: 5
-
-Calculation:
-- Amount per Installment: 10,000 / 5 = 2,000 each
-```
-
-### **Due Date Calculation**:
-- First payment: Due immediately (nb_days = 0)
-- Subsequent installments: Due date = Today + (installment_number × payment_interval)
-- Example: If payment_interval = 30, installment 2 is due in 30 days, installment 3 in 60 days, etc.
+#### Key Methods:
+- **`action_pay_all_invoices()`**: Processes payments for all invoices with `to_pay > 0`
 
 ---
 
-## 🎯 Use Cases
+### 6. **PaymentInvoiceToPay (payment.invoice.to.pay)** - Payment Invoice Link
+**File:** `models/payment_invoice_to_pay.py`
 
-1. **Regular Installment Sales**:
-   - Customer purchases with 12 monthly installments
-   - Automatic generation of payment schedule
-   - Tracking of payment status
+#### Purpose:
+Intermediate model to store `to_pay_amount` and `due_date_filter` for each invoice in a payment (currently unused since account.payment was removed).
 
-2. **First Payment Required**:
-   - Down payment of 30% required
-   - Remaining 70% split into installments
-   - Tracks first payment separately
-
-3. **Customer Payment Tracking**:
-   - View all installments for a customer
-   - Track overdue payments
-   - Generate reports on payment status
-
-4. **Automated Workflow**:
-   - Sale order → Invoice → Payment terms → Installment list
-   - Minimal manual intervention required
+#### Key Fields:
+- `payment_id`: Related payment
+- `invoice_id`: Related invoice
+- `to_pay_amount`: Amount to pay
+- `due_date_filter`: Date filter
+- `due_amount`: Computed due amount
 
 ---
 
-## 🔍 Technical Highlights
+### 7. **ResPartner (res.partner)** - Partner Extension
+**File:** `models/res_partner.py`
 
-### **Strengths**:
-1. ✅ **Automatic Generation**: Reduces manual work
-2. ✅ **Flexible Configuration**: Supports various installment scenarios
-3. ✅ **Comprehensive Tracking**: Detailed installment records
-4. ✅ **Integration**: Seamless integration with sale orders and invoices
-5. ✅ **Error Handling**: Robust exception handling and logging
-6. ✅ **State Management**: Proper workflow states for installments
+#### Key Fields (Computed):
+- `has_installments`: Boolean indicating if partner has installments
+- `installment_count`, `paid_installment_count`, `partial_paid_installment_count`, `pending_installment_count`, `overdue_installment_count`: Count fields
+- `total_installment_amount`, `total_paid_amount`, `total_remaining_amount`: Monetary totals
 
-### **Key Design Patterns**:
-- **Factory Method**: `create_installment_term()` for payment term creation
-- **Computed Fields**: Real-time statistics calculation
-- **Auto-Actions**: Automatic generation on create/write/post
-- **Wizard Pattern**: Payment term generation wizard
-- **Observer Pattern**: Cron job for overdue detection
+#### Key Methods:
+- **`action_view_installments()`**: Opens installment list view filtered by partner
 
 ---
 
-## 📝 Summary
+### 8. **ResConfigSettings (res.config.settings)** - Configuration
+**File:** `models/res_config_settings.py`
 
-The **Invoice Installment Extension** module provides a complete solution for managing installment-based invoices in Odoo. It automates payment term generation, tracks individual installments, provides customer-level reporting, and integrates seamlessly with the sales workflow. The module is well-structured, follows Odoo best practices, and includes comprehensive error handling and logging.
+#### Purpose:
+System-wide configuration settings.
 
+#### Key Fields:
+- `hide_buttons`: Hides buttons on account moves
+- `hide_sale_send_preview_buttons`: Hides send/preview buttons on sale orders
+
+Stored as `ir.config_parameter`:
+- `account.hide_buttons`
+- `sale.hide_send_preview_buttons`
+
+---
+
+## Data Files
+
+### `data/installment_data.xml`
+1. **Installment List Sequence**: Auto-generates installment reference numbers (prefix: INST)
+2. **Regular Installment Payment Term**: Pre-defined payment term with 100% due at end of next month
+
+---
+
+## Views
+
+### 1. **Account Move Views** (`views/account_move_views.xml`)
+- Adds installment fields to invoice header (`installment_num`, `first_payment`)
+- Adds "Generate Payment Term" and "Generate Regular Installment" buttons
+- Adds "Installment Information" notebook page with:
+  - Installment counts and totals
+  - Nearest due installment info
+  - Due Amount Calculation section (`due_date_filter`, `due_amount`, `to_pay_amount`)
+  - "Pay Installment" button
+  - Installment list view
+- Adds green ribbon widget when all installments are paid
+- Hides buttons based on `hide_buttons_setting`
+
+### 2. **Sale Order Views** (in `account_move_views.xml`)
+- Hides "Send by Email" and "Preview" buttons based on config
+- Hides "Quotation Sent" state from statusbar and filters
+
+### 3. **Installment List Views** (`views/installment_list_views.xml`)
+- List and form views for installment tracking
+- Shows installment details, payment status, and actions
+
+### 4. **Payment Term Views** (`views/account_payment_term_views.xml`)
+- Extends payment term form with installment-related fields
+
+### 5. **Payment Term Wizard Views** (`views/payment_term_wizard_views.xml`)
+- Wizard form for generating payment terms
+
+### 6. **Payment Invoice Wizard Views** (`views/payment_invoice_wizard_views.xml`)
+- Wizard form for paying multiple invoices
+
+### 7. **Partner Views** (`views/res_partner_installment_views.xml`)
+- Adds "Installment Information" page to partner form
+- Shows installment statistics and totals
+
+### 8. **Menu Views** (`views/menu_views.xml`)
+- Adds FRTZ menu structure with sub-menus
+
+### 9. **Config Settings Views** (`views/res_config_settings_view.xml`)
+- Settings page for hiding buttons
+
+---
+
+## Key Workflows
+
+### 1. **Installment Creation Workflow**
+1. User sets `installment_num` and `first_payment` on invoice
+2. On create/write, `_auto_generate_payment_terms()` is called
+3. If "Regular Installment" should be used, it's created/assigned
+4. On invoice confirmation (`action_post()`), `_auto_generate_installments()` is called
+5. Installments are generated based on payment term or `installment_num`
+
+### 2. **Regular Installment Workflow**
+1. User clicks "Generate Regular Installment" button
+2. Payment term "Regular Installment" is created/retrieved (100% due at end of next month)
+3. If `installment_num == 1` and `first_payment == 0`, term is auto-assigned
+4. Installments are generated using payment term's due date logic
+
+### 3. **Payment Processing Workflow**
+1. User sets `due_date_filter` and `to_pay_amount` on invoice
+2. `due_amount` is computed automatically
+3. User clicks "Pay Installment" button
+4. `action_pay_installments()` distributes payment:
+   - Prioritizes `partial_paid` installments (oldest first)
+   - Then `pending` installments (oldest first)
+   - Updates states and paid amounts accordingly
+
+### 4. **Wizard Payment Workflow**
+1. User opens "Pay for Invoices" wizard from payment form
+2. Wizard loads unpaid invoices for customer
+3. User sets `due_date_filter` and `to_pay` for each invoice
+4. User clicks "Pay All Selected Invoices"
+5. Payments are processed for all invoices with `to_pay > 0`
+
+---
+
+## Features
+
+### ✅ **Installment Management**
+- Automatic installment generation from payment terms or `installment_num`
+- Support for first payment (custom amount)
+- Partial payment support (`partial_paid` state)
+- Automatic overdue detection and marking
+- Installment tracking and statistics
+
+### ✅ **Payment Term Automation**
+- Automatic payment term creation based on installment data
+- "Regular Installment" payment term (100% due at end of next month)
+- Manual payment term generation wizard
+- Support for complex payment term structures
+
+### ✅ **Payment Processing**
+- Date-based due amount calculation
+- Smart payment distribution (prioritizes partial payments)
+- Batch payment processing via wizard
+- Real-time payment tracking
+
+### ✅ **UI Enhancements**
+- Installment information page on invoices
+- Installment statistics on partner forms
+- Green ribbon when all installments paid
+- Configurable button hiding
+- Menu structure organization
+
+### ✅ **Integration**
+- Sale order installment data transfer
+- Customer guarantee tracking
+- Integration with pricelist expressions
+- Multi-currency support
+
+---
+
+## Technical Notes
+
+### Payment Term Due Date Calculation
+- Uses payment term line's `_get_due_date()` method
+- Properly handles `days_after_end_of_next_month` delay type
+- For "Regular Installment": First installment due at end of next month, subsequent installments monthly
+
+### Installment Generation Logic
+1. **Regular Installment**: Uses `_generate_from_installment_num_with_payment_term()` - calculates amounts from `installment_num`, uses payment term for due dates
+2. **Other Payment Terms**: Uses `_generate_from_payment_terms()` - creates installments from payment term lines
+3. **Fallback**: Uses `_generate_from_installment_num()` - fixed 30-day intervals
+
+### State Management
+- `pending`: Initial state, not paid
+- `partial_paid`: Partially paid (has `paid_amount` < `amount`)
+- `paid`: Fully paid (`paid_amount` == `amount`)
+- `overdue`: Past due date (set by cron or manually)
+- `cancelled`: Cancelled installments
+
+---
+
+## Security
+- Access rights defined in `security/ir.model.access.csv`
+- Button visibility controlled by user groups (`base.group_allow_export`)
+- Configurable button hiding via system parameters
+
+---
+
+## Internationalization
+- Arabic translations in `i18n/ar.po`
+- Pot file for translation template
+
+---
+
+## Current Status
+- ✅ All core functionality implemented
+- ✅ Account payment customizations removed (as requested)
+- ✅ Wizard for batch invoice payment available
+- ✅ Partial payment support working
+- ✅ Automatic installment generation working
+- ✅ Payment term automation working
+
+---
+
+## Potential Improvements
+1. Add installment payment reconciliation
+2. Add installment reminders/notifications
+3. Add installment reporting/dashboards
+4. Add installment templates
+5. Add installment approval workflows

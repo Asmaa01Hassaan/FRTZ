@@ -30,6 +30,8 @@
         'views/account_payment_views.xml',
         'views/account_payment_term_views.xml',
         'views/payment_term_wizard_views.xml',
+        'views/payment_invoice_wizard_views.xml',
+        'views/control_payment_views.xml',
         'views/installment_list_views.xml',
         'views/res_partner_installment_views.xml',
         'views/res_config_settings_view.xml',

@@ -4,3 +4,7 @@ access_account_payment_term_installment,account.payment.term.installment,account
 access_payment_term_wizard,payment.term.generation.wizard,model_payment_term_generation_wizard,account.group_account_user,1,1,1,1
 access_installment_list_user,installment.list.user,model_installment_list,account.group_account_user,1,1,1,0
 access_installment_list_manager,installment.list.manager,model_installment_list,account.group_account_manager,1,1,1,1
+access_payment_invoice_to_pay_user,payment.invoice.to.pay.user,model_payment_invoice_to_pay,account.group_account_user,1,1,1,1
+access_payment_invoice_wizard,payment.invoice.wizard,model_payment_invoice_wizard,account.group_account_user,1,1,1,1
+access_payment_invoice_wizard_line,payment.invoice.wizard.line,model_payment_invoice_wizard_line,account.group_account_user,1,1,1,1
+access_control_payment_user,control.payment.user,model_control_payment,account.group_account_user,1,1,1,1

@@ -67,6 +67,28 @@ class AccountMove(models.Model):
     )
     view_generate = fields.Boolean(string='View generate', default=False, groups="base.group_allow_export" )
     hide_buttons_setting = fields.Boolean(compute='_compute_hide_buttons_setting')
+    
+    # Fields for installment payment (if not already defined elsewhere)
+    to_pay_amount = fields.Monetary(
+        string='To Pay',
+        currency_field='currency_id',
+        default=0.0,
+        help='Amount to be distributed among installments due on or before the selected date'
+    )
+    
+    amount_to_pay = fields.Monetary(
+        string='Amount to Pay',
+        currency_field='currency_id',
+        compute='_compute_amount_to_pay',
+        readonly=True,
+        help='Amount that will be paid for this invoice (same as to_pay_amount)'
+    )
+    
+    @api.depends('to_pay_amount')
+    def _compute_amount_to_pay(self):
+        """Compute amount_to_pay as equal to to_pay_amount"""
+        for move in self:
+            move.amount_to_pay = move.to_pay_amount or 0.0
 
     @api.depends()
     def _compute_hide_buttons_setting(self):

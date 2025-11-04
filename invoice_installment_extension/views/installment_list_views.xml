@@ -11,18 +11,18 @@
                             string="Mark Paid" 
                             type="object" 
                             class="btn-primary"
-                            invisible="state != 'pending'"/>
+                            invisible="state not in ('pending', 'partial_paid')"/>
                     <button name="action_mark_overdue" 
                             string="Mark Overdue" 
                             type="object" 
                             class="btn-warning"
-                            invisible="state != 'pending'"/>
+                            invisible="state not in ('pending', 'partial_paid')"/>
                     <button name="action_cancel" 
                             string="Cancel" 
                             type="object" 
                             class="btn-secondary"
                             invisible="state == 'paid'"/>
-                    <field name="state" widget="statusbar" statusbar_visible="pending,paid,overdue"/>
+                    <field name="state" widget="statusbar" statusbar_visible="pending,partial_paid,paid,overdue"/>
                 </header>
                 <sheet>
                     <div class="oe_title">
@@ -36,6 +36,8 @@
                             <field name="invoice_id"/>
                             <field name="sequence"/>
                             <field name="amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="paid_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="remaining_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             <field name="currency_id" invisible="1"/>
                         </group>
                         <group>
@@ -78,9 +80,11 @@
                 <field name="customer_name"/>
                 <field name="customer_number"/>
                 <field name="amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <field name="paid_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <field name="remaining_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                 <field name="due_date"/>
                 <field name="paid_date"/>
-                <field name="state" widget="badge" decoration-success="state == 'paid'" decoration-danger="state == 'overdue'" decoration-warning="state == 'pending'"/>
+                <field name="state" widget="badge" decoration-success="state == 'paid'" decoration-info="state == 'partial_paid'" decoration-danger="state == 'overdue'" decoration-warning="state == 'pending'"/>
                 <field name="is_late"/>
                 <field name="days_overdue"/>
                 <field name="customer_guarantees_names" optional="hide"/>
@@ -101,6 +105,7 @@
                 <field name="customer_name"/>
                 <field name="customer_number"/>
                 <filter string="Pending" name="pending" domain="[('state', '=', 'pending')]"/>
+                <filter string="Partial Paid" name="partial_paid" domain="[('state', '=', 'partial_paid')]"/>
                 <filter string="Paid" name="paid" domain="[('state', '=', 'paid')]"/>
                 <filter string="Overdue" name="overdue" domain="[('state', '=', 'overdue')]"/>
                 <filter string="Cancelled" name="cancelled" domain="[('state', '=', 'cancelled')]"/>
