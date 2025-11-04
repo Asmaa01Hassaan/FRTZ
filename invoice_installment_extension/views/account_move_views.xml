@@ -22,15 +22,15 @@
         <field name="arch" type="xml">
             <!-- Add green ribbon widget when all installments are paid -->
 
-            <xpath expr="//widget[@name='web_ribbon']" position="after">
-                <field name="pending_installment_count" invisible="1"/>
-                <field name="has_installments" invisible="1"/>
-                <div invisible="pending_installment_count != 0 or not has_installments" style="font-size: 0.55em;">
-                    <widget name="web_ribbon" 
-                            title="All Installments Paid" 
-                            bg_color="text-bg-success"/>
-                </div>
-            </xpath>
+<!--            <xpath expr="//widget[@name='web_ribbon']" position="after">-->
+<!--                <field name="pending_installment_count" invisible="1"/>-->
+<!--                <field name="has_installments" invisible="1"/>-->
+<!--                <div invisible="pending_installment_count != 0 or not has_installments" style="font-size: 0.55em;">-->
+<!--                    <widget name="web_ribbon"-->
+<!--                            title="All Installments Paid"-->
+<!--                            bg_color="text-bg-success"/>-->
+<!--                </div>-->
+<!--            </xpath>-->
             <!-- Add installment fields to invoice header -->
             <xpath expr="//field[@name='invoice_payment_term_id']" position="after">
                 <field name="installment_num" string="Installments"/>
@@ -66,27 +66,27 @@
             <xpath expr="//form" position="inside">
                 <field name="hide_buttons_setting" invisible="1" readonly="1"/>
             </xpath>
-            
+
             <!-- Hide Send by Email button (primary) -->
             <xpath expr="//button[@id='send_by_email_primary']" position="attributes">
                 <attribute name="invisible">hide_buttons_setting == True</attribute>
             </xpath>
-            
+
             <!-- Hide Send by Email button (secondary) -->
             <xpath expr="//button[@id='send_by_email']" position="attributes">
                 <attribute name="invisible">hide_buttons_setting == True</attribute>
             </xpath>
-            
+
             <!-- Hide Preview button -->
             <xpath expr="//button[@name='action_preview_sale_order']" position="attributes">
                 <attribute name="invisible">hide_buttons_setting == True</attribute>
             </xpath>
-            
+
             <!-- Hide all action_quotation_send buttons -->
             <xpath expr="//button[@name='action_quotation_send']" position="attributes">
                 <attribute name="invisible">hide_buttons_setting == True</attribute>
             </xpath>
-            
+
             <!-- Hide Quotation Sent state from statusbar -->
             <xpath expr="//field[@name='state']" position="attributes">
                 <attribute name="statusbar_visible">draft,sale</attribute>
@@ -117,12 +117,12 @@
             <xpath expr="//search" position="inside">
                 <field name="hide_buttons_setting" invisible="1"/>
             </xpath>
-            
+
             <!-- Hide Quotation Sent from status filter -->
             <xpath expr="//filter[@name='draft']" position="attributes">
                 <attribute name="domain">[('state', 'in', ('draft', 'sale'))]</attribute>
             </xpath>
-            
+
             <!-- Update Quotations filter to exclude sent state -->
             <xpath expr="//filter[@name='draft']" position="attributes">
                 <attribute name="domain">[('state', 'in', ('draft', 'sale'))]</attribute>
@@ -168,33 +168,38 @@
                 <page string="Installment Information" invisible="not has_installments">
                     <field name="has_installments" invisible="1"/>
 
-                                        <group>
-                                            <group>
-                                                <field name="installment_count"/>
-                                                <field name="paid_installment_count"/>
-                                                <field name="pending_installment_count"/>
-                                                <field name="overdue_installment_count"/>
-                                            </group>
-                                            <group>
-                                                <field name="total_paid_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
-                                                <field name="total_remaining_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
-                                                <field name="nearest_due_installment_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
-                                                <field name="nearest_due_installment_date"/>
-                                            </group>
-                                        </group>
-                                        <group string="Due Amount Calculation">
-                                            <group>
-                                                <field name="due_date_filter" string="Date for Pay" options="{'datepicker': {'min_date': False}}"/>
-                                                <field name="due_amount" widget="monetary" options="{'currency_field': 'currency_id'}" readonly="1"/>
-                                                <field name="to_pay_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
-                                                <button name="action_pay_installments" 
-                                                        string="Pay Installment" 
-                                                        type="object" 
-                                                        class="btn-primary"
-                                                        invisible="not due_date_filter or not to_pay_amount or to_pay_amount &lt;= 0"
-                                                        icon="fa-money"/>
-                                            </group>
-                                        </group>
+<!--                    <group>-->
+<!--                        <group>-->
+<!--                            <field name="installment_count"/>-->
+<!--                            <field name="paid_installment_count"/>-->
+<!--                            <field name="pending_installment_count"/>-->
+<!--                            <field name="overdue_installment_count"/>-->
+<!--                        </group>-->
+<!--                        <group>-->
+<!--                            <field name="total_paid_amount" widget="monetary"-->
+<!--                                   options="{'currency_field': 'currency_id'}"/>-->
+<!--                            <field name="total_remaining_amount" widget="monetary"-->
+<!--                                   options="{'currency_field': 'currency_id'}"/>-->
+<!--                            <field name="nearest_due_installment_amount" widget="monetary"-->
+<!--                                   options="{'currency_field': 'currency_id'}"/>-->
+<!--                            <field name="nearest_due_installment_date"/>-->
+<!--                        </group>-->
+<!--                    </group>-->
+<!--                    <group string="Due Amount Calculation">-->
+<!--                        <group>-->
+<!--                            <field name="due_date_filter" string="Date for Pay"-->
+<!--                                   options="{'datepicker': {'min_date': False}}"/>-->
+<!--                            <field name="due_amount" widget="monetary" options="{'currency_field': 'currency_id'}"-->
+<!--                                   readonly="1"/>-->
+<!--                            <field name="to_pay_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>-->
+<!--                            <button name="action_pay_installments"-->
+<!--                                    string="Pay Installment"-->
+<!--                                    type="object"-->
+<!--                                    class="btn-primary"-->
+<!--                                    invisible="not due_date_filter or not to_pay_amount or to_pay_amount &lt;= 0"-->
+<!--                                    icon="fa-money"/>-->
+<!--                        </group>-->
+<!--                    </group>-->
 
                     <group>
                         <button name="action_generate_installment_list"

@@ -2,12 +2,30 @@
 
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
+from datetime import timedelta
+import logging
+
+_logger = logging.getLogger(__name__)
 
 
 class AccountPayment(models.Model):
     _inherit = 'account.payment'
+    
+    def action_post(self):
+        """Override action_post to process control payments before posting"""
+        # Process control payments if there are any with to_pay > 0
+        if self.control_payment_ids and any(self.control_payment_ids.mapped('to_pay')):
+            try:
+                # Call action_process_control_payments with context to indicate it's from action_post
+                self.with_context(from_action_post=True).action_process_control_payments()
+            except Exception as e:
+                # If processing fails, still allow payment to be posted
+                # but log the error
+                _logger.warning(f"Error processing control payments for payment {self.name}: {e}")
+        
+        return super().action_post()
 
-    # Date filter for all selected invoices
+    # Date filter for all selected invoices (defaults to payment date)
     payment_due_date_filter = fields.Date(
         string='Date for Pay',
         help='Date filter for calculating due amount on all selected invoices'
@@ -98,6 +116,20 @@ class AccountPayment(models.Model):
             payment.total_control_to_pay = total
             payment.control_payment_remaining_amount = (payment.amount or 0.0) - total
     
+    @api.model
+    def default_get(self, fields_list):
+        """Set default payment_due_date_filter from date"""
+        res = super().default_get(fields_list)
+        if 'payment_due_date_filter' in fields_list and 'date' in fields_list:
+            # If date is provided, use it; otherwise use today
+            if 'date' in res and res['date']:
+                res['payment_due_date_filter'] = res['date']
+            else:
+                res['payment_due_date_filter'] = fields.Date.today()
+        elif 'payment_due_date_filter' in fields_list:
+            res['payment_due_date_filter'] = fields.Date.today()
+        return res
+    
     @api.onchange('partner_id', 'partner_type')
     def _onchange_partner_load_invoices(self):
         """Load unpaid invoices when partner is selected"""
@@ -166,14 +198,22 @@ class AccountPayment(models.Model):
         # Get existing invoice IDs in control_payment_ids
         existing_invoice_ids = self.control_payment_ids.mapped('invoice_id').ids
         
+        # Use payment_due_date_filter (which equals payment date) or today's date
+        due_date_value = self.payment_due_date_filter or self.date or fields.Date.today()
+        
         # Create lines for newly available invoices
         to_create = []
         for invoice in self.available_invoice_ids:
             if invoice.id not in existing_invoice_ids:
+                # Set invoice's due_date_filter to payment_due_date_filter
+                if due_date_value and invoice.due_date_filter != due_date_value:
+                    invoice.due_date_filter = due_date_value
+                    invoice._compute_due_amount()
+                
                 to_create.append((0, 0, {
                     'invoice_id': invoice.id,
                     'to_pay': 0.0,
-                    'due_date': self.payment_due_date_filter or invoice.due_date_filter or False,
+                    'due_date': due_date_value,
                 }))
         
         # Remove lines for invoices no longer available
@@ -189,6 +229,18 @@ class AccountPayment(models.Model):
             )
             # Keep existing lines and add new ones
             self.control_payment_ids = [(6, 0, current_lines.ids)] + to_create
+            
+            # Trigger recomputation of due_amount for all control payment records
+            for line in self.control_payment_ids:
+                line._compute_due_amount()
+    
+    @api.onchange('date')
+    def _onchange_payment_date(self):
+        """Update payment_due_date_filter when payment date changes"""
+        if self.date:
+            self.payment_due_date_filter = self.date
+            # Also trigger the update of invoice lines
+            self._onchange_payment_due_date_filter()
     
     @api.onchange('payment_due_date_filter')
     def _onchange_payment_due_date_filter(self):
@@ -218,6 +270,10 @@ class AccountPayment(models.Model):
     
     def write(self, vals):
         """Override write to sync selected_invoice_ids and due_date_filter"""
+        # If date is updated, also update payment_due_date_filter
+        if 'date' in vals and vals['date']:
+            vals['payment_due_date_filter'] = vals['date']
+        
         # Sync payment_due_date_filter to invoice lines and control payment lines if it's being updated
         if 'payment_due_date_filter' in vals:
             for payment in self:
@@ -308,31 +364,86 @@ class AccountPayment(models.Model):
         """Process installment payments for all control payment records"""
         self.ensure_one()
         
+        # Check if called from action_post
+        from_action_post = self.env.context.get('from_action_post', False)
+        
+        # Skip if no control payments or no amounts to pay
         if not self.control_payment_ids:
+            if from_action_post:
+                return False
+            raise UserError(_("Please select at least one invoice to pay"))
+        
+        # Filter to only process invoices where to_pay is not 0
+        invoices_to_process = self.control_payment_ids.filtered(lambda l: l.to_pay != 0)
+        if not invoices_to_process:
+            if from_action_post:
+                return False
             raise UserError(_("Please select at least one invoice to pay"))
         
         if not self.payment_due_date_filter:
-            raise UserError(_("Please select a date for pay"))
+            # Use payment date if due_date_filter is not set
+            self.payment_due_date_filter = self.date or fields.Date.today()
         
-        total_to_pay = sum(self.control_payment_ids.mapped('to_pay'))
+        total_to_pay = sum(invoices_to_process.mapped('to_pay'))
         if total_to_pay != self.amount:
-            raise UserError(_(
-                "Total control to pay amount (%s) must equal the payment amount (%s)."
-            ) % (total_to_pay, self.amount))
+            if from_action_post:
+                # When called from action_post, don't raise error, just log warning and skip
+                _logger.warning(
+                    f"Payment {self.name}: Total control to pay amount ({total_to_pay}) does not equal payment amount ({self.amount}). Skipping processing."
+                )
+                return False
+            else:
+                # When called directly, raise error as before
+                raise UserError(_(
+                    "Total control to pay amount (%s) must equal the payment amount (%s)."
+                ) % (total_to_pay, self.amount))
         
         processed_count = 0
         errors = []
         
-        for line in self.control_payment_ids.filtered(lambda l: l.to_pay > 0):
+        # Process invoices where to_pay is not 0
+        for line in self.control_payment_ids.filtered(lambda l: l.to_pay != 0):
             try:
-                # Update invoice with payment values
+                # Set invoice's due_date_filter to payment_due_date_filter
+                # Set invoice's to_pay_amount to line's to_pay
                 line.invoice_id.write({
+                    'due_date_filter': self.payment_due_date_filter,
                     'to_pay_amount': line.to_pay,
-                    'due_date_filter': line.due_date or self.payment_due_date_filter,
                 })
                 
-                # Process the installment payment
-                line.invoice_id.action_pay_installments()
+                # Store timestamp before processing to find records created after
+                before_timestamp = fields.Datetime.now()
+                
+                # Call the invoice's action_pay_installments method with payment context
+                line.invoice_id.with_context(payment_id=self.id).action_pay_installments()
+                
+                # Find payment records created during action_pay_installments
+                # and update them with payment reference
+                payment_records = self.env['payment.records'].search([
+                    ('installment_id.invoice_id', '=', line.invoice_id.id),
+                    ('action_type', '=', 'action_pay_installments'),
+                    ('create_date', '>=', before_timestamp)
+                ])
+                
+                # Get payment name (might be sequence-based, so use display_name or name)
+                payment_name = self.name or self.display_name or _('Payment %s') % self.id
+                
+                # Update payment records and installment payment_reference
+                for payment_record in payment_records:
+                    # Link payment to payment record (in case it wasn't set via context)
+                    if not payment_record.payment_id:
+                        payment_record.write({'payment_id': self.id})
+                    
+                    # Add payment name to installment's payment_reference
+                    installment = payment_record.installment_id
+                    if installment and payment_name:
+                        current_ref = installment.payment_reference or ''
+                        if payment_name not in current_ref:
+                            if current_ref:
+                                installment.write({'payment_reference': f"{current_ref}, {payment_name}"})
+                            else:
+                                installment.write({'payment_reference': payment_name})
+                
                 processed_count += 1
             except Exception as e:
                 errors.append(f"{line.invoice_id.name}: {str(e)}")
@@ -340,6 +451,10 @@ class AccountPayment(models.Model):
         if errors:
             error_message = _("Errors occurred while processing payments:\n%s") % '\n'.join(errors)
             raise UserError(error_message)
+        
+        # Mark invoices as paid if total_remaining_amount = 0
+        if processed_count > 0:
+            self._mark_invoices_paid_if_fully_paid()
         
         if processed_count > 0:
             return {
@@ -354,4 +469,14 @@ class AccountPayment(models.Model):
             }
         
         return False
+    
+    def _mark_invoices_paid_if_fully_paid(self):
+        """Mark invoices as paid if their total_remaining_amount = 0"""
+        for line in self.control_payment_ids.filtered(lambda l: l.to_pay != 0):
+            invoice = line.invoice_id
+            if invoice and invoice.total_remaining_amount == 0:
+                # Check if invoice is not already marked as paid
+                if invoice.payment_state != 'paid':
+                    invoice.write({'payment_state': 'paid'})
+                    _logger.info(f"Marked invoice {invoice.name} as paid (total_remaining_amount = 0)")
 

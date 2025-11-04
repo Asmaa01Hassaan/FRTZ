@@ -66,7 +66,7 @@ class ControlPayment(models.Model):
         help='Due amount on the invoice (computed from invoice)'
     )
     
-    @api.depends('invoice_id', 'invoice_id.due_amount', 'due_date')
+    @api.depends('invoice_id', 'invoice_id.due_amount', 'invoice_id.due_date_filter', 'due_date')
     def _compute_due_amount(self):
         """Compute due_amount from invoice, updating invoice's due_date_filter if needed"""
         for record in self:
@@ -79,6 +79,7 @@ class ControlPayment(models.Model):
                 record.invoice_id.due_date_filter = record.due_date
                 record.invoice_id._compute_due_amount()
             
+            # Get due_amount from invoice (which depends on due_date_filter)
             record.due_amount = record.invoice_id.due_amount or 0.0
     
     @api.onchange('due_date', 'invoice_id')
@@ -130,6 +131,29 @@ class ControlPayment(models.Model):
                 record.display_name = f"{record.payment_id.name} - {record.invoice_id.name} - {record.to_pay}"
             else:
                 record.display_name = _('New')
+    
+    @api.model
+    def create(self, vals_list):
+        """Override create to set invoice due_date_filter and compute due_amount"""
+        # Handle both single dict and list of dicts
+        if not isinstance(vals_list, list):
+            vals_list = [vals_list]
+        
+        # Set invoice's due_date_filter if due_date is provided
+        for vals in vals_list:
+            if vals.get('due_date') and vals.get('invoice_id'):
+                invoice = self.env['account.move'].browse(vals['invoice_id'])
+                if invoice.due_date_filter != vals['due_date']:
+                    invoice.due_date_filter = vals['due_date']
+                    invoice._compute_due_amount()
+        
+        records = super().create(vals_list)
+        
+        # Trigger recomputation of due_amount for all created records
+        for record in records:
+            record._compute_due_amount()
+        
+        return records
     
     def write(self, vals):
         """Override write to trigger recomputation of total_control_to_pay"""

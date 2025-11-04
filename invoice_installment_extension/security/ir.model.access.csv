@@ -8,3 +8,5 @@ access_payment_invoice_to_pay_user,payment.invoice.to.pay.user,model_payment_inv
 access_payment_invoice_wizard,payment.invoice.wizard,model_payment_invoice_wizard,account.group_account_user,1,1,1,1
 access_payment_invoice_wizard_line,payment.invoice.wizard.line,model_payment_invoice_wizard_line,account.group_account_user,1,1,1,1
 access_control_payment_user,control.payment.user,model_control_payment,account.group_account_user,1,1,1,1
+access_payment_records_user,payment.records.user,model_payment_records,account.group_account_user,1,0,0,0
+access_payment_records_manager,payment.records.manager,model_payment_records,account.group_account_manager,1,1,1,1

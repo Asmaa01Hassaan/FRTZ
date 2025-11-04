@@ -8,5 +8,6 @@ from . import installment_list
 from . import payment_invoice_to_pay
 from . import payment_invoice_wizard
 from . import control_payment
+from . import payment_records
 from . import res_partner
 from . import res_config_settings

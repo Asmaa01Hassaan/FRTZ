@@ -103,11 +103,22 @@ class InstallmentList(models.Model):
         if self.state not in ('pending', 'partial_paid'):
             raise UserError(_("Only pending or partial paid installments can be marked as fully paid"))
         
+        previous_state = self.state
         self.write({
             'state': 'paid',
             'paid_amount': self.amount,  # Set paid amount to full amount
             'paid_date': fields.Date.today(),
         })
+        
+        # Create payment record
+        self.env['payment.records'].create_payment_record(
+            installment=self,
+            payment=None,
+            paid_amount=self.amount - (self.paid_amount or 0.0),
+            previous_state=previous_state,
+            new_state='paid',
+            action_type='action_mark_paid'
+        )
     
     def action_mark_partial_paid(self, partial_amount=0.0):
         """Mark installment as partially paid or update partial payment"""
@@ -122,6 +133,7 @@ class InstallmentList(models.Model):
             raise UserError(_("Partial payment amount must be greater than 0"))
         
         new_paid_amount = (self.paid_amount or 0.0) + partial_amount
+        previous_state = self.state
         
         if new_paid_amount >= self.amount:
             # If partial payment makes it fully paid, mark as paid
@@ -130,6 +142,7 @@ class InstallmentList(models.Model):
                 'paid_amount': self.amount,
                 'paid_date': fields.Date.today(),
             })
+            new_state = 'paid'
         else:
             # Update partial payment
             self.write({
@@ -137,6 +150,17 @@ class InstallmentList(models.Model):
                 'paid_amount': new_paid_amount,
                 'paid_date': fields.Date.today() if not self.paid_date else self.paid_date,
             })
+            new_state = 'partial_paid'
+        
+        # Create payment record
+        self.env['payment.records'].create_payment_record(
+            installment=self,
+            payment=None,
+            paid_amount=partial_amount,
+            previous_state=previous_state,
+            new_state=new_state,
+            action_type='action_mark_partial_paid'
+        )
     
     def action_mark_overdue(self):
         """Mark installment as overdue"""
@@ -407,8 +431,12 @@ class AccountMove(models.Model):
                 remaining_needed = installment.amount
             
             # Determine how much to pay for this installment
+            previous_state = installment.state
+            payment_amount = min(remaining_to_pay, remaining_needed)
+            
             if remaining_to_pay >= remaining_needed:
                 # Can fully pay this installment
+                new_state = 'paid'
                 installment.write({
                     'paid_amount': installment.amount,
                     'state': 'paid',
@@ -417,6 +445,7 @@ class AccountMove(models.Model):
                 remaining_to_pay -= remaining_needed
             else:
                 # Partial payment
+                new_state = 'partial_paid'
                 new_paid_amount = (installment.paid_amount or 0.0) + remaining_to_pay
                 installment.write({
                     'paid_amount': new_paid_amount,
@@ -424,6 +453,20 @@ class AccountMove(models.Model):
                     'paid_date': fields.Date.today() if not installment.paid_date else installment.paid_date,
                 })
                 remaining_to_pay = 0.0
+            
+            # Create payment record for this installment
+            # Check if called from a payment (via context)
+            payment_id = self.env.context.get('payment_id')
+            payment = self.env['account.payment'].browse(payment_id) if payment_id else None
+            
+            self.env['payment.records'].create_payment_record(
+                installment=installment,
+                payment=payment,
+                paid_amount=payment_amount,
+                previous_state=previous_state,
+                new_state=new_state,
+                action_type='action_pay_installments'
+            )
         
         # Clear the to_pay_amount field and save the invoice
         self.write({'to_pay_amount': 0.0})
