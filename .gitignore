@@ -5,6 +5,7 @@ __pycache__/
 *.egg-info/
 *.egg
 .python-version
+.rar
 
 # Database dumps and backups
 *.dump
@@ -139,7 +140,6 @@ docker-compose.yml
 *~
 
 # Odoo specific development
-/static/
 /translations/
 
 # Database connection strings and secrets
