@@ -3,12 +3,9 @@
 from . import models
 
 
-def post_init_hook(cr, registry):
+def post_init_hook(env):
     """Post-installation hook to create cron jobs and set dynamic dates"""
-    from odoo import api, SUPERUSER_ID
     import datetime
-    
-    env = api.Environment(cr, SUPERUSER_ID, {})
     
     # Set dynamic dates and config parameters
     try:

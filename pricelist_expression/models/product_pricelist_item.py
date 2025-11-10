@@ -38,9 +38,14 @@ class ProductPricelistItem(models.Model):
 
         if self.compute_price == "expression" and self.price_expression:
             try:
+                # Get product cost safely
+                cost = 0.0
+                if product:
+                    cost = float(getattr(product, "standard_price", 0.0) or 0.0)
+                
                 env = {
                     "price": float(base_price or 0.0),
-                    "cost": float(getattr(product, "standard_price", 0.0) or 0.0),
+                    "cost": cost,
                     "qty": float(quantity or 0.0),
                     "installment_num": float(self.env.context.get("installment_num", 0.0) or 0.0),
                     "first_payment": float(self.env.context.get("first_payment", 0.0) or 0.0),
