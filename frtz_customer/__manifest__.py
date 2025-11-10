@@ -5,7 +5,9 @@
     "author": "Your Company",
     "depends": ['base','sale'],
     "data": [
+        "security/ir.model.access.csv",
         "views/customer_view.xml",
+        "views/customer_guarantees_view.xml",
         "views/sale_order_view.xml",
     ],
     "i18n": [

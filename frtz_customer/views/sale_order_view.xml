@@ -5,14 +5,24 @@
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
             <xpath expr="//page[@name='other_information']" position="after">
-                <page name="Customer_Guarantees" string="Customer Guarantees">
-                    <group>
-                        <field name="guarantees_count" readonly="1"/>
-                    </group>
-                    <field name="customer_guarantees_ids" nolabel="1">
-                        <list>
-                            <field name="name"/>
-                            <field name="ref"/>
+<!--                <page name="Customer_Guarantees" string="Customer Guarantees">-->
+<!--                    <group>-->
+<!--                        <field name="guarantees_count" readonly="1"/>-->
+<!--                    </group>-->
+<!--                    <field name="customer_guarantees_ids" nolabel="1">-->
+<!--                        <list>-->
+<!--                            <field name="name"/>-->
+<!--                            <field name="ref"/>-->
+<!--                        </list>-->
+<!--                    </field>-->
+<!--                </page>-->
+                <page name="Customer_Guarantees2" string="Customer Guarantees List">
+                    <field name="customer_guarantees_list_ids" nolabel="1">
+                        <list editable="bottom">
+                            <field name="customer_id"/>
+                            <field name="sale_order_customer_guarantees_status"/>
+                            <field name="date"/>
+                            <field name="notes"/>
                         </list>
                     </field>
                 </page>

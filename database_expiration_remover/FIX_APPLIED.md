@@ -54,3 +54,4 @@ docker restart odoo
 ## Verification
 Module should install without the TypeError error.
 
+

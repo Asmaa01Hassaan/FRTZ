@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: frtz_customer 18.0.1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-01 12:00+0000\n"
-"PO-Revision-Date: 2024-01-01 12:00+0000\n"
+"POT-Creation-Date: 2024-11-10 12:00+0000\n"
+"PO-Revision-Date: 2024-11-10 12:00+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ar\n"
@@ -15,6 +15,77 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
+
+#. module: frtz_customer
+#: model:ir.model,name:frtz_customer.model_customer_guarantees
+msgid "Customer Guarantees"
+msgstr "كفلاء العملاء"
+
+#. module: frtz_customer
+#: model:ir.model.fields,field_description:frtz_customer.field_customer_guarantees__customer_id
+msgid "Customer Name"
+msgstr "اسم العميل"
+
+#. module: frtz_customer
+#: model:ir.model.fields,field_description:frtz_customer.field_customer_guarantees__sale_order_customer_guarantees_status
+#: model:ir.model.fields,field_description:frtz_customer.field_sale_order__sale_order_customer_guarantees_status
+msgid "Status"
+msgstr "الحالة"
+
+#. module: frtz_customer
+#: model:ir.model.fields,field_description:frtz_customer.field_customer_guarantees__sale_order_id
+msgid "Sale Order"
+msgstr "أمر البيع"
+
+#. module: frtz_customer
+#: model:ir.model.fields,field_description:frtz_customer.field_customer_guarantees__notes
+msgid "Notes"
+msgstr "ملاحظات"
+
+#. module: frtz_customer
+#: model:ir.model.fields,field_description:frtz_customer.field_customer_guarantees__date
+msgid "Date"
+msgstr "التاريخ"
+
+#. module: frtz_customer
+#: model:ir.model.fields,field_description:frtz_customer.field_sale_order__customer_guarantees_list_ids
+msgid "Customer Guarantees List"
+msgstr "قائمة كفلاء العملاء"
+
+#. module: frtz_customer
+#: model:ir.ui.view,arch_db:frtz_customer.view_sale_form_inherit_customer_ref
+msgid "Customer Guarantees List"
+msgstr "قائمة كفلاء العملاء"
+
+#. module: frtz_customer
+#: selection:customer.guarantees,sale_order_customer_guarantees_status:0
+msgid "Active"
+msgstr "نشط"
+
+#. module: frtz_customer
+#: selection:customer.guarantees,sale_order_customer_guarantees_status:0
+msgid "Suspended"
+msgstr "معلق"
+
+#. module: frtz_customer
+#: model:ir.actions.act_window,name:frtz_customer.action_customer_guarantees
+msgid "Customer Guarantees"
+msgstr "كفلاء العملاء"
+
+#. module: frtz_customer
+#: model:ir.actions.act_window,help:frtz_customer.action_customer_guarantees
+msgid "Create a new customer guarantee"
+msgstr "إنشاء كفيل عميل جديد"
+
+#. module: frtz_customer
+#: model:ir.ui.view,arch_db:frtz_customer.view_customer_guarantees_tree
+msgid "Customer Guarantees"
+msgstr "كفلاء العملاء"
+
+#. module: frtz_customer
+#: model:ir.ui.view,arch_db:frtz_customer.view_customer_guarantees_form
+msgid "Customer Guarantee"
+msgstr "كفيل العميل"
 
 #. module: frtz_customer
 #: model:ir.ui.view,arch_db:frtz_customer.view_sale_form_inherit_customer_ref
@@ -237,3 +308,9 @@ msgstr "رمز العميل"
 #: model:ir.ui.view,arch_db:frtz_customer.view_partner_form_inherit_customer_ref
 msgid "Company Name"
 msgstr "اسم الشركة"
+
+#. module: frtz_customer
+#: code:addons/frtz_customer/models/sale_order.py:0
+#, python-format
+msgid "This Customer Is Suspended"
+msgstr "هذا العميل معلق"

@@ -18,6 +18,13 @@ class SaleOrder(models.Model):
         string='Guarantees Count',
         compute='_compute_guarantees_count'
     )
+    
+    # New relation to customer.guarantees model
+    customer_guarantees_list_ids = fields.One2many(
+        'customer.guarantees',
+        'sale_order_id',
+        string='Customer Guarantees List'
+    )
 
     @api.depends('customer_guarantees_ids')
     def _compute_guarantees_count(self):
