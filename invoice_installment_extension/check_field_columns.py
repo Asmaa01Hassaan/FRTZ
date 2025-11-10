@@ -76,3 +76,4 @@ if __name__ == '__main__':
     print(">>> results = check_res_partner_fields(env)")
     print(">>> print_report(results)")
 
+

@@ -5,27 +5,29 @@ from odoo.exceptions import ValidationError
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
-    vendor_name_id = fields.Many2one('res.partner', string='Vendor Name')
+    vendor_name_id = fields.Many2one('res.partner', string=_('Vendor Name'))
     payment_type = fields.Selection(
-        selection=[
-            ("immediate", "Immediate Payment"),
-            ("regular", "Regular Installments"),
-            ("irregular", "Irregular Installments"),
+        [
+            ('immediate', _('Immediate Payment')),
+            ('regular', _('Regular Installments')),
+            ('irregular', _('Irregular Installments')),
         ],
-        string="Payment Plan",
+        string=_("Payment Type"),
         default="immediate",
         tracking=True,
         copy=False,
-        help="Select the payment plan for this order"
+        help=_("Select the payment plan for this order")
     )
+    # name = fields.Char('Plan Name', required=True, translate=True)
+
     # Order Type Classification
     order_type = fields.Selection([
-        ('standard', 'Standard Sale Order'),
-        ('custom', 'Warehouse Sale Order'),
-        ('wholesale', 'External Sales Order'),
-        ('subscription', 'Service Sales Order'),
-    ], string='Order Type', default='standard', required=True, tracking=True,
-       help="Select the type of sale order")
+        ('standard', _('Standard Sale Order')),
+        ('custom', _('Warehouse Sale Order')),
+        ('wholesale', _('External Sales Order')),
+        ('subscription', _('Service Sales Order')),
+    ], string=_('Order Type'), default='standard', required=True, tracking=True,
+       help=_("Select the type of sale order"))
 
     @api.model_create_multi
     def create(self, vals_list):
