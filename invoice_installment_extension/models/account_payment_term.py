@@ -11,19 +11,19 @@ class AccountPaymentTerm(models.Model):
     _inherit = 'account.payment.term'
 
     is_installment_term = fields.Boolean(
-        string="Is Installment Payment Term",
+        string=_("Is Installment Payment Term"),
         default=False,
-        help="Indicates if this payment term is for installments"
+        help=_("Indicates if this payment term is for installments")
     )
     installment_count = fields.Integer(
-        string="Number of Installments",
+        string=_("Number of Installments"),
         default=0,
-        help="Number of installments for this payment term"
+        help=_("Number of installments for this payment term")
     )
     first_payment_percentage = fields.Float(
-        string="First Payment Percentage",
+        string=_("First Payment Percentage"),
         default=0.0,
-        help="Percentage of first payment"
+        help=_("Percentage of first payment")
     )
 
     @api.model

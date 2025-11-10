@@ -9,7 +9,7 @@ _logger = logging.getLogger(__name__)
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
-    hide_buttons_setting = fields.Boolean(compute='_compute_hide_sale_buttons_setting', store=False)
+    hide_buttons_setting = fields.Boolean(string=_('Hide Buttons Setting'), compute='_compute_hide_sale_buttons_setting', store=False)
 
     @api.depends_context('uid')
     def _compute_hide_sale_buttons_setting(self):
@@ -56,32 +56,32 @@ class AccountMove(models.Model):
     _inherit = 'account.move'
 
     installment_num = fields.Float(
-        string="Number of Installments",
+        string=_("Number of Installments"),
         default=0.0,
-        help="Number of installments for this invoice"
+        help=_("Number of installments for this invoice")
     )
     first_payment = fields.Monetary(
-        string="First Payment Amount",
+        string=_("First Payment Amount"),
         default=0.0,
-        help="First payment amount for installment calculations"
+        help=_("First payment amount for installment calculations")
     )
-    view_generate = fields.Boolean(string='View generate', default=False, groups="base.group_allow_export" )
-    hide_buttons_setting = fields.Boolean(compute='_compute_hide_buttons_setting')
+    view_generate = fields.Boolean(string=_('View Generate'), default=False, groups="base.group_allow_export" )
+    hide_buttons_setting = fields.Boolean(string=_('Hide Buttons Setting'), compute='_compute_hide_buttons_setting')
     
     # Fields for installment payment (if not already defined elsewhere)
     to_pay_amount = fields.Monetary(
-        string='To Pay',
+        string=_('To Pay'),
         currency_field='currency_id',
         default=0.0,
-        help='Amount to be distributed among installments due on or before the selected date'
+        help=_('Amount to be distributed among installments due on or before the selected date')
     )
     
     amount_to_pay = fields.Monetary(
-        string='Amount to Pay',
+        string=_('Amount to Pay'),
         currency_field='currency_id',
         compute='_compute_amount_to_pay',
         readonly=True,
-        help='Amount that will be paid for this invoice (same as to_pay_amount)'
+        help=_('Amount that will be paid for this invoice (same as to_pay_amount)')
     )
     
     @api.depends('to_pay_amount')
@@ -487,14 +487,14 @@ class AccountMoveLine(models.Model):
 
     # Installment fields from sale order line
     installment_num = fields.Float(
-        string="Number of Installments",
+        string=_("Number of Installments"),
         default=0.0,
-        help="Number of installments for this line"
+        help=_("Number of installments for this line")
     )
     first_payment = fields.Monetary(
-        string="First Payment Amount",
+        string=_("First Payment Amount"),
         default=0.0,
-        help="First payment amount for installment calculations"
+        help=_("First payment amount for installment calculations")
     )
 
     @api.model

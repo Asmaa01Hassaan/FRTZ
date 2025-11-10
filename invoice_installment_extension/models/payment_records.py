@@ -15,22 +15,22 @@ class PaymentRecords(models.Model):
     _order = 'payment_date desc, create_date desc'
 
     # Basic Information
-    name = fields.Char(string='Payment Record Reference', required=True, copy=False, readonly=True, default=lambda self: _('New'))
+    name = fields.Char(string=_('Payment Record Reference'), required=True, copy=False, readonly=True, default=lambda self: _('New'))
     payment_id = fields.Many2one(
         'account.payment',
-        string='Payment',
+        string=_('Payment'),
         ondelete='set null',
         index=True,
-        help='The payment that triggered this record'
+        help=_('The payment that triggered this record')
     )
     payment_name = fields.Char(
-        string='Payment Name',
+        string=_('Payment Name'),
         related='payment_id.name',
         readonly=True,
         store=True
     )
     payment_date = fields.Date(
-        string='Payment Date',
+        string=_('Payment Date'),
         related='payment_id.date',
         readonly=True,
         store=True
@@ -39,14 +39,14 @@ class PaymentRecords(models.Model):
     # Invoice Information
     invoice_id = fields.Many2one(
         'account.move',
-        string='Invoice',
+        string=_('Invoice'),
         required=True,
         ondelete='cascade',
         index=True,
-        help='The invoice this payment record is related to'
+        help=_('The invoice this payment record is related to')
     )
     invoice_name = fields.Char(
-        string='Invoice Name',
+        string=_('Invoice Name'),
         related='invoice_id.name',
         readonly=True,
         store=True
@@ -55,27 +55,27 @@ class PaymentRecords(models.Model):
     # Installment Information
     installment_id = fields.Many2one(
         'installment.list',
-        string='Installment',
+        string=_('Installment'),
         required=True,
         ondelete='cascade',
         index=True,
-        help='The installment this payment record is related to'
+        help=_('The installment this payment record is related to')
     )
     installment_name = fields.Char(
-        string='Installment Reference',
+        string=_('Installment Reference'),
         related='installment_id.name',
         readonly=True,
         store=True
     )
     installment_amount = fields.Monetary(
-        string='Installment Amount',
+        string=_('Installment Amount'),
         currency_field='currency_id',
         related='installment_id.amount',
         readonly=True,
         store=True
     )
     installment_due_date = fields.Date(
-        string='Installment Due Date',
+        string=_('Installment Due Date'),
         related='installment_id.due_date',
         readonly=True,
         store=True
@@ -83,48 +83,48 @@ class PaymentRecords(models.Model):
     
     # Payment Details
     paid_amount = fields.Monetary(
-        string='Paid Amount',
+        string=_('Paid Amount'),
         currency_field='currency_id',
         required=True,
-        help='Amount paid for this installment in this payment record'
+        help=_('Amount paid for this installment in this payment record')
     )
     previous_state = fields.Selection([
-        ('pending', 'Pending'),
-        ('partial_paid', 'Partial Paid'),
-        ('paid', 'Paid'),
-        ('overdue', 'Overdue'),
-        ('cancelled', 'Cancelled')
-    ], string='Previous State', readonly=True, help='Installment state before this payment')
+        ('pending', _('Pending')),
+        ('partial_paid', _('Partial Paid')),
+        ('paid', _('Paid')),
+        ('overdue', _('Overdue')),
+        ('cancelled', _('Cancelled'))
+    ], string=_('Previous State'), readonly=True, help=_('Installment state before this payment'))
     
     new_state = fields.Selection([
-        ('pending', 'Pending'),
-        ('partial_paid', 'Partial Paid'),
-        ('paid', 'Paid'),
-        ('overdue', 'Overdue'),
-        ('cancelled', 'Cancelled')
-    ], string='New State', readonly=True, help='Installment state after this payment')
+        ('pending', _('Pending')),
+        ('partial_paid', _('Partial Paid')),
+        ('paid', _('Paid')),
+        ('overdue', _('Overdue')),
+        ('cancelled', _('Cancelled'))
+    ], string=_('New State'), readonly=True, help=_('Installment state after this payment'))
     
     # Action Information
     action_type = fields.Char(
-        string='Action Type',
+        string=_('Action Type'),
         readonly=True,
-        help='Type of action that triggered this record (e.g., action_pay_installments, action_mark_paid)'
+        help=_('Type of action that triggered this record (e.g., action_pay_installments, action_mark_paid)')
     )
     
     # Additional Information
     currency_id = fields.Many2one(
         'res.currency',
-        string='Currency',
+        string=_('Currency'),
         related='invoice_id.currency_id',
         store=True,
         readonly=True
     )
     
-    notes = fields.Text(string='Notes')
+    notes = fields.Text(string=_('Notes'))
     
     # Computed Fields
     display_name = fields.Char(
-        string='Display Name',
+        string=_('Display Name'),
         compute='_compute_display_name',
         store=True
     )

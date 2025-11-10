@@ -1,11 +1,11 @@
-from odoo import api, fields, models
+from odoo import models, fields, api, _
 
 class ResConfigSettings(models.TransientModel):
     _inherit = 'res.config.settings'
 
-    hide_buttons = fields.Boolean(string="Hide Buttons")
+    hide_buttons = fields.Boolean(string=_("Hide Buttons"))
     hide_sale_send_preview_buttons = fields.Boolean(
-        string="Hide 'Send by Email' & 'Preview' buttons on Sales Orders",
+        string=_("Hide 'Send by Email' & 'Preview' buttons on Sales Orders"),
         config_parameter='sale.hide_send_preview_buttons'
     )
 

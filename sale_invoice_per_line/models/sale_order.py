@@ -8,8 +8,8 @@ class SaleOrder(models.Model):
     _inherit = "sale.order"
 
     invoice_per_line = fields.Boolean(
-        string="Invoice Per Line",
-        help="If enabled, 'Create Invoice' will generate a separate invoice for each invoiceable order line.",
+        string=_("Invoice Per Line"),
+        help=_("If enabled, 'Create Invoice' will generate a separate invoice for each invoiceable order line."),
         default=False,
         tracking=True,
     )

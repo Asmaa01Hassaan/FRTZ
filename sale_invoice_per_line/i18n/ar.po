@@ -1,13 +1,13 @@
-# Translation file for sale_invoice_per_line module
-# Copyright (C) 2024 Your Company
-# This file is distributed under the same license as the sale_invoice_per_line package.
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* sale_invoice_per_line
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: sale_invoice_per_line 18.0.1.0.0\n"
+"Project-Id-Version: Odoo Server 18.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-01 12:00+0000\n"
-"PO-Revision-Date: 2024-01-01 12:00+0000\n"
+"POT-Creation-Date: 2025-11-10 01:00+0000\n"
+"PO-Revision-Date: 2025-11-10 01:00+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ar\n"
@@ -17,9 +17,16 @@ msgstr ""
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
 
 #. module: sale_invoice_per_line
-#: model:ir.model.fields,field_description:sale_invoice_per_line.field_sale_order__invoice_per_line
-msgid "Invoice Per Line"
-msgstr "تفعيل الأقساط على مستوى السطر"
+#. odoo-python
+#: code:addons/sale_invoice_per_line/models/sale_order.py:0
+#, python-format
+msgid "Error creating invoice for line %s: %s"
+msgstr "خطأ في إنشاء فاتورة للسطر %s: %s"
+
+#. module: sale_invoice_per_line
+#: model:ir.model.fields,field_description:sale_invoice_per_line.field_account_move__first_payment
+msgid "First Payment"
+msgstr "الدفعة الأولى"
 
 #. module: sale_invoice_per_line
 #: model:ir.model.fields,help:sale_invoice_per_line.field_sale_order__invoice_per_line
@@ -27,6 +34,31 @@ msgid "If enabled, 'Create Invoice' will generate a separate invoice for each in
 msgstr "إذا تم تفعيله، فإن 'إنشاء فاتورة' سينشئ فاتورة منفصلة لكل سطر قابل للفوترة في الطلب."
 
 #. module: sale_invoice_per_line
-#: model:ir.ui.view,arch_db:sale_invoice_per_line.sale_order_form_invoice_per_line
+#: model:ir.model.fields,field_description:sale_invoice_per_line.field_account_move__installment_num
+msgid "Installments"
+msgstr "عدد الأقساط"
+
+#. module: sale_invoice_per_line
+#: model:ir.model.fields,field_description:sale_invoice_per_line.field_sale_order__invoice_per_line
 msgid "Invoice Per Line"
-msgstr "تفعيل الأقساط على مستوى السطر"
+msgstr "فوترة كل سطر بشكل منفصل"
+
+#. module: sale_invoice_per_line
+#: model:ir.model.fields,field_description:sale_invoice_per_line.field_account_move__sale_order_line_id
+msgid "Sale Order Line"
+msgstr "سطر أمر البيع"
+
+#. module: sale_invoice_per_line
+#: model:ir.model,name:sale_invoice_per_line.model_account_move
+msgid "Journal Entry"
+msgstr "قيد يومية"
+
+#. module: sale_invoice_per_line
+#: model:ir.model,name:sale_invoice_per_line.model_account_move_line
+msgid "Journal Item"
+msgstr "بند قيد اليومية"
+
+#. module: sale_invoice_per_line
+#: model:ir.model,name:sale_invoice_per_line.model_sale_order
+msgid "Sales Order"
+msgstr "أمر البيع"

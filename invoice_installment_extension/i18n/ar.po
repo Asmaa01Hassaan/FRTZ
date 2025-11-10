@@ -1,13 +1,13 @@
-# Translation file for invoice_installment_extension module
-# Copyright (C) 2024 Your Company
-# This file is distributed under the same license as the invoice_installment_extension package.
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* invoice_installment_extension
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: invoice_installment_extension 18.0.1.0.0\n"
+"Project-Id-Version: Odoo Server 18.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-01 12:00+0000\n"
-"PO-Revision-Date: 2024-01-01 12:00+0000\n"
+"POT-Creation-Date: 2025-11-10 02:00+0000\n"
+"PO-Revision-Date: 2025-11-10 02:00+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ar\n"
@@ -17,79 +17,142 @@ msgstr ""
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
 
 #. module: invoice_installment_extension
+#: model:ir.model,name:invoice_installment_extension.model_sale_order
+msgid "Sales Order"
+msgstr "أمر البيع"
+
+#. module: invoice_installment_extension
+#: model:ir.model,name:invoice_installment_extension.model_account_move
+msgid "Journal Entry"
+msgstr "قيد يومية"
+
+#. module: invoice_installment_extension
+#: model:ir.model,name:invoice_installment_extension.model_account_move_line
+msgid "Journal Item"
+msgstr "بند قيد اليومية"
+
+#. module: invoice_installment_extension
+#: model:ir.model,name:invoice_installment_extension.model_account_payment
+msgid "Payment"
+msgstr "دفعة"
+
+#. module: invoice_installment_extension
+#: model:ir.model,name:invoice_installment_extension.model_account_payment_term
+msgid "Payment Terms"
+msgstr "شروط الدفع"
+
+#. module: invoice_installment_extension
+#: model:ir.model,name:invoice_installment_extension.model_control_payment
+msgid "Control Payment"
+msgstr "التحكم بالدفع"
+
+#. module: invoice_installment_extension
+#: model:ir.model,name:invoice_installment_extension.model_installment_list
+msgid "Installment Payment List"
+msgstr "قائمة أقساط الدفع"
+
+#. module: invoice_installment_extension
+#: model:ir.model,name:invoice_installment_extension.model_payment_invoice_to_pay
+msgid "Payment Invoice To Pay"
+msgstr "فاتورة الدفع المستحقة"
+
+#. module: invoice_installment_extension
+#: model:ir.model,name:invoice_installment_extension.model_payment_records
+msgid "Payment Records"
+msgstr "سجلات الدفع"
+
+#. module: invoice_installment_extension
+#: model:ir.model,name:invoice_installment_extension.model_res_partner
+msgid "Contact"
+msgstr "جهة اتصال"
+
+#. module: invoice_installment_extension
+#: model:ir.model,name:invoice_installment_extension.model_res_config_settings
+msgid "Config Settings"
+msgstr "إعدادات النظام"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_sale_order__hide_buttons_setting
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_account_move__hide_buttons_setting
+msgid "Hide Buttons Setting"
+msgstr "إعداد إخفاء الأزرار"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_account_move__installment_num
 #: model:ir.model.fields,field_description:invoice_installment_extension.field_account_move_line__installment_num
 msgid "Number of Installments"
 msgstr "عدد الأقساط"
 
 #. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_account_move__first_payment
 #: model:ir.model.fields,field_description:invoice_installment_extension.field_account_move_line__first_payment
 msgid "First Payment Amount"
 msgstr "مبلغ الدفعة الأولى"
 
 #. module: invoice_installment_extension
-#: model:ir.model.fields,field_description:invoice_installment_extension.field_account_move__is_installment_invoice
-msgid "Is Installment Invoice"
-msgstr "فاتورة أقساط"
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_account_move__view_generate
+msgid "View Generate"
+msgstr "عرض التوليد"
 
 #. module: invoice_installment_extension
-#: model:ir.model.fields,field_description:invoice_installment_extension.field_account_move__installment_sequence
-msgid "Installment Sequence"
-msgstr "ترتيب القسط"
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_account_move__to_pay_amount
+msgid "To Pay"
+msgstr "للدفع"
 
 #. module: invoice_installment_extension
-#: model:ir.model.fields,field_description:invoice_installment_extension.field_account_move__total_installments
-msgid "Total Installments"
-msgstr "إجمالي الأقساط"
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_account_move__amount_to_pay
+msgid "Amount to Pay"
+msgstr "المبلغ المستحق للدفع"
 
 #. module: invoice_installment_extension
-#: model:ir.model.fields,field_description:invoice_installment_extension.field_account_move__installment_amount
-msgid "Installment Amount"
-msgstr "مبلغ القسط"
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_account_payment__payment_due_date_filter
+msgid "Date for Pay"
+msgstr "تاريخ الدفع"
 
 #. module: invoice_installment_extension
-#: model:ir.model.fields,field_description:invoice_installment_extension.field_account_move__remaining_installments
-msgid "Remaining Installments"
-msgstr "الأقساط المتبقية"
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_account_payment__available_invoice_ids
+msgid "Available Invoices"
+msgstr "الفواتير المتاحة"
 
 #. module: invoice_installment_extension
-#: model:ir.model.fields,help:invoice_installment_extension.field_account_move__installment_num
-msgid "Number of installments for this invoice"
-msgstr "عدد الأقساط لهذه الفاتورة"
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_account_payment__selected_invoice_ids
+msgid "Selected Invoices"
+msgstr "الفواتير المحددة"
 
 #. module: invoice_installment_extension
-#: model:ir.model.fields,help:invoice_installment_extension.field_account_move__first_payment
-msgid "First payment amount for installment calculations"
-msgstr "مبلغ الدفعة الأولى لحسابات الأقساط"
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_account_payment__payment_invoice_line_ids
+msgid "Invoice Payment Lines"
+msgstr "بنود دفع الفواتير"
 
 #. module: invoice_installment_extension
-#: model:ir.model.fields,help:invoice_installment_extension.field_account_move__is_installment_invoice
-msgid "Indicates if this is an installment-based invoice"
-msgstr "يشير إلى ما إذا كانت هذه فاتورة مبنية على الأقساط"
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_account_payment__control_payment_ids
+msgid "Control Payments"
+msgstr "مراقبة الدفعات"
 
 #. module: invoice_installment_extension
-#: model:ir.model.fields,help:invoice_installment_extension.field_account_move__installment_sequence
-msgid "Sequence number of this installment (1, 2, 3, etc.)"
-msgstr "رقم تسلسل هذا القسط (1، 2، 3، إلخ)"
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_account_payment__total_invoice_to_pay
+msgid "Total Invoice To Pay"
+msgstr "إجمالي الفواتير للدفع"
 
 #. module: invoice_installment_extension
-#: model:ir.model.fields,help:invoice_installment_extension.field_account_move__total_installments
-msgid "Total number of installments for this invoice series"
-msgstr "إجمالي عدد الأقساط لسلسلة الفواتير هذه"
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_account_payment__payment_remaining_amount
+msgid "Remaining Amount"
+msgstr "المبلغ المتبقي"
 
 #. module: invoice_installment_extension
-#: model:ir.model.fields,help:invoice_installment_extension.field_account_move__installment_amount
-msgid "Calculated installment amount"
-msgstr "مبلغ القسط المحسوب"
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_account_payment__total_control_to_pay
+msgid "Total Control To Pay"
+msgstr "إجمالي المراقبة للدفع"
 
 #. module: invoice_installment_extension
-#: model:ir.model.fields,help:invoice_installment_extension.field_account_move__remaining_installments
-msgid "Number of remaining installments"
-msgstr "عدد الأقساط المتبقية"
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_account_payment__control_payment_remaining_amount
+msgid "Control Remaining Amount"
+msgstr "المبلغ المتبقي للمراقبة"
 
 #. module: invoice_installment_extension
 #: model:ir.model.fields,field_description:invoice_installment_extension.field_account_payment_term__is_installment_term
 msgid "Is Installment Payment Term"
-msgstr "شروط دفع الأقساط"
+msgstr "هو شرط دفع بالتقسيط"
 
 #. module: invoice_installment_extension
 #: model:ir.model.fields,field_description:invoice_installment_extension.field_account_payment_term__installment_count
@@ -102,141 +165,957 @@ msgid "First Payment Percentage"
 msgstr "نسبة الدفعة الأولى"
 
 #. module: invoice_installment_extension
-#: model:ir.model.fields,help:invoice_installment_extension.field_account_payment_term__is_installment_term
-msgid "Indicates if this payment term is for installments"
-msgstr "يشير إلى ما إذا كانت شروط الدفع هذه للأقساط"
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_control_payment__payment_id
+msgid "Payment"
+msgstr "الدفع"
 
 #. module: invoice_installment_extension
-#: model:ir.model.fields,help:invoice_installment_extension.field_account_payment_term__installment_count
-msgid "Number of installments for this payment term"
-msgstr "عدد الأقساط لشروط الدفع هذه"
-
-#. module: invoice_installment_extension
-#: model:ir.model.fields,help:invoice_installment_extension.field_account_payment_term__first_payment_percentage
-msgid "Percentage of first payment"
-msgstr "نسبة الدفعة الأولى"
-
-#. module: invoice_installment_extension
-#: model:ir.ui.view,arch_db:invoice_installment_extension.view_move_form_installment
-msgid "Installment Information"
-msgstr "معلومات الأقساط"
-
-#. module: invoice_installment_extension
-#: model:ir.ui.view,arch_db:invoice_installment_extension.view_move_tree_installment
-msgid "Installments"
-msgstr "الأقساط"
-
-#. module: invoice_installment_extension
-#: model:ir.ui.view,arch_db:invoice_installment_extension.view_move_tree_installment
-msgid "Installment"
-msgstr "قسط"
-
-#. module: invoice_installment_extension
-#: model:ir.ui.view,arch_db:invoice_installment_extension.view_move_filter_installment
-msgid "Installment Invoices"
-msgstr "فواتير الأقساط"
-
-#. module: invoice_installment_extension
-#: model:ir.ui.view,arch_db:invoice_installment_extension.view_move_filter_installment
-msgid "Regular Invoices"
-msgstr "الفواتير العادية"
-
-#. module: invoice_installment_extension
-#: model:ir.ui.view,arch_db:invoice_installment_extension.view_move_filter_installment
-msgid "Installment Status"
-msgstr "حالة الأقساط"
-
-#. module: invoice_installment_extension
-#: model:ir.ui.view,arch_db:invoice_installment_extension.view_payment_term_form_installment
-msgid "Is Installment Term"
-msgstr "شروط الأقساط"
-
-#. module: invoice_installment_extension
-#: model:ir.ui.view,arch_db:invoice_installment_extension.view_payment_term_tree_installment
-msgid "Installment"
-msgstr "قسط"
-
-#. module: invoice_installment_extension
-#: model:ir.ui.view,arch_db:invoice_installment_extension.view_payment_term_filter_installment
-msgid "Installment Term"
-msgstr "شروط الأقساط"
-
-#. module: invoice_installment_extension
-#: model:ir.ui.view,arch_db:invoice_installment_extension.view_payment_term_filter_installment
-msgid "Installment Terms"
-msgstr "شروط الأقساط"
-
-#. module: invoice_installment_extension
-#: model:ir.ui.view,arch_db:invoice_installment_extension.view_payment_term_filter_installment
-msgid "Regular Terms"
-msgstr "الشروط العادية"
-
-#. module: invoice_installment_extension
-#: model:ir.model.fields,field_description:invoice_installment_extension.field_payment_term_generation_wizard__invoice_id
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_control_payment__invoice_id
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_payment_invoice_to_pay__invoice_id
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_payment_records__invoice_id
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_installment_list__invoice_id
 msgid "Invoice"
 msgstr "الفاتورة"
 
 #. module: invoice_installment_extension
-#: model:ir.model.fields,field_description:invoice_installment_extension.field_payment_term_generation_wizard__installment_num
-msgid "Number of Installments"
-msgstr "عدد الأقساط"
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_control_payment__invoice_name
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_payment_invoice_to_pay__invoice_name
+msgid "Transaction"
+msgstr "المعاملة"
 
 #. module: invoice_installment_extension
-#: model:ir.model.fields,field_description:invoice_installment_extension.field_payment_term_generation_wizard__first_payment_type
-msgid "First Payment Type"
-msgstr "نوع الدفعة الأولى"
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_control_payment__invoice_date
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_payment_invoice_to_pay__invoice_date
+msgid "Transaction Date"
+msgstr "تاريخ المعاملة"
 
 #. module: invoice_installment_extension
-#: model:ir.model.fields,field_description:invoice_installment_extension.field_payment_term_generation_wizard__first_payment_percentage
-msgid "First Payment Percentage"
-msgstr "نسبة الدفعة الأولى"
-
-#. module: invoice_installment_extension
-#: model:ir.model.fields,field_description:invoice_installment_extension.field_payment_term_generation_wizard__first_payment_amount
-msgid "First Payment Amount"
-msgstr "مبلغ الدفعة الأولى"
-
-#. module: invoice_installment_extension
-#: model:ir.model.fields,field_description:invoice_installment_extension.field_payment_term_generation_wizard__payment_interval
-msgid "Payment Interval (Days)"
-msgstr "فترة الدفع (بالأيام)"
-
-#. module: invoice_installment_extension
-#: model:ir.model.fields,field_description:invoice_installment_extension.field_payment_term_generation_wizard__total_amount
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_control_payment__amount_total
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_payment_invoice_to_pay__amount_total
 msgid "Total Amount"
 msgstr "المبلغ الإجمالي"
 
 #. module: invoice_installment_extension
-#: model:ir.model.fields,selection:invoice_installment_extension.field_payment_term_generation_wizard__first_payment_type
-msgid "Percentage"
-msgstr "نسبة مئوية"
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_control_payment__total_remaining_amount
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_payment_invoice_to_pay__total_remaining_amount
+msgid "Remaining Amount"
+msgstr "المبلغ المتبقي"
 
 #. module: invoice_installment_extension
-#: model:ir.model.fields,selection:invoice_installment_extension.field_payment_term_generation_wizard__first_payment_type
-msgid "Fixed Amount"
-msgstr "مبلغ ثابت"
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_control_payment__due_amount
+msgid "Due Amount"
+msgstr "المبلغ المستحق"
 
 #. module: invoice_installment_extension
-#: model:ir.actions.act_window,name:invoice_installment_extension.action_payment_term_generation_wizard
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_control_payment__due_date
+msgid "Due Date"
+msgstr "تاريخ الاستحقاق"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_control_payment__to_pay
+msgid "To Pay"
+msgstr "للدفع"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_control_payment__currency_id
+msgid "Currency"
+msgstr "العملة"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_control_payment__display_name
+msgid "Display Name"
+msgstr "اسم العرض"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_installment_list__name
+msgid "Installment Reference"
+msgstr "مرجع القسط"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_installment_list__sequence
+msgid "Sequence"
+msgstr "التسلسل"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_installment_list__payment_term_id
+msgid "Payment Term"
+msgstr "شرط الدفع"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_installment_list__amount
+msgid "Amount"
+msgstr "المبلغ"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_installment_list__currency_id
+msgid "Currency"
+msgstr "العملة"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_installment_list__due_date
+msgid "Due Date"
+msgstr "تاريخ الاستحقاق"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_installment_list__paid_date
+msgid "Paid Date"
+msgstr "تاريخ الدفع"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_installment_list__paid_amount
+msgid "Paid Amount"
+msgstr "المبلغ المدفوع"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_installment_list__remaining_amount
+msgid "Remaining Amount"
+msgstr "المبلغ المتبقي"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_installment_list__state
+msgid "Status"
+msgstr "الحالة"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields.selection,name:invoice_installment_extension.selection__installment_list__state__pending
+msgid "Pending"
+msgstr "قيد الانتظار"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields.selection,name:invoice_installment_extension.selection__installment_list__state__partial_paid
+msgid "Partial Paid"
+msgstr "مدفوع جزئياً"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields.selection,name:invoice_installment_extension.selection__installment_list__state__paid
+msgid "Paid"
+msgstr "مدفوع"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields.selection,name:invoice_installment_extension.selection__installment_list__state__overdue
+msgid "Overdue"
+msgstr "متأخر"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields.selection,name:invoice_installment_extension.selection__installment_list__state__cancelled
+msgid "Cancelled"
+msgstr "ملغي"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_installment_list__payment_method_id
+msgid "Payment Method"
+msgstr "طريقة الدفع"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_installment_list__payment_reference
+msgid "Payment Reference"
+msgstr "مرجع الدفع"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_installment_list__notes
+msgid "Notes"
+msgstr "ملاحظات"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_installment_list__display_name
+msgid "Display Name"
+msgstr "اسم العرض"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_installment_list__is_late
+msgid "Is Late Payment"
+msgstr "دفعة متأخرة"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_installment_list__days_overdue
+msgid "Days Overdue"
+msgstr "أيام التأخير"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_installment_list__partner_id
+msgid "Customer"
+msgstr "العميل"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_installment_list__customer_name
+msgid "Customer Name"
+msgstr "اسم العميل"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_installment_list__customer_number
+msgid "Customer Number"
+msgstr "رقم العميل"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_installment_list__customer_guarantees_names
+msgid "Customer Guarantees"
+msgstr "ضمانات العميل"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_payment_invoice_to_pay__to_pay_amount
+msgid "To Pay Amount"
+msgstr "المبلغ للدفع"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_payment_records__name
+msgid "Payment Record Reference"
+msgstr "مرجع سجل الدفع"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_payment_records__payment_name
+msgid "Payment Name"
+msgstr "اسم الدفعة"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_payment_records__payment_date
+msgid "Payment Date"
+msgstr "تاريخ الدفع"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_res_partner__installment_list_ids
+msgid "Installment List"
+msgstr "قائمة الأقساط"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_res_partner__has_installments
+msgid "Has Installments"
+msgstr "لديه أقساط"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_res_partner__view_installments
+msgid "View Installments"
+msgstr "عرض الأقساط"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_res_partner__installment_count
+msgid "Total Installments"
+msgstr "إجمالي الأقساط"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_res_partner__paid_installment_count
+msgid "Paid Installments"
+msgstr "الأقساط المدفوعة"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_res_partner__partial_paid_installment_count
+msgid "Partial Paid Installments"
+msgstr "الأقساط المدفوعة جزئياً"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_res_partner__pending_installment_count
+msgid "Pending Installments"
+msgstr "الأقساط المعلقة"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_res_partner__overdue_installment_count
+msgid "Overdue Installments"
+msgstr "الأقساط المتأخرة"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_res_partner__total_installment_amount
+msgid "Total Installment Amount"
+msgstr "إجمالي مبلغ الأقساط"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_res_partner__total_paid_amount
+msgid "Total Paid Amount"
+msgstr "إجمالي المبلغ المدفوع"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_res_partner__total_remaining_amount
+msgid "Remaining Amount"
+msgstr "المبلغ المتبقي"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_res_config_settings__hide_buttons
+msgid "Hide Buttons"
+msgstr "إخفاء الأزرار"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_res_config_settings__hide_sale_send_preview_buttons
+msgid "Hide 'Send by Email' & 'Preview' buttons on Sales Orders"
+msgstr "إخفاء أزرار 'إرسال بالبريد الإلكتروني' و 'معاينة' في أوامر المبيعات"
+
+#. module: invoice_installment_extension
+#. odoo-python
+#: code:addons/invoice_installment_extension/models/account_move.py:0
+#, python-format
+msgid "Sending quotations is disabled by system configuration."
+msgstr "إرسال عروض الأسعار معطل بواسطة إعدادات النظام."
+
+#. module: invoice_installment_extension
+#. odoo-python
+#: code:addons/invoice_installment_extension/models/account_move.py:0
+#, python-format
+msgid "Changing state to 'Quotation Sent' is disabled by system configuration."
+msgstr "تغيير الحالة إلى 'تم إرسال عرض السعر' معطل بواسطة إعدادات النظام."
+
+#. module: invoice_installment_extension
+#. odoo-python
+#: code:addons/invoice_installment_extension/models/account_move.py:0
+#, python-format
+msgid "Please set the number of installments first"
+msgstr "الرجاء تحديد عدد الأقساط أولاً"
+
+#. module: invoice_installment_extension
+#. odoo-python
+#: code:addons/invoice_installment_extension/models/account_move.py:0
+#, python-format
 msgid "Generate Payment Term"
-msgstr "إنشاء شروط الدفع"
+msgstr "إنشاء شرط الدفع"
 
 #. module: invoice_installment_extension
-#: model:ir.ui.view,arch_db:invoice_installment_extension.view_payment_term_generation_wizard_form
+#. odoo-python
+#: code:addons/invoice_installment_extension/models/account_move.py:0
+#, python-format
+msgid "Regular Installment payment term has been created and assigned. Installments generated."
+msgstr "تم إنشاء وتعيين شرط الدفع بالأقساط المنتظمة. تم إنشاء الأقساط."
+
+#. module: invoice_installment_extension
+#. odoo-python
+#: code:addons/invoice_installment_extension/models/account_move.py:0
+#, python-format
+msgid "Regular Installment payment term is available. Set Installments=1 and First Payment=0 to auto-assign it."
+msgstr "شرط الدفع بالأقساط المنتظمة متاح. اضبط الأقساط=1 والدفعة الأولى=0 للتعيين التلقائي."
+
+#. module: invoice_installment_extension
+#. odoo-python
+#: code:addons/invoice_installment_extension/models/account_move.py:0
+#, python-format
+msgid "Success"
+msgstr "نجاح"
+
+#. module: invoice_installment_extension
+#. odoo-python
+#: code:addons/invoice_installment_extension/models/account_move.py:0
+#, python-format
+msgid "Invoice"
+msgstr "الفاتورة"
+
+#. module: invoice_installment_extension
+#. odoo-python
+#: code:addons/invoice_installment_extension/models/account_move.py:0
+#, python-format
+msgid "Installment List"
+msgstr "قائمة الأقساط"
+
+#. module: invoice_installment_extension
+#. odoo-python
+#: code:addons/invoice_installment_extension/models/account_move.py:0
+#, python-format
+msgid "No payment term found for this invoice"
+msgstr "لم يتم العثور على شرط دفع لهذه الفاتورة"
+
+#. module: invoice_installment_extension
+#. odoo-python
+#: code:addons/invoice_installment_extension/models/account_move.py:0
+#, python-format
+msgid "Installment list already exists for this invoice"
+msgstr "قائمة الأقساط موجودة بالفعل لهذه الفاتورة"
+
+#. module: invoice_installment_extension
+#. odoo-python
+#: code:addons/invoice_installment_extension/models/account_payment.py:0
+#, python-format
+msgid "Please select at least one invoice to pay"
+msgstr "الرجاء تحديد فاتورة واحدة على الأقل للدفع"
+
+#. module: invoice_installment_extension
+#. odoo-python
+#: code:addons/invoice_installment_extension/models/account_payment.py:0
+#, python-format
+msgid "Please select a date for pay"
+msgstr "الرجاء تحديد تاريخ للدفع"
+
+#. module: invoice_installment_extension
+#. odoo-python
+#: code:addons/invoice_installment_extension/models/account_payment.py:0
+#, python-format
+msgid "Total invoice to pay amount (%s) must equal the payment amount (%s)."
+msgstr "إجمالي مبلغ الفواتير للدفع (%s) يجب أن يساوي مبلغ الدفع (%s)."
+
+#. module: invoice_installment_extension
+#. odoo-python
+#: code:addons/invoice_installment_extension/models/account_payment.py:0
+#, python-format
+msgid "Errors occurred while processing payments:\n%s"
+msgstr "حدثت أخطاء أثناء معالجة الدفعات:\n%s"
+
+#. module: invoice_installment_extension
+#. odoo-python
+#: code:addons/invoice_installment_extension/models/account_payment.py:0
+#, python-format
+msgid "Payment processed for %d invoice(s) successfully."
+msgstr "تمت معالجة الدفع لـ %d فاتورة بنجاح."
+
+#. module: invoice_installment_extension
+#. odoo-python
+#: code:addons/invoice_installment_extension/models/account_payment.py:0
+#, python-format
+msgid "Total control to pay amount (%s) must equal the payment amount (%s)."
+msgstr "إجمالي مبلغ المراقبة للدفع (%s) يجب أن يساوي مبلغ الدفع (%s)."
+
+#. module: invoice_installment_extension
+#. odoo-python
+#: code:addons/invoice_installment_extension/models/account_payment_term.py:0
+#, python-format
+msgid "Regular Installment"
+msgstr "قسط منتظم"
+
+#. module: invoice_installment_extension
+#. odoo-python
+#: code:addons/invoice_installment_extension/models/account_payment_term.py:0
+#, python-format
+msgid "Regular Installment payment term has been created successfully."
+msgstr "تم إنشاء شرط الدفع بالأقساط المنتظمة بنجاح."
+
+#. module: invoice_installment_extension
+#. odoo-python
+#: code:addons/invoice_installment_extension/models/installment_list.py:0
+#, python-format
+msgid "New"
+msgstr "جديد"
+
+#. module: invoice_installment_extension
+#. odoo-python
+#: code:addons/invoice_installment_extension/models/installment_list.py:0
+#, python-format
+msgid "Only pending or partial paid installments can be marked as fully paid"
+msgstr "يمكن فقط وضع علامة على الأقساط المعلقة أو المدفوعة جزئياً كمدفوعة بالكامل"
+
+#. module: invoice_installment_extension
+#. odoo-python
+#: code:addons/invoice_installment_extension/models/installment_list.py:0
+#, python-format
+msgid "Fully paid installments cannot be updated"
+msgstr "لا يمكن تحديث الأقساط المدفوعة بالكامل"
+
+#. module: invoice_installment_extension
+#. odoo-python
+#: code:addons/invoice_installment_extension/models/installment_list.py:0
+#, python-format
+msgid "Cancelled installments cannot be paid"
+msgstr "لا يمكن دفع الأقساط الملغاة"
+
+#. module: invoice_installment_extension
+#. odoo-python
+#: code:addons/invoice_installment_extension/models/installment_list.py:0
+#, python-format
+msgid "Partial payment amount must be greater than 0"
+msgstr "مبلغ الدفع الجزئي يجب أن يكون أكبر من 0"
+
+#. module: invoice_installment_extension
+#. odoo-python
+#: code:addons/invoice_installment_extension/models/installment_list.py:0
+#, python-format
+msgid "Only pending or partial paid installments can be marked as overdue"
+msgstr "يمكن فقط وضع علامة على الأقساط المعلقة أو المدفوعة جزئياً كمتأخرة"
+
+#. module: invoice_installment_extension
+#. odoo-python
+#: code:addons/invoice_installment_extension/models/installment_list.py:0
+#, python-format
+msgid "Paid installments cannot be cancelled"
+msgstr "لا يمكن إلغاء الأقساط المدفوعة"
+
+#. module: invoice_installment_extension
+#. odoo-python
+#: code:addons/invoice_installment_extension/models/installment_list.py:0
+#, python-format
+msgid "Paid amount cannot exceed the installment amount"
+msgstr "المبلغ المدفوع لا يمكن أن يتجاوز مبلغ القسط"
+
+#. module: invoice_installment_extension
+#. odoo-python
+#: code:addons/invoice_installment_extension/models/installment_list.py:0
+#, python-format
+msgid "Please enter a valid amount to pay"
+msgstr "الرجاء إدخال مبلغ صحيح للدفع"
+
+#. module: invoice_installment_extension
+#. odoo-python
+#: code:addons/invoice_installment_extension/models/installment_list.py:0
+#, python-format
+msgid "Please select a date for pay first"
+msgstr "الرجاء تحديد تاريخ للدفع أولاً"
+
+#. module: invoice_installment_extension
+#. odoo-python
+#: code:addons/invoice_installment_extension/models/installment_list.py:0
+#, python-format
+msgid "No installments found due on or before the selected date"
+msgstr "لم يتم العثور على أقساط مستحقة في أو قبل التاريخ المحدد"
+
+#. module: invoice_installment_extension
+#. odoo-python
+#: code:addons/invoice_installment_extension/models/installment_list.py:0
+#, python-format
+msgid "Payment distributed. Remaining amount %.2f could not be applied to any installment."
+msgstr "تم توزيع الدفعة. المبلغ المتبقي %.2f لم يمكن تطبيقه على أي قسط."
+
+#. module: invoice_installment_extension
+#. odoo-python
+#: code:addons/invoice_installment_extension/models/installment_list.py:0
+#, python-format
+msgid "Payment has been distributed to installments successfully."
+msgstr "تم توزيع الدفعة على الأقساط بنجاح."
+
+#. module: invoice_installment_extension
+#. odoo-python
+#: code:addons/invoice_installment_extension/models/installment_list.py:0
+#, python-format
+msgid "Partial Payment Applied"
+msgstr "تم تطبيق الدفع الجزئي"
+
+#. module: invoice_installment_extension
+#. odoo-python
+#: code:addons/invoice_installment_extension/models/payment_invoice_to_pay.py:0
+#, python-format
+msgid "Invoice is required. Please select an invoice."
+msgstr "الفاتورة مطلوبة. الرجاء تحديد فاتورة."
+
+#. module: invoice_installment_extension
+#. odoo-python
+#: code:addons/invoice_installment_extension/models/payment_invoice_to_pay.py:0
+#, python-format
+msgid "Invoice is required. Cannot remove invoice from payment line."
+msgstr "الفاتورة مطلوبة. لا يمكن إزالة الفاتورة من بند الدفع."
+
+#. module: invoice_installment_extension
+#. odoo-python
+#: code:addons/invoice_installment_extension/models/control_payment.py:0
+#, python-format
+msgid "New"
+msgstr "جديد"
+
+#. module: invoice_installment_extension
+#. odoo-python
+#: code:addons/invoice_installment_extension/models/payment_records.py:0
+#, python-format
+msgid "New"
+msgstr "جديد"
+
+#. module: invoice_installment_extension
+#. odoo-python
+#: code:addons/invoice_installment_extension/models/payment_records.py:0
+#, python-format
+msgid "New Payment Record"
+msgstr "سجل دفع جديد"
+
+#. module: invoice_installment_extension
+#. odoo-python
+#: code:addons/invoice_installment_extension/models/res_partner.py:0
+#, python-format
+msgid "Installments for %s"
+msgstr "أقساط %s"
+
+#. module: invoice_installment_extension
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_move_line_form_installment
+msgid "Installments"
+msgstr "الأقساط"
+
+#. module: invoice_installment_extension
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_move_line_form_installment
+msgid "First Payment"
+msgstr "الدفعة الأولى"
+
+#. module: invoice_installment_extension
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_move_form_installment_header
 msgid "Generate Payment Term"
-msgstr "إنشاء شروط الدفع"
+msgstr "إنشاء شرط الدفع"
 
 #. module: invoice_installment_extension
-#: model:ir.ui.view,arch_db:invoice_installment_extension.view_payment_term_generation_wizard_form
-msgid "Installment Configuration"
-msgstr "إعدادات الأقساط"
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_move_form_installment_header
+msgid "Generate Regular Installment"
+msgstr "إنشاء قسط منتظم"
 
 #. module: invoice_installment_extension
-#: model:ir.ui.view,arch_db:invoice_installment_extension.view_payment_term_generation_wizard_form
-msgid "First Payment Configuration"
-msgstr "إعدادات الدفعة الأولى"
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_move_form_installment_header
+msgid "Create or view the Regular Installment payment term (100% due at end of next month)"
+msgstr "إنشاء أو عرض شرط الدفع بالأقساط المنتظمة (100% مستحق في نهاية الشهر القادم)"
 
 #. module: invoice_installment_extension
-#: model:ir.ui.view,arch_db:invoice_installment_extension.view_payment_term_generation_wizard_form
-msgid "Payment Schedule Preview"
-msgstr "معاينة جدول الدفع"
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_move_form_installment_list
+msgid "Installment Information"
+msgstr "معلومات الأقساط"
+
+#. module: invoice_installment_extension
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_move_form_installment_list
+msgid "Due Amount Calculation"
+msgstr "حساب المبلغ المستحق"
+
+#. module: invoice_installment_extension
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_move_form_installment_list
+msgid "Date for Pay"
+msgstr "تاريخ الدفع"
+
+#. module: invoice_installment_extension
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_move_form_installment_list
+msgid "Pay Installment"
+msgstr "دفع القسط"
+
+#. module: invoice_installment_extension
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_move_form_installment_list
+msgid "Generate Installment List"
+msgstr "إنشاء قائمة الأقساط"
+
+#. module: invoice_installment_extension
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_move_form_installment_list
+msgid "View Installment List"
+msgstr "عرض قائمة الأقساط"
+
+#. module: invoice_installment_extension
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_move_form_installment_list
+msgid "Installment Details"
+msgstr "تفاصيل الأقساط"
+
+#. module: invoice_installment_extension
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_account_payment_form_invoice_payment
+msgid "Transaction"
+msgstr "المعاملة"
+
+#. module: invoice_installment_extension
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_account_payment_form_invoice_payment
+msgid "Due Date"
+msgstr "تاريخ الاستحقاق"
+
+#. module: invoice_installment_extension
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_account_payment_form_invoice_payment
+msgid "This date will be applied to all invoices as due_date_filter"
+msgstr "سيتم تطبيق هذا التاريخ على جميع الفواتير كفلتر تاريخ الاستحقاق"
+
+#. module: invoice_installment_extension
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_account_payment_form_invoice_payment
+msgid "Payment Amount"
+msgstr "مبلغ الدفع"
+
+#. module: invoice_installment_extension
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_account_payment_form_invoice_payment
+msgid "Total Control To Pay"
+msgstr "إجمالي المراقبة للدفع"
+
+#. module: invoice_installment_extension
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_account_payment_form_invoice_payment
+msgid "Control Remaining Amount"
+msgstr "المبلغ المتبقي للمراقبة"
+
+#. module: invoice_installment_extension
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_account_payment_form_invoice_payment
+msgid "Transaction Date"
+msgstr "تاريخ المعاملة"
+
+#. module: invoice_installment_extension
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_account_payment_form_invoice_payment
+msgid "Total Amount"
+msgstr "المبلغ الإجمالي"
+
+#. module: invoice_installment_extension
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_account_payment_form_invoice_payment
+msgid "Remaining Amount"
+msgstr "المبلغ المتبقي"
+
+#. module: invoice_installment_extension
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_account_payment_form_invoice_payment
+msgid "Due Amount"
+msgstr "المبلغ المستحق"
+
+#. module: invoice_installment_extension
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_account_payment_form_invoice_payment
+msgid "To Pay"
+msgstr "للدفع"
+
+#. module: invoice_installment_extension
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_account_payment_form_invoice_payment
+msgid "Warning:"
+msgstr "تحذير:"
+
+#. module: invoice_installment_extension
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_account_payment_form_invoice_payment
+msgid "Total control to pay amount must equal the payment amount."
+msgstr "يجب أن يساوي إجمالي مبلغ المراقبة للدفع مبلغ الدفع."
+
+#. module: invoice_installment_extension
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_account_payment_form_invoice_payment
+msgid "Current difference:"
+msgstr "الفرق الحالي:"
+
+#. module: invoice_installment_extension
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_account_payment_form_invoice_payment
+msgid "Process Control Payments"
+msgstr "معالجة دفعات المراقبة"
+
+#. module: invoice_installment_extension
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_control_payment_tree
+#: model:ir.actions.act_window,name:invoice_installment_extension.action_control_payment
+msgid "Control Payments"
+msgstr "مراقبة الدفعات"
+
+#. module: invoice_installment_extension
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_control_payment_form
+msgid "Control Payment"
+msgstr "مراقبة الدفع"
+
+#. module: invoice_installment_extension
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_control_payment_tree
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_control_payment_form
+msgid "Transaction"
+msgstr "المعاملة"
+
+#. module: invoice_installment_extension
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_control_payment_tree
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_control_payment_form
+msgid "Transaction Date"
+msgstr "تاريخ المعاملة"
+
+#. module: invoice_installment_extension
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_control_payment_tree
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_control_payment_form
+msgid "Total Amount"
+msgstr "المبلغ الإجمالي"
+
+#. module: invoice_installment_extension
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_control_payment_tree
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_control_payment_form
+msgid "Remaining Amount"
+msgstr "المبلغ المتبقي"
+
+#. module: invoice_installment_extension
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_control_payment_tree
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_control_payment_form
+msgid "Due Amount"
+msgstr "المبلغ المستحق"
+
+#. module: invoice_installment_extension
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_control_payment_tree
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_control_payment_form
+msgid "To Pay"
+msgstr "للدفع"
+
+#. module: invoice_installment_extension
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_control_payment_form
+msgid "Payment"
+msgstr "الدفع"
+
+#. module: invoice_installment_extension
+#: model:ir.ui.menu,name:invoice_installment_extension.menu_installment_management
+msgid "Installment Management"
+msgstr "إدارة الأقساط"
+
+#. module: invoice_installment_extension
+#: model:ir.ui.menu,name:invoice_installment_extension.menu_installment_list
+#: model:ir.ui.menu,name:invoice_installment_extension.menu_accounting_installment_list
+msgid "Installment List"
+msgstr "قائمة الأقساط"
+
+#. module: invoice_installment_extension
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_payment_records_tree
+#: model:ir.actions.act_window,name:invoice_installment_extension.action_payment_records
+#: model:ir.ui.menu,name:invoice_installment_extension.menu_payment_records
+msgid "Payment Records"
+msgstr "سجلات الدفع"
+
+#. module: invoice_installment_extension
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_payment_records_form
+msgid "Payment Record"
+msgstr "سجل الدفع"
+
+#. module: invoice_installment_extension
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_payment_records_tree
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_payment_records_form
+msgid "Reference"
+msgstr "المرجع"
+
+#. module: invoice_installment_extension
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_payment_records_tree
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_payment_records_form
+msgid "Payment Name"
+msgstr "اسم الدفعة"
+
+#. module: invoice_installment_extension
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_payment_records_tree
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_payment_records_form
+msgid "Payment Date"
+msgstr "تاريخ الدفع"
+
+#. module: invoice_installment_extension
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_payment_records_tree
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_payment_records_form
+msgid "Invoice"
+msgstr "الفاتورة"
+
+#. module: invoice_installment_extension
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_payment_records_form
+msgid "Invoice Name"
+msgstr "اسم الفاتورة"
+
+#. module: invoice_installment_extension
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_payment_records_tree
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_payment_records_form
+msgid "Installment"
+msgstr "القسط"
+
+#. module: invoice_installment_extension
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_payment_records_form
+msgid "Installment Name"
+msgstr "اسم القسط"
+
+#. module: invoice_installment_extension
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_payment_records_tree
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_payment_records_form
+msgid "Due Date"
+msgstr "تاريخ الاستحقاق"
+
+#. module: invoice_installment_extension
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_payment_records_tree
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_payment_records_form
+msgid "Paid Amount"
+msgstr "المبلغ المدفوع"
+
+#. module: invoice_installment_extension
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_payment_records_tree
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_payment_records_form
+msgid "Previous State"
+msgstr "الحالة السابقة"
+
+#. module: invoice_installment_extension
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_payment_records_tree
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_payment_records_form
+msgid "New State"
+msgstr "الحالة الجديدة"
+
+#. module: invoice_installment_extension
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_payment_records_tree
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_payment_records_form
+msgid "Action Type"
+msgstr "نوع الإجراء"
+
+#. module: invoice_installment_extension
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_payment_records_tree
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_payment_records_form
+msgid "Created On"
+msgstr "تم الإنشاء في"
+
+#. module: invoice_installment_extension
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_payment_records_form
+msgid "Installment Amount"
+msgstr "مبلغ القسط"
+
+#. module: invoice_installment_extension
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_payment_records_form
+msgid "Last Updated"
+msgstr "آخر تحديث"
+
+#. module: invoice_installment_extension
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_payment_records_form
+msgid "Notes"
+msgstr "ملاحظات"
+
+#. module: invoice_installment_extension
+#: model_terms:ir.ui.view,arch_db:invoice_installment_extension.view_payment_records_form
+msgid "Additional notes about this payment record..."
+msgstr "ملاحظات إضافية حول سجل الدفع هذا..."
+
+#. module: invoice_installment_extension
+#: model:ir.actions.act_window,name:invoice_installment_extension.action_payment_records
+msgid "No payment records found"
+msgstr "لم يتم العثور على سجلات دفع"
+
+#. module: invoice_installment_extension
+#: model:ir.actions.act_window,name:invoice_installment_extension.action_payment_records
+msgid "Payment records track all actions that change installment states and store payment information."
+msgstr "تتبع سجلات الدفع جميع الإجراءات التي تغير حالات الأقساط وتخزن معلومات الدفع."
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_payment_records__invoice_id
+msgid "Invoice"
+msgstr "الفاتورة"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,help:invoice_installment_extension.field_payment_records__invoice_id
+msgid "The invoice this payment record is related to"
+msgstr "الفاتورة المرتبطة بسجل الدفع هذا"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_payment_records__invoice_name
+msgid "Invoice Name"
+msgstr "اسم الفاتورة"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_payment_records__installment_id
+msgid "Installment"
+msgstr "القسط"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,help:invoice_installment_extension.field_payment_records__installment_id
+msgid "The installment this payment record is related to"
+msgstr "القسط المرتبط بسجل الدفع هذا"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_payment_records__installment_name
+msgid "Installment Reference"
+msgstr "مرجع القسط"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_payment_records__installment_amount
+msgid "Installment Amount"
+msgstr "مبلغ القسط"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_payment_records__installment_due_date
+msgid "Installment Due Date"
+msgstr "تاريخ استحقاق القسط"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_payment_records__paid_amount
+msgid "Paid Amount"
+msgstr "المبلغ المدفوع"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,help:invoice_installment_extension.field_payment_records__paid_amount
+msgid "Amount paid for this installment in this payment record"
+msgstr "المبلغ المدفوع لهذا القسط في سجل الدفع هذا"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_payment_records__previous_state
+msgid "Previous State"
+msgstr "الحالة السابقة"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,help:invoice_installment_extension.field_payment_records__previous_state
+msgid "Installment state before this payment"
+msgstr "حالة القسط قبل هذه الدفعة"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_payment_records__new_state
+msgid "New State"
+msgstr "الحالة الجديدة"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,help:invoice_installment_extension.field_payment_records__new_state
+msgid "Installment state after this payment"
+msgstr "حالة القسط بعد هذه الدفعة"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_payment_records__action_type
+msgid "Action Type"
+msgstr "نوع الإجراء"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,help:invoice_installment_extension.field_payment_records__action_type
+msgid "Type of action that triggered this record (e.g., action_pay_installments, action_mark_paid)"
+msgstr "نوع الإجراء الذي أطلق هذا السجل (مثل: action_pay_installments، action_mark_paid)"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_payment_records__currency_id
+msgid "Currency"
+msgstr "العملة"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_payment_records__notes
+msgid "Notes"
+msgstr "ملاحظات"
+
+#. module: invoice_installment_extension
+#: model:ir.model.fields,field_description:invoice_installment_extension.field_payment_records__display_name
+msgid "Display Name"
+msgstr "اسم العرض"

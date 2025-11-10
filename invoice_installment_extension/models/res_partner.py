@@ -7,17 +7,17 @@ class ResPartner(models.Model):
     _inherit = 'res.partner'
 
     # Installment Information
-    installment_list_ids = fields.One2many('installment.list', 'partner_id', string='Installment List')
-    has_installments = fields.Boolean(string='Has Installments', compute='_compute_installment_info', store=True)
-    view_installments = fields.Boolean(string='View Installments', default=False , store=True)
-    installment_count = fields.Integer(string='Total Installments', compute='_compute_installment_info', store=True)
-    paid_installment_count = fields.Integer(string='Paid Installments', compute='_compute_installment_info', store=True)
-    partial_paid_installment_count = fields.Integer(string='Partial Paid Installments', compute='_compute_installment_info', store=True)
-    pending_installment_count = fields.Integer(string='Pending Installments', compute='_compute_installment_info', store=True)
-    overdue_installment_count = fields.Integer(string='Overdue Installments', compute='_compute_installment_info', store=True)
-    total_installment_amount = fields.Monetary(string='Total Installment Amount', currency_field='currency_id', compute='_compute_installment_info', store=True)
-    total_paid_amount = fields.Monetary(string='Total Paid Amount', currency_field='currency_id', compute='_compute_installment_info', store=True)
-    total_remaining_amount = fields.Monetary(string='Remaining Amount', currency_field='currency_id', compute='_compute_installment_info', store=True)
+    installment_list_ids = fields.One2many('installment.list', 'partner_id', string=_('Installment List'))
+    has_installments = fields.Boolean(string=_('Has Installments'), compute='_compute_installment_info', store=True)
+    view_installments = fields.Boolean(string=_('View Installments'), default=False , store=True)
+    installment_count = fields.Integer(string=_('Total Installments'), compute='_compute_installment_info', store=True)
+    paid_installment_count = fields.Integer(string=_('Paid Installments'), compute='_compute_installment_info', store=True)
+    partial_paid_installment_count = fields.Integer(string=_('Partial Paid Installments'), compute='_compute_installment_info', store=True)
+    pending_installment_count = fields.Integer(string=_('Pending Installments'), compute='_compute_installment_info', store=True)
+    overdue_installment_count = fields.Integer(string=_('Overdue Installments'), compute='_compute_installment_info', store=True)
+    total_installment_amount = fields.Monetary(string=_('Total Installment Amount'), currency_field='currency_id', compute='_compute_installment_info', store=True)
+    total_paid_amount = fields.Monetary(string=_('Total Paid Amount'), currency_field='currency_id', compute='_compute_installment_info', store=True)
+    total_remaining_amount = fields.Monetary(string=_('Remaining Amount'), currency_field='currency_id', compute='_compute_installment_info', store=True)
     
     @api.depends('installment_list_ids', 'installment_list_ids.state', 'installment_list_ids.amount', 'installment_list_ids.paid_amount')
     def _compute_installment_info(self):

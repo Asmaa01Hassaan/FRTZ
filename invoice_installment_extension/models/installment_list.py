@@ -14,43 +14,43 @@ class InstallmentList(models.Model):
     _rec_name = 'display_name'
 
     # Basic Information
-    name = fields.Char(string='Installment Reference', required=True, copy=False, readonly=True, default=lambda self: _('New'))
-    sequence = fields.Integer(string='Sequence', default=1, help="Installment sequence number")
-    invoice_id = fields.Many2one('account.move', string='Invoice', required=True, ondelete='cascade')
-    payment_term_id = fields.Many2one('account.payment.term', string='Payment Term', related='invoice_id.invoice_payment_term_id', store=True)
+    name = fields.Char(string=_('Installment Reference'), required=True, copy=False, readonly=True, default=lambda self: _('New'))
+    sequence = fields.Integer(string=_('Sequence'), default=1, help=_("Installment sequence number"))
+    invoice_id = fields.Many2one('account.move', string=_('Invoice'), required=True, ondelete='cascade')
+    payment_term_id = fields.Many2one('account.payment.term', string=_('Payment Term'), related='invoice_id.invoice_payment_term_id', store=True)
     
     # Payment Details
-    amount = fields.Monetary(string='Amount', currency_field='currency_id', required=True)
-    currency_id = fields.Many2one('res.currency', string='Currency', related='invoice_id.currency_id', store=True, readonly=True)
-    due_date = fields.Date(string='Due Date', required=True)
-    paid_date = fields.Date(string='Paid Date', readonly=True)
-    paid_amount = fields.Monetary(string='Paid Amount', currency_field='currency_id', default=0.0, help='Amount that has been paid for this installment')
-    remaining_amount = fields.Monetary(string='Remaining Amount', currency_field='currency_id', compute='_compute_remaining_amount', store=True, help='Remaining amount to be paid')
+    amount = fields.Monetary(string=_('Amount'), currency_field='currency_id', required=True)
+    currency_id = fields.Many2one('res.currency', string=_('Currency'), related='invoice_id.currency_id', store=True, readonly=True)
+    due_date = fields.Date(string=_('Due Date'), required=True)
+    paid_date = fields.Date(string=_('Paid Date'), readonly=True)
+    paid_amount = fields.Monetary(string=_('Paid Amount'), currency_field='currency_id', default=0.0, help=_('Amount that has been paid for this installment'))
+    remaining_amount = fields.Monetary(string=_('Remaining Amount'), currency_field='currency_id', compute='_compute_remaining_amount', store=True, help=_('Remaining amount to be paid'))
     
     # Status and Tracking
     state = fields.Selection([
-        ('pending', 'Pending'),
-        ('partial_paid', 'Partial Paid'),
-        ('paid', 'Paid'),
-        ('overdue', 'Overdue'),
-        ('cancelled', 'Cancelled')
-    ], string='Status', default='pending', tracking=True)
+        ('pending', _('Pending')),
+        ('partial_paid', _('Partial Paid')),
+        ('paid', _('Paid')),
+        ('overdue', _('Overdue')),
+        ('cancelled', _('Cancelled'))
+    ], string=_('Status'), default='pending', tracking=True)
     
     # Payment Information
-    payment_method_id = fields.Many2one('account.payment.method', string='Payment Method')
-    payment_reference = fields.Char(string='Payment Reference')
-    notes = fields.Text(string='Notes')
+    payment_method_id = fields.Many2one('account.payment.method', string=_('Payment Method'))
+    payment_reference = fields.Char(string=_('Payment Reference'))
+    notes = fields.Text(string=_('Notes'))
     
     # Computed Fields
-    display_name = fields.Char(string='Display Name', compute='_compute_display_name', store=True)
-    is_late = fields.Boolean(string='Is Late Payment', compute='_compute_is_late', store=True)
-    days_overdue = fields.Integer(string='Days Overdue', compute='_compute_days_overdue')
+    display_name = fields.Char(string=_('Display Name'), compute='_compute_display_name', store=True)
+    is_late = fields.Boolean(string=_('Is Late Payment'), compute='_compute_is_late', store=True)
+    days_overdue = fields.Integer(string=_('Days Overdue'), compute='_compute_days_overdue')
     
     # Related Information
-    partner_id = fields.Many2one('res.partner', string='Customer', required=True)
-    customer_name = fields.Char(string='Customer Name', related='partner_id.name', store=True)
-    customer_number = fields.Char(string='Customer Number', related='partner_id.ref', store=True)
-    customer_guarantees_names = fields.Char(string='Customer Guarantees', compute='_compute_customer_guarantees_names', store=True)
+    partner_id = fields.Many2one('res.partner', string=_('Customer'), required=True)
+    customer_name = fields.Char(string=_('Customer Name'), related='partner_id.name', store=True)
+    customer_number = fields.Char(string=_('Customer Number'), related='partner_id.ref', store=True)
+    customer_guarantees_names = fields.Char(string=_('Customer Guarantees'), compute='_compute_customer_guarantees_names', store=True)
     
     @api.depends('invoice_id.customer_guarantees_ids.name')
     def _compute_customer_guarantees_names(self):

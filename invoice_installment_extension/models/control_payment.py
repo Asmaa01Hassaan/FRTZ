@@ -13,7 +13,7 @@ class ControlPayment(models.Model):
 
     payment_id = fields.Many2one(
         'account.payment',
-        string='Payment',
+        string=_('Payment'),
         required=True,
         ondelete='cascade',
         index=True
@@ -21,7 +21,7 @@ class ControlPayment(models.Model):
     
     invoice_id = fields.Many2one(
         'account.move',
-        string='Invoice',
+        string=_('Invoice'),
         required=True,
         ondelete='cascade',
         index=True
@@ -29,21 +29,21 @@ class ControlPayment(models.Model):
     
     # Related fields from invoice
     invoice_name = fields.Char(
-        string='Transion',
+        string=_('Transaction'),
         related='invoice_id.name',
         readonly=True,
         store=True
     )
     
     invoice_date = fields.Date(
-        string='Transion Date',
+        string=_('Transaction Date'),
         related='invoice_id.invoice_date',
         readonly=True,
         store=True
     )
     
     amount_total = fields.Monetary(
-        string='Total Amount',
+        string=_('Total Amount'),
         currency_field='currency_id',
         related='invoice_id.amount_total',
         readonly=True,
@@ -51,7 +51,7 @@ class ControlPayment(models.Model):
     )
     
     total_remaining_amount = fields.Monetary(
-        string='Remaining Amount',
+        string=_('Remaining Amount'),
         currency_field='currency_id',
         related='invoice_id.total_remaining_amount',
         readonly=True,
@@ -59,11 +59,11 @@ class ControlPayment(models.Model):
     )
     
     due_amount = fields.Monetary(
-        string='Due Amount',
+        string=_('Due Amount'),
         currency_field='currency_id',
         compute='_compute_due_amount',
         readonly=True,
-        help='Due amount on the invoice (computed from invoice)'
+        help=_('Due amount on the invoice (computed from invoice)')
     )
     
     @api.depends('invoice_id', 'invoice_id.due_amount', 'invoice_id.due_date_filter', 'due_date')
@@ -98,28 +98,28 @@ class ControlPayment(models.Model):
     
     # Date filter field
     due_date = fields.Date(
-        string='Due Date',
-        help='Date filter for calculating due amount on invoice'
+        string=_('Due Date'),
+        help=_('Date filter for calculating due amount on invoice')
     )
     
     # Non-related field
     to_pay = fields.Monetary(
-        string='To Pay',
+        string=_('To Pay'),
         currency_field='currency_id',
         default=0.0,
-        help='Amount to pay for this invoice'
+        help=_('Amount to pay for this invoice')
     )
     
     currency_id = fields.Many2one(
         'res.currency',
-        string='Currency',
+        string=_('Currency'),
         related='payment_id.currency_id',
         store=True,
         readonly=True
     )
     
     display_name = fields.Char(
-        string='Display Name',
+        string=_('Display Name'),
         compute='_compute_display_name',
         store=True
     )

@@ -6,13 +6,13 @@ import logging
 class AccountMove(models.Model):
     _inherit = "account.move"
 
-    sale_order_line_id = fields.Many2one('sale.order.line', string="Sale Order Line")
+    sale_order_line_id = fields.Many2one('sale.order.line', string=_("Sale Order Line"))
 
     installment_num = fields.Float(
-        string="Installments", default=0.0, readonly=True
+        string=_("Installments"), default=0.0, readonly=True
     )
     first_payment = fields.Float(
-        string="First Payment", default=0.0, readonly=True
+        string=_("First Payment"), default=0.0, readonly=True
     )
 
 

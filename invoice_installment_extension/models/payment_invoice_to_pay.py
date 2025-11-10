@@ -12,7 +12,7 @@ class PaymentInvoiceToPay(models.Model):
     
     payment_id = fields.Many2one(
         'account.payment',
-        string='Payment',
+        string=_('Payment'),
         required=True,
         ondelete='cascade',
         index=True
@@ -20,7 +20,7 @@ class PaymentInvoiceToPay(models.Model):
     
     invoice_id = fields.Many2one(
         'account.move',
-        string='Invoice',
+        string=_('Invoice'),
         required=True,
         ondelete='cascade',
         index=True,
@@ -29,21 +29,21 @@ class PaymentInvoiceToPay(models.Model):
     
     # Invoice fields to display
     invoice_name = fields.Char(
-        string='Transion',
+        string=_('Transaction'),
         related='invoice_id.name',
         readonly=True,
         store=True
     )
     
     invoice_date = fields.Date(
-        string='Transion Date',
+        string=_('Transaction Date'),
         related='invoice_id.invoice_date',
         readonly=True,
         store=True
     )
     
     amount_total = fields.Monetary(
-        string='Total Amount',
+        string=_('Total Amount'),
         currency_field='currency_id',
         related='invoice_id.amount_total',
         readonly=True,
@@ -51,7 +51,7 @@ class PaymentInvoiceToPay(models.Model):
     )
     
     total_remaining_amount = fields.Monetary(
-        string='Remaining Amount',
+        string=_('Remaining Amount'),
         currency_field='currency_id',
         related='invoice_id.total_remaining_amount',
         readonly=True,
@@ -59,10 +59,10 @@ class PaymentInvoiceToPay(models.Model):
     )
     
     to_pay_amount = fields.Monetary(
-        string='To Pay Amount',
+        string=_('To Pay Amount'),
         currency_field='currency_id',
         default=0.0,
-        help='Amount to pay for this invoice from the payment amount'
+        help=_('Amount to pay for this invoice from the payment amount')
     )
     
     currency_id = fields.Many2one(

@@ -27,8 +27,8 @@ class AccountPayment(models.Model):
 
     # Date filter for all selected invoices (defaults to payment date)
     payment_due_date_filter = fields.Date(
-        string='Date for Pay',
-        help='Date filter for calculating due amount on all selected invoices'
+        string=_('Date for Pay'),
+        help=_('Date filter for calculating due amount on all selected invoices')
     )
     
     # Many2many field for all unpaid invoices
@@ -37,8 +37,8 @@ class AccountPayment(models.Model):
         'payment_available_invoice_rel',
         'payment_id',
         'invoice_id',
-        string='Available Invoices',
-        help='All unpaid invoices for the selected customer',
+        string=_('Available Invoices'),
+        help=_('All unpaid invoices for the selected customer'),
         domain="[('partner_id', '=', partner_id), ('move_type', '=', 'out_invoice'), ('state', '=', 'posted'), ('payment_state', '!=', 'paid')]"
     )
     
@@ -48,8 +48,8 @@ class AccountPayment(models.Model):
         'payment_selected_invoice_rel',
         'payment_id',
         'invoice_id',
-        string='Selected Invoices',
-        help='Invoices selected for payment',
+        string=_('Selected Invoices'),
+        help=_('Invoices selected for payment'),
         domain="[('id', 'in', available_invoice_ids)]"
     )
     
@@ -57,8 +57,8 @@ class AccountPayment(models.Model):
     payment_invoice_line_ids = fields.One2many(
         'payment.invoice.to.pay',
         'payment_id',
-        string='Invoice Payment Lines',
-        help='Invoices selected for payment with amounts to pay',
+        string=_('Invoice Payment Lines'),
+        help=_('Invoices selected for payment with amounts to pay'),
         domain="[('invoice_id', 'in', selected_invoice_ids)]"
     )
     
@@ -66,38 +66,38 @@ class AccountPayment(models.Model):
     control_payment_ids = fields.One2many(
         'control.payment',
         'payment_id',
-        string='Control Payments',
-        help='Control payment records for invoices'
+        string=_('Control Payments'),
+        help=_('Control payment records for invoices')
     )
     
     # Computed fields
     total_invoice_to_pay = fields.Monetary(
-        string='Total Invoice To Pay',
+        string=_('Total Invoice To Pay'),
         currency_field='currency_id',
         compute='_compute_total_invoice_to_pay',
-        help='Sum of all to_pay_amount for selected invoices'
+        help=_('Sum of all to_pay_amount for selected invoices')
     )
     
     payment_remaining_amount = fields.Monetary(
-        string='Remaining Amount',
+        string=_('Remaining Amount'),
         currency_field='currency_id',
         compute='_compute_total_invoice_to_pay',
-        help='Payment amount minus total invoice to pay'
+        help=_('Payment amount minus total invoice to pay')
     )
     
     # Computed fields for control payments
     total_control_to_pay = fields.Monetary(
-        string='Total Control To Pay',
+        string=_('Total Control To Pay'),
         currency_field='currency_id',
         compute='_compute_total_control_to_pay',
-        help='Sum of all to_pay for control payment records'
+        help=_('Sum of all to_pay for control payment records')
     )
     
     control_payment_remaining_amount = fields.Monetary(
-        string='Control Remaining Amount',
+        string=_('Control Remaining Amount'),
         currency_field='currency_id',
         compute='_compute_total_control_to_pay',
-        help='Payment amount minus total control to pay'
+        help=_('Payment amount minus total control to pay')
     )
     
     @api.depends('payment_invoice_line_ids.to_pay_amount', 'amount')

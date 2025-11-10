@@ -20,12 +20,14 @@
                                    invisible="1"/>
                         </group>
                         <group>
-                            <field name="amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="amount" string="Payment Amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             <field name="total_control_to_pay" 
+                                   string="Total Control To Pay"
                                    widget="monetary" 
                                    options="{'currency_field': 'currency_id'}" 
                                    readonly="1"/>
                             <field name="control_payment_remaining_amount" 
+                                   string="Control Remaining Amount"
                                    widget="monetary" 
                                    options="{'currency_field': 'currency_id'}" 
                                    readonly="1"
@@ -40,14 +42,17 @@
 <!--                            <field name="invoice_name" readonly="1"/>-->
                             <field name="invoice_date" string="Transaction Date" readonly="1"/>
                             <field name="amount_total" 
+                                   string="Total Amount"
                                    widget="monetary" 
                                    options="{'currency_field': 'currency_id'}" 
                                    readonly="1"/>
                             <field name="total_remaining_amount" 
+                                   string="Remaining Amount"
                                    widget="monetary" 
                                    options="{'currency_field': 'currency_id'}" 
                                    readonly="1"/>
                             <field name="due_amount" 
+                                   string="Due Amount"
                                    widget="monetary" 
                                    options="{'currency_field': 'currency_id'}" 
                                    readonly="1"/>
@@ -56,6 +61,7 @@
                                    options="{'datepicker': {'min_date': False}}"
                                    invisible="1"/>
                             <field name="to_pay" 
+                                   string="To Pay"
                                    widget="monetary" 
                                    options="{'currency_field': 'currency_id'}"/>
                         </list>
@@ -66,6 +72,7 @@
                         <div class="alert alert-warning" role="alert">
                             <strong>Warning:</strong> Total control to pay amount must equal the payment amount.
                             Current difference: <field name="control_payment_remaining_amount" 
+                                                       string="Control Remaining Amount"
                                                        widget="monetary" 
                                                        options="{'currency_field': 'currency_id'}" 
                                                        readonly="1"
