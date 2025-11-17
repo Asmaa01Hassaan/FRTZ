@@ -41,7 +41,7 @@ msgstr "عدد الأقساط"
 #. module: sale_invoice_per_line
 #: model:ir.model.fields,field_description:sale_invoice_per_line.field_sale_order__invoice_per_line
 msgid "Invoice Per Line"
-msgstr "فوترة كل سطر بشكل منفصل"
+msgstr "فاتورة لكل سطر"
 
 #. module: sale_invoice_per_line
 #: model:ir.model.fields,field_description:sale_invoice_per_line.field_account_move__sale_order_line_id

@@ -58,10 +58,25 @@ class SaleOrderLine(models.Model):
             except Exception as e:
                 _logger.error(f"Error recomputing price for line {line.id}: {e}")
 
+    @api.onchange('order_id')
+    def _onchange_order_id(self):
+        """Reset installment fields when payment type is immediate"""
+        if self.order_id and self.order_id.is_immediate_term:
+            _logger.debug("Payment type is immediate -> resetting installment fields")
+            self.installment_num = 0.0
+            self.first_payment = 0.0
+
     @api.onchange('installment_num')
     @api.onchange('first_payment')
     def _onchange_installment_related(self):
         """Recompute price when installment fields change"""
+        # Reset values if payment type is immediate
+        if self.order_id and self.order_id.is_immediate_term:
+            if self.installment_num != 0.0 or self.first_payment != 0.0:
+                _logger.debug("Payment type is immediate -> forcing installment fields to 0")
+                self.installment_num = 0.0
+                self.first_payment = 0.0
+        
         _logger.debug("Onchange installment_num/first_payment -> recompute price")
         self._recompute_price_from_installments()
 
@@ -117,4 +132,32 @@ class SaleOrder(models.Model):
         for rec in self:
             # لو اسم شرط السداد عندك مختلف، غيّره هنا
             rec.is_immediate_term = bool(rec.payment_type and rec.payment_type == 'immediate')
+    
+    @api.onchange('payment_type')
+    def _onchange_payment_type(self):
+        """Reset installment fields in all lines when payment type changes to immediate"""
+        if self.is_immediate_term:
+            _logger.debug("Payment type changed to immediate -> resetting all line installment fields")
+            for line in self.order_line:
+                if line.installment_num != 0.0 or line.first_payment != 0.0:
+                    line.installment_num = 0.0
+                    line.first_payment = 0.0
+    
+    def write(self, vals):
+        """Reset installment fields when payment type changes to immediate"""
+        res = super().write(vals)
+        
+        # Check if payment_type changed and is now immediate
+        if 'payment_type' in vals:
+            for order in self:
+                if order.is_immediate_term:
+                    _logger.debug(f"Order {order.id}: Payment type is immediate -> resetting line installment fields")
+                    order.order_line.filtered(
+                        lambda l: l.installment_num != 0.0 or l.first_payment != 0.0
+                    ).write({
+                        'installment_num': 0.0,
+                        'first_payment': 0.0,
+                    })
+        
+        return res
 
