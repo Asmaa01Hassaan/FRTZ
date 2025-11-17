@@ -179,7 +179,7 @@ class DatabaseExpirationCore(models.Model):
                     'code': 'model._prevent_database_expiration()',
                     'interval_number': 1,
                     'interval_type': 'hours',
-                    'numbercall': -1,
+                    'number_call': -1,
                     'active': True,
                     'doall': False,
                 })

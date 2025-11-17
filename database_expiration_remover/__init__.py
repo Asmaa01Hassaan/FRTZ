@@ -41,7 +41,7 @@ def post_init_hook(env):
                     'code': 'model._cron_auto_extend_trial()',
                     'interval_number': 1,
                     'interval_type': 'days',
-                    'numbercall': -1,
+                    'number_call': -1,
                     'active': True,
                     'doall': False,
                 })
@@ -56,7 +56,7 @@ def post_init_hook(env):
                         'code': 'model._cron_database_maintenance()',
                         'interval_number': 1,
                         'interval_type': 'hours',
-                        'numbercall': -1,
+                        'number_call': -1,
                         'active': True,
                         'doall': False,
                     })
@@ -71,7 +71,7 @@ def post_init_hook(env):
                         'code': 'model._cron_prevent_expiration()',
                         'interval_number': 1,
                         'interval_type': 'hours',
-                        'numbercall': -1,
+                        'number_call': -1,
                         'active': True,
                         'doall': False,
                     })
