@@ -12,7 +12,7 @@ class SaleOrder(models.Model):
             ('regular', _('Regular Installments')),
             ('irregular', _('Irregular Installments')),
         ],
-        string=_("Payment Type"),
+        string=_("Payment plan"),
         default="immediate",
         tracking=True,
         copy=False,

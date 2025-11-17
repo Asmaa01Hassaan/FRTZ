@@ -33,7 +33,7 @@
 <!--                <field name="order_type"/>-->
 <!--            </xpath>-->
             <xpath expr="//sheet//field[@name='payment_term_id']" position="before">
-                <field name="payment_type" string="Payment Type"/>
+                <field name="payment_type" string="Payment plan"/>
             </xpath>
             <xpath expr="//sheet//field[@name='payment_term_id']" position="attributes">
                 <attribute name="invisible">payment_type in ['immediate', 'regular']</attribute>

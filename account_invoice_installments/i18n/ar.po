@@ -108,7 +108,7 @@ msgstr "شروط الدفع"
 #: model:ir.model.fields,field_description:account_invoice_installments.field_sale_order__payment_type
 #: model_terms:ir.ui.view,arch_db:account_invoice_installments.sale_order_form_installments
 msgid "Payment Type"
-msgstr "نوع خطة الدفع"
+msgstr "خطة الدفع"
 
 #. module: account_invoice_installments
 #: model:ir.ui.menu,name:account_invoice_installments.menu_pricelist

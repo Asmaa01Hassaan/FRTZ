@@ -113,7 +113,7 @@ python3 odoo-bin -c odoo.conf -d DATABASE_NAME -u account_invoice_installments -
 2. **ابحث عن النص** الإنجليزي المراد ترجمته:
    ```po
    msgid "Payment Type"
-   msgstr "نوع خطة الدفع"
+   msgstr "خطة الدفع"
    ```
 3. **عدّل الترجمة** في السطر `msgstr`
 4. **احفظ الملف**
