@@ -301,6 +301,18 @@ msgstr "العميل"
 
 #. module: frtz_customer
 #: model:ir.ui.view,arch_db:frtz_customer.view_partner_form_inherit_customer_ref
+#: xpath expr="(//field[@name='name'])[1]"
+msgid "Enter full name..."
+msgstr "أدخل الاسم ..."
+
+#. module: frtz_customer
+#: model:ir.ui.view,arch_db:frtz_customer.view_partner_form_inherit_customer_ref
+#: xpath expr="(//field[@name='name'])[2]"
+msgid "Enter full name..."
+msgstr "أدخل الاسم ..."
+
+#. module: frtz_customer
+#: model:ir.ui.view,arch_db:frtz_customer.view_partner_form_inherit_customer_ref
 msgid "Customer Code"
 msgstr "رمز العميل"
 

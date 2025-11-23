@@ -4,9 +4,17 @@
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="base.view_partner_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//div[hasclass('oe_title')]//h1/field[@name='name']" position="before">
-                <span class="o_form_label fw-bold me-2">Customer</span>
+            <!--            <xpath expr="//div[hasclass('oe_title')]//h1/field[@name='name']" position="attributes" multiple="true">-->
+            <!--                <attribute name="placeholder">Enter full name...</attribute>-->
+            <!--            </xpath>-->
+            <xpath expr="(//field[@name='name'])[1]" position="attributes">
+                <attribute name="placeholder">Enter full name...</attribute>
             </xpath>
+
+            <xpath expr="(//field[@name='name'])[2]" position="attributes">
+                <attribute name="placeholder">Enter full name...</attribute>
+            </xpath>
+
             <xpath expr="//div[hasclass('oe_title')]//h1" position="attributes">
                 <attribute name="class">d-flex align-items-center gap-3</attribute>
             </xpath>
@@ -19,8 +27,8 @@
                 <field name="status"/>
             </xpath>
 
-             <xpath expr="//field[@name='parent_id']" position="before">
-                <span >Company Name</span>
+            <xpath expr="//field[@name='parent_id']" position="before">
+                <span>Company Name</span>
             </xpath>
         </field>
     </record>
