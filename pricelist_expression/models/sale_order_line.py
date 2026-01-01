@@ -25,7 +25,7 @@ class SaleOrderLine(models.Model):
     )
 
     def _get_pricelist_context(self):
-        """Build pricing context with installment information"""
+        """Build pricing context with installment and payment_type information"""
         ctx = dict(self.env.context or {})
         try:
             if self.order_id and hasattr(self.order_id, "_get_pricelist_context"):
@@ -33,10 +33,16 @@ class SaleOrderLine(models.Model):
         except Exception as e:
             _logger.warning(f"Error getting pricelist context from order: {e}")
         
+        # Add payment_type from order
+        if self.order_id and hasattr(self.order_id, 'payment_type'):
+            ctx['payment_type'] = self.order_id.payment_type
+            _logger.debug(f"Added payment_type to context: {ctx['payment_type']}")
+        
         ctx["installment_num"] = float(self.installment_num or 0.0)
         ctx["first_payment"] = float(self.first_payment or 0.0)
         
         _logger.debug(f"Pricelist context: line_id={self.id or 'new'}, "
+                     f"payment_type={ctx.get('payment_type')}, "
                      f"installment_num={ctx['installment_num']}, "
                      f"first_payment={ctx['first_payment']}")
         return ctx
@@ -135,19 +141,25 @@ class SaleOrder(models.Model):
     
     @api.onchange('payment_type')
     def _onchange_payment_type(self):
-        """Reset installment fields in all lines when payment type changes to immediate"""
+        """Reset installment fields and recompute prices when payment type changes"""
         if self.is_immediate_term:
             _logger.debug("Payment type changed to immediate -> resetting all line installment fields")
             for line in self.order_line:
                 if line.installment_num != 0.0 or line.first_payment != 0.0:
                     line.installment_num = 0.0
                     line.first_payment = 0.0
+        
+        # Recompute prices for all lines when payment_type changes (to apply correct pricelist items)
+        _logger.debug(f"Payment type changed to {self.payment_type} -> recomputing prices")
+        for line in self.order_line:
+            if line.product_id:
+                line._recompute_price_from_installments()
     
     def write(self, vals):
-        """Reset installment fields when payment type changes to immediate"""
+        """Reset installment fields and recompute prices when payment type changes"""
         res = super().write(vals)
         
-        # Check if payment_type changed and is now immediate
+        # Check if payment_type changed
         if 'payment_type' in vals:
             for order in self:
                 if order.is_immediate_term:
@@ -158,6 +170,12 @@ class SaleOrder(models.Model):
                         'installment_num': 0.0,
                         'first_payment': 0.0,
                     })
+                
+                # Recompute prices for all lines when payment_type changes
+                _logger.debug(f"Order {order.id}: Payment type changed to {order.payment_type} -> recomputing prices")
+                for line in order.order_line:
+                    if line.product_id:
+                        line._recompute_price_from_installments()
         
         return res
 

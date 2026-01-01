@@ -93,21 +93,6 @@
                 <attribute name="statusbar_visible">draft,sale</attribute>
                  <attribute name="invisible">True</attribute>
             </xpath>
-
-            <!-- Change label from Quotation Date to Order Date -->
-            <xpath expr="//div[@class='o_td_label'][@groups='base.group_no_one']/label[@for='date_order']" position="attributes">
-                <attribute name="string">Order Date</attribute>
-            </xpath>
-
-            <!-- Make Order Date editable in all states - First field (with groups) -->
-            <xpath expr="//field[@name='date_order'][@groups='base.group_no_one']" position="attributes">
-                <attribute name="readonly">False</attribute>
-            </xpath>
-
-            <!-- Make Order Date editable in all states - Second field (without groups) -->
-            <xpath expr="//field[@name='date_order'][not(@groups)]" position="attributes">
-                <attribute name="readonly">False</attribute>
-            </xpath>
         </field>
     </record>
 

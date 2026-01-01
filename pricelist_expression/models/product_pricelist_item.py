@@ -29,6 +29,17 @@ class ProductPricelistItem(models.Model):
         ),
     )
 
+    payment_type = fields.Selection(
+        [
+            ('immediate', _('Immediate Payment')),
+            ('regular', _('Regular Installments')),
+            ('irregular', _('Irregular Installments')),
+        ],
+        string=_("Payment plan"),
+        default="immediate",
+        help=_("Select the payment plan for this pricelist rule")
+    )
+
     def _compute_price(self, *args, **kwargs):
         """Compute price using expression if configured"""
         base_price = super()._compute_price(*args, **kwargs)

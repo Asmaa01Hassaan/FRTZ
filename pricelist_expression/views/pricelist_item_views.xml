@@ -16,6 +16,11 @@
 
 <!--            </xpath>-->
 
+            <!-- Add payment_type after Validity Period -->
+            <xpath expr="//field[@name='date_start']" position="after">
+                <field name="payment_type" string="Payment plan"/>
+            </xpath>
+
             <xpath expr="//sheet//group[@name='pricelist_rule_base']" position="after">
                 <group name="pricelist_rule_base2" invisible="compute_price != 'expression'">
                     <group>
