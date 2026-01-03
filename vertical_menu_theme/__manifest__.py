@@ -18,12 +18,14 @@
     'category': 'Theme/Backend',
     'author': 'Your Company',
     'website': 'https://www.yourcompany.com',
-    'depends': ['base', 'web'],
-    'data': [],
+    'depends': ['base', 'web','sale'],
+    'data': [
+        'views/navbar_view.xml',
+    ],
     'assets': {
         'web.assets_backend': [
-            'vertical_menu_theme/static/src/css/vertical_menu.css',
-            'vertical_menu_theme/static/src/js/vertical_menu.js',
+            # 'vertical_menu_theme/static/src/css/vertical_menu.css',
+            '/vertical_menu_theme/static/src/js/vertical_menu.js',
         ],
     },
     'installable': True,

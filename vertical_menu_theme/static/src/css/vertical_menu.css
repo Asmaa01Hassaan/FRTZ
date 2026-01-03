@@ -4,10 +4,10 @@
 .o_main_navbar {
     flex-direction: column !important;
     height: 100vh !important;
+    top: 55px !important;
     width: 280px !important;
     position: fixed !important;
     left: 0 !important;
-    top: 0 !important;
     z-index: 1000 !important;
     background: white !important;
     border-right: 1px solid #dee2e6 !important;
@@ -311,17 +311,17 @@ body.o_home .o_main_navbar {
     .o_main_navbar {
         width: 240px !important;
     }
-    
+
     .o_main_content {
         margin-left: 240px !important;
         width: calc(100% - 240px) !important;
     }
-    
+
     .o_menu_section_header {
         font-size: 12px !important;
         padding: 6px 0 !important;
     }
-    
+
     .o_menu_item {
         font-size: 13px !important;
         padding: 6px 10px !important;
@@ -332,13 +332,12 @@ body.o_home .o_main_navbar {
     .o_main_navbar {
         width: 200px !important;
     }
-    
+
     .o_main_content {
         margin-left: 200px !important;
         width: calc(100% - 200px) !important;
     }
 }
-
 /* Scrollbar styling - Odoo dashboard style */
 .o_main_navbar::-webkit-scrollbar {
     width: 6px !important;
@@ -381,3 +380,4 @@ body.o_home .o_main_navbar {
     background: #007bff !important;
     color: white !important;
 }
+
