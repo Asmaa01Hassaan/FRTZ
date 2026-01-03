@@ -95,7 +95,7 @@
     <!-- Payment Records Menu -->
     <menuitem id="menu_payment_records"
               name="Payment Records"
-              parent="menu_installment_management"
+              parent="invoice_installment_extension.menu_installment_management"
               action="action_payment_records"
               sequence="20"/>
 </odoo>
