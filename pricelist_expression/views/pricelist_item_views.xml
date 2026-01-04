@@ -26,14 +26,33 @@
                     <group>
                         <field name="price_expression"
                                modifiers="{'invisible': [('compute_price','!=','expression')]}"/>
-
-                        <!--                            <field name="adv_formula" string="Advanced Formula"/>-->
-<!--                            <field name="adv_formula"-->
-<!--                                invisible="base != 'pricelist'"-->
-<!--                                readonly="base != 'pricelist'"-->
-<!--                                required="compute_price == 'adv_formula' and base == 'pricelist'"-->
-<!--                                string="Other Pricelist"/>-->
-                        </group>
+                        
+                        <!-- Help section showing available variables and functions -->
+                        <div class="alert alert-info" role="alert" invisible="compute_price != 'expression'">
+                            <strong>Available Variables and Functions:</strong>
+                            <ul class="mb-0 mt-2" style="list-style-type: disc; padding-left: 20px;">
+                                <li><code>price</code> - Base price from pricelist</li>
+                                <li><code>cost</code> - Product standard cost</li>
+                                <li><code>qty</code> - Quantity ordered</li>
+                                <li><code>installment_num</code> - Number of installments</li>
+                                <li><code>first_payment</code> - First payment amount</li>
+                                <li><code>round(x, n)</code> - Round number x to n decimal places</li>
+                                <li><code>ceil(x)</code> - Round up to next integer</li>
+                                <li><code>if(condition, true_value, false_value)</code> - Conditional expression (automatically converted to iff)</li>
+                            </ul>
+                            <p class="mb-0 mt-2"><strong>Examples:</strong></p>
+                            <ul class="mb-0" style="list-style-type: disc; padding-left: 20px;">
+                                <li><code>price * 1.1</code> - Add 10% markup</li>
+                                <li><code>price + (installment_num * 10)</code> - Add $10 per installment</li>
+                                <li><code>round(price * 0.9, 2)</code> - 10% discount rounded to 2 decimals</li>
+                                <li><code>cost * 1.2</code> - 20% markup on cost</li>
+                                <li><code>if(installment_num &lt; 12, price, cost)</code> - Use price if installments &lt; 12, else use cost</li>
+                                <li><code>if(qty &gt; 10, price * 0.9, price)</code> - 10% discount for quantity &gt; 10</li>
+                                <li><code>if(installment_num == 0, price, price * 1.05)</code> - 5% markup for installments</li>
+                                <li><strong>Note:</strong> <code>if(</code> is automatically converted to <code>iff(</code> internally</li>
+                            </ul>
+                        </div>
+                    </group>
                 </group>
 
             </xpath>

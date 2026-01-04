@@ -4,6 +4,7 @@ from odoo.tools.safe_eval import safe_eval
 from odoo.exceptions import ValidationError
 import logging
 import math
+import re
 _logger = logging.getLogger(__name__)
 
 class ProductPricelistItem(models.Model):
@@ -54,6 +55,17 @@ class ProductPricelistItem(models.Model):
                 if product:
                     cost = float(getattr(product, "standard_price", 0.0) or 0.0)
                 
+                # Helper function for conditional expressions (SQL-style: if(condition, true_value, false_value))
+                def iff(condition, true_value, false_value):
+                    """Conditional expression: returns true_value if condition is True, else false_value"""
+                    return float(true_value) if condition else float(false_value)
+                
+                # Preprocess expression: replace if( with iff( to avoid Python keyword conflict
+                # This allows users to write if(condition, true, false) which gets converted to iff(condition, true, false)
+                expression = str(self.price_expression).strip()
+                # Replace if( with iff( using word boundary to avoid replacing "if " or other variations
+                expression = re.sub(r'\bif\s*\(', 'iff(', expression)
+                
                 env = {
                     "price": float(base_price or 0.0),
                     "cost": cost,
@@ -62,10 +74,11 @@ class ProductPricelistItem(models.Model):
                     "first_payment": float(self.env.context.get("first_payment", 0.0) or 0.0),
                     "round": round,
                     "ceil": math.ceil,
+                    "iff": iff,  # Conditional function: iff(condition, true_value, false_value)
                 }
                 
-                new_price = float(safe_eval(self.price_expression, env, nocopy=True))
-                _logger.debug(f"Expression pricing: {self.price_expression} -> {new_price}")
+                new_price = float(safe_eval(expression, env, nocopy=True))
+                _logger.debug(f"Expression pricing: {self.price_expression} -> {new_price} (processed: {expression})")
                 return new_price
                 
             except Exception as e:
