@@ -22,6 +22,7 @@ class ProductPricelistItem(models.Model):
             "Available variables:\n"
             "price → base price\n"
             "cost → standard cost\n"
+            "purchase_price → purchase price (same as cost)\n"
             "qty → quantity\n"
             "installment_num → number of installments\n"
             "first_payment → first payment amount\n"
@@ -50,10 +51,12 @@ class ProductPricelistItem(models.Model):
 
         if self.compute_price == "expression" and self.price_expression:
             try:
-                # Get product cost safely
+                # Get product cost and purchase price safely
                 cost = 0.0
+                purchase_price = 0.0
                 if product:
                     cost = float(getattr(product, "standard_price", 0.0) or 0.0)
+                    purchase_price = cost  # purchase_price is same as standard_price (cost)
                 
                 # Helper function for conditional expressions (SQL-style: if(condition, true_value, false_value))
                 def iff(condition, true_value, false_value):
@@ -69,6 +72,7 @@ class ProductPricelistItem(models.Model):
                 env = {
                     "price": float(base_price or 0.0),
                     "cost": cost,
+                    "purchase_price": purchase_price,  # Purchase price (same as cost/standard_price)
                     "qty": float(quantity or 0.0),
                     "installment_num": float(self.env.context.get("installment_num", 0.0) or 0.0),
                     "first_payment": float(self.env.context.get("first_payment", 0.0) or 0.0),
