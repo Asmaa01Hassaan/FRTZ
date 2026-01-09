@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_product_template_form_code" model="ir.ui.view">
+        <field name="name">product.template.form.code</field>
+        <field name="model">product.template</field>
+        <!-- Higher priority to ensure we modify fields added by other inherits -->
+        <field name="priority" eval="99"/>
+        <!-- Inherit from the view that injects default_code after categ_id -->
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <!-- Add code field after name field inside the d-flex div -->
+            <xpath expr="//div[hasclass('oe_title')]//h1/div[@class='d-flex']/field[@name='name']" position="after">
+                <field name="code"
+                       class="ms-2"
+                       style="width: 200px; font-size: 14px;"
+                       placeholder="Code"/>
+            </xpath>
+            <!-- Hide default_code field in product form -->
+            <xpath expr="//field[@name='default_code']" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath>
+            <!-- Hide categ_id from General Information page -->
+            <xpath expr="//field[@name='categ_id']" position="replace"/>
+            <xpath expr="//field[@name='type']" position="replace"/>
+
+            <!-- Add categ_id after name field in the header -->
+            <xpath expr="//div[@class='oe_title']" position="after">
+                <group>
+                    <field name="categ_id" string="Category" class="mb-2"/>
+                    <field name="type" class="ms-2 mb-2"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+    <!--     Add code field next to name in product template form view-->
+    <!--    <record id="view_product_template_form_code" model="ir.ui.view">-->
+    <!--        <field name="name">product.template.form.code</field>-->
+    <!--        <field name="model">product.template</field>-->
+    <!--        &lt;!&ndash; Higher priority to ensure we modify fields added by other inherits &ndash;&gt;-->
+    <!--        <field name="priority" eval="99"/>-->
+    <!--        &lt;!&ndash; Inherit from the view that injects default_code after categ_id &ndash;&gt;-->
+    <!--        <field name="inherit_id" ref="product.product_template_only_form_view"/>-->
+    <!--        <field name="arch" type="xml">-->
+    <!--            &lt;!&ndash; Add code field after name field in header &ndash;&gt;-->
+    <!--            <xpath expr="//div[hasclass('oe_title')]//field[@name='name']" position="after">-->
+    <!--                <field name="code"-->
+    <!--                       class="ms-2"-->
+    <!--                       style="width: 200px; font-size: 14px;"-->
+    <!--                       placeholder="Code"/>-->
+    <!--            </xpath>-->
+    <!--            &lt;!&ndash; Hide default_code field in product form &ndash;&gt;-->
+    <!--            <xpath expr="//field[@name='default_code']" position="attributes">-->
+    <!--                <attribute name="invisible">True</attribute>-->
+    <!--            </xpath>-->
+    <!--            <xpath expr="//field[@name='categ_id']" position="replace"/>-->
+
+    <!--            &lt;!&ndash; Add categ_id and type inline after name inside header &ndash;&gt;-->
+    <!--            <xpath expr="//div[hasclass('oe_title')]//field[@name='name']" position="after">-->
+    <!--                <field name="categ_id"  class="ms-2 mb-2"/>-->
+    <!--                <field name="type" class="ms-2 mb-2"/>-->
+    <!--            </xpath>-->
+    <!--        </field>-->
+    <!--    </record>-->
+
+    <!-- Move is_storable and tracking fields to Inventory page -->
+    <record id="view_product_template_move_tracking_to_inventory" model="ir.ui.view">
+        <field name="name">product.template.move.tracking.to.inventory</field>
+        <field name="model">product.template</field>
+        <field name="priority" eval="100"/>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <!-- Hide is_storable and tracking from General Information page (where stock module adds them) -->
+            <xpath expr="//field[@name='type']/following-sibling::label[@for='is_storable']" position="replace"/>
+            <xpath expr="//field[@name='type']/following-sibling::div[field[@name='is_storable']]" position="replace"/>
+
+            <!-- Add is_storable and tracking to Inventory page -->
+            <xpath expr="//page[@name='inventory']//group[@name='inventory']" position="inside">
+                <group name="tracking_group" string="Inventory Tracking" invisible="type != 'consu'">
+                    <label for="is_storable" class="oe_inline"/>
+                    <div class="o_row w-100">
+                        <field name="is_storable"/>
+                        <field name="tracking" invisible="not is_storable" groups="stock.group_production_lot"/>
+                    </div>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Add subscription_ok field next to purchase_ok (if purchase_ok is visible) or after sale_ok -->
+    <record id="view_product_template_subscription_ok" model="ir.ui.view">
+        <field name="name">product.template.subscription.ok</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <!-- Add subscription_ok field after sale_ok in the options div -->
+            <xpath expr="//div[@name='options']//span[@class='d-inline-flex']" position="inside">
+                <field name="subscription_ok"/>
+                <label for="subscription_ok"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Move invoice_policy and product_tooltip fields from General Information page to Sales page -->
+    <record id="view_product_template_move_invoice_policy" model="ir.ui.view">
+        <field name="name">product.template.move.invoice.policy</field>
+        <field name="model">product.template</field>
+        <field name="priority" eval="102"/>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <!-- Hide invoice_policy from General Information page (where sale module adds it after type) -->
+            <xpath expr="//field[@name='invoice_policy']" position="replace"/>
+
+            <!-- Hide product_tooltip from General Information page -->
+            <xpath expr="//field[@name='product_tooltip']" position="replace"/>
+
+            <!-- Add invoice_policy and product_tooltip to Sales page -->
+            <xpath expr="//page[@name='sales']//group[@name='sale']" position="inside">
+                <group name="invoice_policy_group" string="Invoicing">
+                    <field name="invoice_policy" required="1" invisible="not sale_ok or type == 'combo'"/>
+                    <field name="product_tooltip"
+                           class="fst-italic text-muted"
+                           string=""
+                           invisible="not product_tooltip"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
+

@@ -14,6 +14,7 @@
     "data": [
         "data/ir_sequence.xml",
         "views/sales_orders_view.xml",
+        "views/product_attribute_views.xml",
         "views/menu_views.xml",
     ],
     "i18n": [
@@ -24,4 +25,5 @@
     "application": False,
     "installable": True,
     "auto_install": False,
+    "post_init_hook": "post_init_hook",
 }
