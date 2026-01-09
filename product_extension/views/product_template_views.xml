@@ -1,5 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <record id="view_product_template_insert_custom_group" model="ir.ui.view">
+        <field name="name">product.template.insert.custom.group</field>
+        <field name="model">product.template</field>
+        <field name="priority" eval="105"/>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='general_information']/group[1]/group[@name='group_standard_price']" position="before">
+                <group name="custom_group">
+                    <!-- your fields here -->
+                    <string></string>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
     <record id="view_product_template_form_code" model="ir.ui.view">
         <field name="name">product.template.form.code</field>
         <field name="model">product.template</field>
@@ -26,41 +41,12 @@
             <!-- Add categ_id after name field in the header -->
             <xpath expr="//div[@class='oe_title']" position="after">
                 <group>
-                    <field name="categ_id" string="Category" class="mb-2"/>
+                    <field name="categ_id" string="Category" class="mb-2" required="1"/>
                     <field name="type" class="ms-2 mb-2"/>
                 </group>
             </xpath>
         </field>
     </record>
-    <!--     Add code field next to name in product template form view-->
-    <!--    <record id="view_product_template_form_code" model="ir.ui.view">-->
-    <!--        <field name="name">product.template.form.code</field>-->
-    <!--        <field name="model">product.template</field>-->
-    <!--        &lt;!&ndash; Higher priority to ensure we modify fields added by other inherits &ndash;&gt;-->
-    <!--        <field name="priority" eval="99"/>-->
-    <!--        &lt;!&ndash; Inherit from the view that injects default_code after categ_id &ndash;&gt;-->
-    <!--        <field name="inherit_id" ref="product.product_template_only_form_view"/>-->
-    <!--        <field name="arch" type="xml">-->
-    <!--            &lt;!&ndash; Add code field after name field in header &ndash;&gt;-->
-    <!--            <xpath expr="//div[hasclass('oe_title')]//field[@name='name']" position="after">-->
-    <!--                <field name="code"-->
-    <!--                       class="ms-2"-->
-    <!--                       style="width: 200px; font-size: 14px;"-->
-    <!--                       placeholder="Code"/>-->
-    <!--            </xpath>-->
-    <!--            &lt;!&ndash; Hide default_code field in product form &ndash;&gt;-->
-    <!--            <xpath expr="//field[@name='default_code']" position="attributes">-->
-    <!--                <attribute name="invisible">True</attribute>-->
-    <!--            </xpath>-->
-    <!--            <xpath expr="//field[@name='categ_id']" position="replace"/>-->
-
-    <!--            &lt;!&ndash; Add categ_id and type inline after name inside header &ndash;&gt;-->
-    <!--            <xpath expr="//div[hasclass('oe_title')]//field[@name='name']" position="after">-->
-    <!--                <field name="categ_id"  class="ms-2 mb-2"/>-->
-    <!--                <field name="type" class="ms-2 mb-2"/>-->
-    <!--            </xpath>-->
-    <!--        </field>-->
-    <!--    </record>-->
 
     <!-- Move is_storable and tracking fields to Inventory page -->
     <record id="view_product_template_move_tracking_to_inventory" model="ir.ui.view">
@@ -124,7 +110,9 @@
                 </group>
             </xpath>
         </field>
+
     </record>
+
 
 </odoo>
 
