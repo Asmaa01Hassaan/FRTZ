@@ -13,6 +13,7 @@
     "depends": ["product", "stock", "sale"],
     "data": [
         "security/ir.model.access.csv",
+        "data/product_category_allowed_types.xml",
         "data/product_reference_sequences.xml",
         "views/product_template_views.xml",
         "views/product_category_views.xml",
@@ -22,5 +23,6 @@
     "application": False,
     "installable": True,
     "auto_install": False,
+    "post_init_hook": "post_init_hook",
 }
 

@@ -66,9 +66,9 @@ class ProductTemplate(models.Model):
             return False
         
         # Apply validation rules if set (for formatting)
-        if category.validation_mode == 'length' and category.reference_length:
+        if category.validate_length and category.reference_length:
             # Pad or truncate to required length
-            if category.reference_char_type == 'number':
+            if category.validate_type and category.reference_char_type == 'number':
                 # Ensure numeric and pad with zeros
                 try:
                     num = int(''.join(filter(str.isdigit, generated_ref)) or '0')
@@ -103,6 +103,56 @@ class ProductTemplate(models.Model):
         
         return super().create(vals_list)
 
+    @api.constrains('type', 'categ_id')
+    def _check_product_type_in_category(self):
+        """Validate that product type is allowed in the selected category"""
+        for product in self:
+            if not product.categ_id:
+                continue  # No category, allow any type
+            
+            category = product.categ_id
+            
+            # Check if any restrictions are set (any boolean is True)
+            has_restrictions = category.allow_consu or category.allow_service or category.allow_combo
+            
+            if not has_restrictions:
+                continue  # No restrictions set, allow any type
+            
+            # Check if the product type is allowed based on boolean fields
+            type_allowed = False
+            if product.type == 'consu' and category.allow_consu:
+                type_allowed = True
+            elif product.type == 'service' and category.allow_service:
+                type_allowed = True
+            elif product.type == 'combo' and category.allow_combo:
+                type_allowed = True
+            
+            if not type_allowed:
+                type_labels = {
+                    'consu': 'Goods',
+                    'service': 'Service',
+                    'combo': 'Combo'
+                }
+                current_label = type_labels.get(product.type, product.type)
+                
+                # Build list of allowed types
+                allowed_labels = []
+                if category.allow_consu:
+                    allowed_labels.append('Goods')
+                if category.allow_service:
+                    allowed_labels.append('Service')
+                if category.allow_combo:
+                    allowed_labels.append('Combo')
+                
+                raise ValidationError(
+                    _("Product type '%(current)s' is not allowed in category '%(category)s'. "
+                      "Allowed types: %(allowed)s") % {
+                        'current': current_label,
+                        'category': category.name,
+                        'allowed': ', '.join(allowed_labels)
+                    }
+                )
+
     @api.constrains('internal_reference_new', 'categ_id')
     def _check_internal_reference_new(self):
         """Enhanced validation for internal reference based on category rules"""
@@ -132,8 +182,8 @@ class ProductTemplate(models.Model):
                         _("Internal Reference is required for category '%s'.") % cat.name
                     )
                 
-                # Length validation
-                if cat.validation_mode == 'length':
+                # Length validation (if enabled)
+                if cat.validate_length:
                     if not cat.reference_length:
                         continue  # No length set, skip length validation
                     if len(ref) != cat.reference_length:  # Fixed: use != instead of >
@@ -146,8 +196,8 @@ class ProductTemplate(models.Model):
                             }
                         )
                 
-                # Type validation
-                if cat.validation_mode == 'type':
+                # Type validation (if enabled)
+                if cat.validate_type:
                     if cat.reference_char_type == 'number':
                         if not ref.isdigit():
                             raise ValidationError(

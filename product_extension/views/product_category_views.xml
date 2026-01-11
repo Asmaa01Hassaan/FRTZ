@@ -7,10 +7,11 @@
         <field name="inherit_id" ref="product.product_category_form_view"/>
         <field name="arch" type="xml">
             <!-- Add code field on the same line as name -->
-            <xpath expr="//div[@class='oe_title']/h1/field[@name='name']" position="after">
-                <field name="code" class="ms-2" placeholder="Code"/>
+            <xpath expr="//group//field[@name='parent_id']" position="before">
+                <field name="code"  placeholder="Code"/>
             </xpath>
-            <xpath expr="//sheet" position="inside">
+            <!-- Add Reference Configuration before Account Properties group -->
+            <xpath expr="//group[@name='account_property']" position="before">
                 <group string="Reference Configuration">
                     <field name="reference_type"/>
                     
@@ -19,16 +20,40 @@
                            invisible="reference_type != 'automatic'"
                            help="Sequence to use for automatic reference generation. If not set, the default sequence will be used."/>
                     
-                    <!-- Validation mode: Show validation fields -->
-                    <field name="validation_mode"
-                           invisible="reference_type != 'validation'"
-                           help="Validation mode for internal references"/>
+                    <!-- Validation mode: Show validation checkboxes -->
+                    <div invisible="reference_type != 'validation'">
+                        <div class="o_row w-100">
+                            <field name="validate_length" />
+                            <label for="validate_length" string="Validate Length"/>
+                        </div>
+                        <div class="o_row w-100">
+                            <field name="validate_type"/>
+                            <label for="validate_type" string="Validate Type"/>
+                        </div>
+                    </div>
                     <field name="reference_length"
-                           invisible="reference_type != 'validation' or validation_mode != 'length'"
-                           help="Required length for internal references"/>
+                           invisible="reference_type != 'validation' or not validate_length"
+                           help="Required length for internal references (only if Validate Length is checked)"/>
                     <field name="reference_char_type"
-                           invisible="reference_type != 'validation' or validation_mode != 'type'"
-                           help="Character type allowed in internal references"/>
+                           invisible="reference_type != 'validation' or not validate_type"
+                           help="Character type allowed in internal references (only if Validate Type is checked)"/>
+                </group>
+                
+                <!-- Product Type Restrictions -->
+                <group string="Product Type Restrictions">
+                    <div class="o_form_label">Product Type:</div><br/>
+                     <div class="o_row w-100">
+                        <field name="allow_consu" />
+                        <label for="allow_consu" string="Goods"/>
+                    </div>
+                    <div class="o_row w-100">
+                        <field name="allow_service"/>
+                        <label for="allow_service" string="Service"/>
+                    </div>
+                    <div class="o_row w-100">
+                        <field name="allow_combo"/>
+                        <label for="allow_combo" string="Combo"/>
+                    </div>
                 </group>
             </xpath>
         </field>
