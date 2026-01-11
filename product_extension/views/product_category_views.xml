@@ -12,49 +12,59 @@
             </xpath>
             <!-- Add Reference Configuration before Account Properties group -->
             <xpath expr="//group[@name='account_property']" position="before">
-                <group string="Reference Configuration">
-                    <field name="reference_type"/>
-                    
+                <!-- Product Type Restrictions -->
+                <group string="Product">
+                    <div class="o_form_label">Product Type:</div>
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="d-flex align-items-center">
+                            <field name="allow_consu" />
+                            <label for="allow_consu" string="Goods" class="ms-2 mb-0"/>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <field name="allow_service"/>
+                            <label for="allow_service" string="Service" class="ms-2 mb-0"/>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <field name="allow_combo"/>
+                            <label for="allow_combo" string="Combo" class="ms-2 mb-0"/>
+                        </div>
+                    </div>
+                     <field name="reference_type" string="Reference Generation"/>
+
                     <!-- Automatic mode: Show sequence field -->
                     <field name="reference_sequence_id"
                            invisible="reference_type != 'automatic'"
                            help="Sequence to use for automatic reference generation. If not set, the default sequence will be used."/>
-                    
+
                     <!-- Validation mode: Show validation checkboxes -->
                     <div invisible="reference_type != 'validation'">
-                        <div class="o_row w-100">
-                            <field name="validate_length" />
-                            <label for="validate_length" string="Validate Length"/>
+                        <div class="d-flex align-items-center gap-3 mb-2">
+                            <div class="d-flex align-items-center">
+                                <field name="validate_length" />
+                                <label for="validate_length" string="Validate Length" class="ms-2 mb-0"/>
+                            </div>
+                            <field name="reference_length"
+                                   invisible="not validate_length"
+                                   class="ms-3"
+                                   style="width: 150px;"
+                                   help="Required length for internal references (only if Validate Length is checked)"/>
                         </div>
-                        <div class="o_row w-100">
-                            <field name="validate_type"/>
-                            <label for="validate_type" string="Validate Type"/>
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="d-flex align-items-center">
+                                <field name="validate_type"/>
+                                <label for="validate_type" string="Validate Type" class="ms-2 mb-0"/>
+                            </div>
+                            <field name="reference_char_type"
+                                   invisible="not validate_type"
+                                   class="ms-3"
+                                   style="width: 200px;"
+                                   help="Character type allowed in internal references (only if Validate Type is checked)"/>
                         </div>
                     </div>
-                    <field name="reference_length"
-                           invisible="reference_type != 'validation' or not validate_length"
-                           help="Required length for internal references (only if Validate Length is checked)"/>
-                    <field name="reference_char_type"
-                           invisible="reference_type != 'validation' or not validate_type"
-                           help="Character type allowed in internal references (only if Validate Type is checked)"/>
+
                 </group>
-                
-                <!-- Product Type Restrictions -->
-                <group string="Product Type Restrictions">
-                    <div class="o_form_label">Product Type:</div><br/>
-                     <div class="o_row w-100">
-                        <field name="allow_consu" />
-                        <label for="allow_consu" string="Goods"/>
-                    </div>
-                    <div class="o_row w-100">
-                        <field name="allow_service"/>
-                        <label for="allow_service" string="Service"/>
-                    </div>
-                    <div class="o_row w-100">
-                        <field name="allow_combo"/>
-                        <label for="allow_combo" string="Combo"/>
-                    </div>
-                </group>
+              
+
             </xpath>
         </field>
     </record>
