@@ -13,8 +13,10 @@
     "depends": ["product", "stock", "sale"],
     "data": [
         "security/ir.model.access.csv",
+        "data/product_reference_sequences.xml",
         "views/product_template_views.xml",
         "views/product_category_views.xml",
+        "views/product_attribute_views.xml",
     ],
     "license": "LGPL-3",
     "application": False,

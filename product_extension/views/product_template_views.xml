@@ -6,7 +6,8 @@
         <field name="priority" eval="105"/>
         <field name="inherit_id" ref="product.product_template_form_view"/>
         <field name="arch" type="xml">
-            <xpath expr="//page[@name='general_information']/group[1]/group[@name='group_standard_price']" position="before">
+            <xpath expr="//page[@name='general_information']/group[1]/group[@name='group_standard_price']"
+                   position="before">
                 <group name="custom_group">
                     <!-- your fields here -->
                     <string></string>
@@ -23,12 +24,14 @@
         <!-- Inherit from the view that injects default_code after categ_id -->
         <field name="inherit_id" ref="product.product_template_only_form_view"/>
         <field name="arch" type="xml">
-            <!-- Add code field after name field inside the d-flex div -->
+            <!-- Add internal_reference_new field after name field inside the d-flex div -->
             <xpath expr="//div[hasclass('oe_title')]//h1/div[@class='d-flex']/field[@name='name']" position="after">
-                <field name="code"
+                <field name="internal_reference_new"
                        class="ms-2"
                        style="width: 200px; font-size: 14px;"
-                       placeholder="Code"/>
+                       readonly="categ_id.reference_type == 'automatic'"
+                       placeholder="Internal Reference"
+                       help="Internal reference for the product. Automatically generated when category is set to 'Automatic'."/>
             </xpath>
             <!-- Hide default_code field in product form -->
             <xpath expr="//field[@name='default_code']" position="attributes">
@@ -110,7 +113,19 @@
                 </group>
             </xpath>
         </field>
+    </record>
 
+    <record id="view_product_template_reference" model="ir.ui.view">
+        <field name="name">product.template.reference</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <!-- internal_reference_new is now placed after name field in view_product_template_form_code -->
+            <!-- This view only handles standard_price readonly attribute -->
+            <xpath expr="//field[@name='standard_price']" position="attributes">
+                <attribute name="readonly"> cost_method != 'standard'</attribute>
+            </xpath>
+        </field>
     </record>
 
 
