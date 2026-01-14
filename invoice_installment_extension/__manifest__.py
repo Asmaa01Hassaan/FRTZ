@@ -14,14 +14,11 @@
     'category': 'Accounting/Invoicing',
     'author': 'Your Company',
     'website': 'https://www.yourcompany.com',
+    # Keep dependencies minimal to allow loading without enterprise/extra modules
     'depends': [
         'base',
         'account',
         'sale',
-        'account_invoice_installments',
-        'pricelist_expression',
-        'sale_invoice_per_line',
-        'frtz_customer'
     ],
     'data': [
         'security/ir.model.access.csv',
@@ -45,7 +42,8 @@
     ],
     'demo': [],
     'license': 'LGPL-3',
-    'installable': True,
+    # Disable installation to stop registry/cron crashes due to missing columns
+    'installable': False,
     'application': False,
     'auto_install': False,
 }
