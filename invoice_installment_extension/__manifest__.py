@@ -19,6 +19,10 @@
         'base',
         'account',
         'sale',
+        'account_invoice_installments',
+        'pricelist_expression',
+        'sale_invoice_per_line',
+        'frtz_customer',
     ],
     'data': [
         'security/ir.model.access.csv',
@@ -42,8 +46,8 @@
     ],
     'demo': [],
     'license': 'LGPL-3',
-    # Disable installation to stop registry/cron crashes due to missing columns
-    'installable': False,
+    # Enable installation (UI will handle install; deps are minimal)
+    'installable': True,
     'application': False,
     'auto_install': False,
 }
