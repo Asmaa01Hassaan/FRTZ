@@ -22,7 +22,7 @@
     'category': 'Tools',
     'author': 'Your Company',
     'website': 'https://www.yourcompany.com',
-    'depends': ['base', 'web_enterprise'],
+    'depends': ['base'],
     'data': [
         'security/ir.model.access.csv',
         'data/database_expiration_data.xml',
@@ -42,7 +42,7 @@
     },
     'installable': True,
     'application': False,
-    'auto_install': True,
+    'auto_install': False,
     'license': 'LGPL-3',
     'post_init_hook': 'post_init_hook',
 }
