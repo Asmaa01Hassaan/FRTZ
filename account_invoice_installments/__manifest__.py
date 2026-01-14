@@ -10,7 +10,7 @@
         - Improved order management and tracking
     """,
     "author": "Your Company",
-    "depends": ['sale', 'product'],
+    "depends": ['sale', 'product','account_invoice_installments','pricelist_expression','sale_invoice_per_line','frtz_customer'],
     "data": [
         "data/ir_sequence.xml",
         "views/sales_orders_view.xml",
