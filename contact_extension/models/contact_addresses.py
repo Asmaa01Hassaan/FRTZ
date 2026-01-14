@@ -8,7 +8,7 @@ class ContactAddresses(models.Model):
 
     partner_id = fields.Many2one('res.partner', string='Contact', required=True, ondelete='cascade')
     type = fields.Selection([
-        ('contact', 'Contact'),
+        ('contact', 'Address'),
         ('invoice', 'Invoice Address'),
         ('delivery', 'Delivery Address'),
         ('other', 'Other'),

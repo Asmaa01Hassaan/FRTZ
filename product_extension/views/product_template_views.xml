@@ -24,15 +24,8 @@
         <!-- Inherit from the view that injects default_code after categ_id -->
         <field name="inherit_id" ref="product.product_template_only_form_view"/>
         <field name="arch" type="xml">
-            <!-- Add internal_reference_new field after name field inside the d-flex div -->
-            <xpath expr="//div[hasclass('oe_title')]//h1/div[@class='d-flex']/field[@name='name']" position="after">
-                <field name="internal_reference_new"
-                       class="ms-2"
-                       style="width: 200px; font-size: 14px;"
-                       readonly="categ_id.reference_type == 'automatic'"
-                       placeholder="Internal Reference"
-                       help="Internal reference for the product. Automatically generated when category is set to 'Automatic'."/>
-            </xpath>
+
+
             <!-- Hide default_code field in product form -->
             <xpath expr="//field[@name='default_code']" position="attributes">
                 <attribute name="invisible">True</attribute>
@@ -45,6 +38,13 @@
             <xpath expr="//div[@class='oe_title']" position="after">
                 <group>
                     <field name="categ_id" string="Category" class="mb-2" required="1"/>
+                    <field name="internal_reference_new" string="Reference"
+                           class="ms-2"
+                           style="width: 200px; font-size: 14px;"
+                           readonly="categ_id.reference_type == 'automatic'"
+                           placeholder="Reference"
+                           help="Internal reference for the product. Automatically generated when category is set to 'Automatic'."/>
+
                     <field name="type" class="ms-2 mb-2"/>
                 </group>
             </xpath>
