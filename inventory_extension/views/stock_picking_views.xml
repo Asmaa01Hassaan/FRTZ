@@ -17,6 +17,13 @@
                     ['|', ('code', '=', operation_type_code), ('id', '=', picking_type_id)]
                 </attribute>
             </xpath>
+            <!-- Add Entry Type field - visible only in Receive form (incoming pickings) -->
+            <xpath expr="//field[@name='picking_type_id']" position="after">
+                <field name="entry_type" 
+                       string="Entry Type"
+                       invisible="operation_type_code != 'incoming'"
+                       placeholder="Select entry type"/>
+            </xpath>
         </field>
     </record>
 </odoo>

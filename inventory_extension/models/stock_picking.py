@@ -12,6 +12,18 @@ class StockPicking(models.Model):
         help="Used to filter operation types"
     )
 
+    entry_type = fields.Selection(
+        [('consignment', 'Consignment')],
+        string="Entry Type",
+        help="Type of entry for receiving goods"
+    )
+    
+    @api.onchange('picking_type_id')
+    def _onchange_picking_type_id_entry_type(self):
+        """Clear entry_type when picking_type_id changes to non-incoming"""
+        if self.picking_type_id and self.picking_type_id.code != 'incoming':
+            self.entry_type = False
+
     @api.depends('picking_type_id.code')
     def _compute_operation_type_code(self):
         """Compute the operation type code for domain filtering"""
