@@ -128,6 +128,48 @@
         </field>
     </record>
 
+    <!-- Add Variants page after Attributes & Variants page -->
+    <record id="view_product_template_variants_page" model="ir.ui.view">
+        <field name="name">product.template.variants.page</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <!-- Find the Attributes & Variants page by looking for attribute_line_ids field which is typically in that page -->
+            <xpath expr="//page[@name='sales']" position="before">
+                <page name="product_variants_list" string="Variants">
+                    <field name="product_variant_ids" nolabel="1">
+                        <list string="Product Variants" editable="bottom">
+                            <field name="default_code" string="Internal Reference"/>
+                            <field name="barcode"/>
+                            <field name="active"/>
+                            <field name="standard_price" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="lst_price" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="product_template_attribute_value_ids" widget="many2many_tags" readonly="1"/>
+                        </list>
+                        <form>
+                            <sheet>
+                                <group>
+                                    <group>
+                                        <field name="default_code" string="Internal Reference"/>
+                                        <field name="barcode"/>
+                                        <field name="active"/>
+                                    </group>
+                                    <group>
+                                        <field name="standard_price" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                        <field name="lst_price" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                    </group>
+                                </group>
+                                <group>
+                                    <field name="product_template_attribute_value_ids" widget="many2many_tags" readonly="1"/>
+                                </group>
+                            </sheet>
+                        </form>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
 
 </odoo>
 
