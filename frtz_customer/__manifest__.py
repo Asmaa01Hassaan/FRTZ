@@ -3,7 +3,8 @@
     "version": "18.0.1.0.0",
     "summary": "Enhanced customer management with guarantees functionality",
     "author": "Your Company",
-    "depends": ['base','sale'],
+    # Add 'account' so partner actions like open_customer_statement are available
+    "depends": ['base','sale','account'],
     "data": [
         "security/ir.model.access.csv",
         "views/customer_view.xml",
