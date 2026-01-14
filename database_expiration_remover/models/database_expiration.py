@@ -206,7 +206,6 @@ class DatabaseExpirationRemover(models.Model):
                 'code': 'model._cron_auto_extend_trial()',
                 'interval_number': 1,
                 'interval_type': 'days',
-                'number_call': -1,
                 'active': True,
                 'doall': False,
             })
