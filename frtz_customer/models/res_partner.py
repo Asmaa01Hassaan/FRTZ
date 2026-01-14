@@ -48,6 +48,20 @@ class FrtzCustomer(models.Model):
         records = self.search(domain + args, limit=limit)
         return records.name_get()
 
+    # Stub total_all_due to satisfy inherited partner view when accounting reports are absent
+    total_all_due = fields.Monetary(
+        string='Total Due',
+        currency_field='currency_id',
+        compute='_compute_total_all_due',
+        store=False,
+        readonly=True,
+        help='Fallback placeholder when account reports are not installed.'
+    )
+
+    def _compute_total_all_due(self):
+        for partner in self:
+            partner.total_all_due = 0.0
+
     def open_customer_statement(self):
         """Fallback stub to satisfy inherited views when account reports are absent."""
         return False
