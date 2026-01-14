@@ -36,6 +36,7 @@ class ProductAttribute(models.Model):
             self._ensure_text_attribute_value_onchange()
         else:
             # When disabling free text, disable is_custom on all values
+            # But keep the free text value (with space name) so we can reuse it when rechecking
             if self.value_ids:
                 for val in self.value_ids:
                     val.is_custom = False
@@ -43,10 +44,11 @@ class ProductAttribute(models.Model):
     def _ensure_text_attribute_value_onchange(self):
         """Ensure there's an attribute value with is_custom=True and name=' ' for text type (onchange)"""
         if self.allow_free_text:
-            # Check if there's already a free text value with space name
-            text_value = self.value_ids.filtered(lambda v: v.is_custom and (v.name.strip() == '' or v.name == ' '))
+            # Check if there's already a value with space name (regardless of is_custom)
+            # This handles the case when unchecking and rechecking
+            text_value = self.value_ids.filtered(lambda v: v.name.strip() == '' or v.name == ' ')
             if not text_value:
-                # Add new value using One2many field (works in onchange)
+                # No existing value with space - add new value using One2many field (works in onchange)
                 # For onchange, we need to preserve existing values
                 # Build commands list with existing values and new one
                 commands = []
@@ -70,7 +72,7 @@ class ProductAttribute(models.Model):
                 if commands:
                     self.value_ids = commands
             else:
-                # Ensure existing value has is_custom=True and name is space
+                # Reuse existing value - ensure it has is_custom=True and name is space
                 for val in text_value:
                     val.is_custom = True
                     if val.name != ' ':
@@ -79,21 +81,25 @@ class ProductAttribute(models.Model):
     def _ensure_text_attribute_value(self):
         """Ensure there's an attribute value with is_custom=True and name=' ' for text type (after save)"""
         if self.allow_free_text and self.id:
-            # Check if there's already a free text value with space name
-            text_value = self.value_ids.filtered(lambda v: v.is_custom and (v.name.strip() == '' or v.name == ' '))
+            # Check if there's already a value with space name (regardless of is_custom)
+            # This handles the case when unchecking and rechecking - reuse existing value
+            text_value = self.value_ids.filtered(lambda v: v.name.strip() == '' or v.name == ' ')
             if not text_value:
-                # Create a new attribute value with space
+                # No existing value with space - create a new attribute value with space
                 self.env['product.attribute.value'].create({
                     'name': ' ',
                     'attribute_id': self.id,
                     'is_custom': True,
                 })
             else:
-                # Ensure existing value has is_custom=True and name is space
-                text_value.write({
-                    'is_custom': True,
-                    'name': ' ',
-                })
+                # Reuse existing value - ensure it has is_custom=True and name is space
+                # Only update if needed to avoid unnecessary writes
+                for val in text_value:
+                    if not val.is_custom or val.name != ' ':
+                        val.write({
+                            'is_custom': True,
+                            'name': ' ',
+                        })
     
     @api.model
     def create(self, vals):
