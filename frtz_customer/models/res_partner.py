@@ -58,9 +58,22 @@ class FrtzCustomer(models.Model):
         help='Fallback placeholder when account reports are not installed.'
     )
 
+    # Stub has_moves to satisfy inherited stat button visibility when accounting is absent
+    has_moves = fields.Boolean(
+        string='Has Moves',
+        compute='_compute_has_moves',
+        store=False,
+        readonly=True,
+        help='Fallback placeholder for accounting stat button visibility.'
+    )
+
     def _compute_total_all_due(self):
         for partner in self:
             partner.total_all_due = 0.0
+
+    def _compute_has_moves(self):
+        for partner in self:
+            partner.has_moves = False
 
     def open_customer_statement(self):
         """Fallback stub to satisfy inherited views when account reports are absent."""
