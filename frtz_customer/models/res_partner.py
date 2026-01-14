@@ -48,3 +48,7 @@ class FrtzCustomer(models.Model):
         records = self.search(domain + args, limit=limit)
         return records.name_get()
 
+    def open_customer_statement(self):
+        """Fallback stub to satisfy inherited views when account reports are absent."""
+        return False
+
