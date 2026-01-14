@@ -58,6 +58,15 @@ class FrtzCustomer(models.Model):
         help='Fallback placeholder when account reports are not installed.'
     )
 
+    # Stub total_all_overdue to satisfy view visibility conditions when accounting is absent
+    total_all_overdue = fields.Monetary(
+        string='Total Overdue',
+        currency_field='currency_id',
+        compute='_compute_total_all_overdue',
+        store=False,
+        readonly=True,
+        help='Fallback placeholder for overdue amounts.'
+    )
     # Stub has_moves to satisfy inherited stat button visibility when accounting is absent
     has_moves = fields.Boolean(
         string='Has Moves',
@@ -70,6 +79,10 @@ class FrtzCustomer(models.Model):
     def _compute_total_all_due(self):
         for partner in self:
             partner.total_all_due = 0.0
+
+    def _compute_total_all_overdue(self):
+        for partner in self:
+            partner.total_all_overdue = 0.0
 
     def _compute_has_moves(self):
         for partner in self:
