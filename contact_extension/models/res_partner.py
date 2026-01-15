@@ -19,7 +19,13 @@ class ResPartner(models.Model):
         ('active', 'Active'),
         ('suspended', 'Suspended'),
     ], string='Status', default='active')
-    divisions = fields.Char(string='Divisions')
+    division_ids = fields.One2many("contact.division", "partner_id", string="Divisions")
+    division_id = fields.Many2one(
+        "contact.division",
+        string="Department",
+        help="For individuals, select a department from the related company divisions.",
+        domain="[('partner_id', '=', parent_id)]",
+    )
     contact_address_ids = fields.One2many('contact.addresses', 'partner_id', string='Contact Addresses')
     max_salary_deduction = fields.Monetary(string='Max Salary Deduction', currency_field='currency_id')
     max_installments_amount = fields.Monetary(string='Max Installments Amount', currency_field='currency_id')
@@ -62,6 +68,57 @@ class ResPartner(models.Model):
         
         if name_parts:
             self.name = ' '.join(name_parts)
+
+    @api.onchange('contact_address_ids')
+    def _onchange_contact_address_ids_set_default_address(self):
+        """
+        When the default address is changed in the one2many, reflect it on the main
+        partner address fields (street/city/state/zip/country).
+
+        Also make sure there is at most one default address in the one2many to avoid
+        ambiguity.
+        """
+        # Determine which line should be considered "the" default.
+        defaults = self.contact_address_ids.filtered(lambda l: l.is_default)
+        if not defaults:
+            return
+
+        # Prefer the most recently created/edited line as the default if multiple are checked.
+        default_line = defaults[-1]
+
+        # Enforce single default in memory (onchange)
+        for line in (defaults - default_line):
+            line.is_default = False
+
+        # Copy address values to main partner address fields.
+        self.street = default_line.street
+        self.street2 = default_line.street2
+        self.city = default_line.city
+        self.state_id = default_line.state_id
+        self.zip = default_line.zip
+        self.country_id = default_line.country_id
+
+    @api.onchange("parent_id")
+    def _onchange_parent_id_set_department(self):
+        """
+        For individuals: when a company is set, keep department (division_id) consistent.
+        If the company has only one division, auto-select it.
+        """
+        if self.is_company:
+            return
+
+        if not self.parent_id:
+            self.division_id = False
+            return
+
+        # Clear if it doesn't belong to the selected company
+        if self.division_id and self.division_id.partner_id != self.parent_id:
+            self.division_id = False
+
+        # Auto-pick if exactly one division exists
+        divisions = self.parent_id.division_ids
+        if not self.division_id and len(divisions) == 1:
+            self.division_id = divisions[0]
 
     def write(self, vals):
         """Clear name parts when use_name_parts is unchecked and prevent manual name editing when checked"""

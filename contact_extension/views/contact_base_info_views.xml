@@ -8,7 +8,8 @@
 
             <!-- Make name field readonly when use_name_parts checkbox is checked -->
             <!-- Target the individual name field (id='individual') since use_name_parts only applies to individuals -->
-            <xpath expr="//div[hasclass('oe_title')]//h1/field[@name='name' and @id='individual']" position="attributes">
+            <xpath expr="//div[hasclass('oe_title')]//h1/field[@name='name' and @id='individual']"
+                   position="attributes">
                 <attribute name="readonly">use_name_parts</attribute>
             </xpath>
 
@@ -33,12 +34,28 @@
             </xpath>
 
             <xpath expr="//page[@name='contact_addresses']" position="attributes">
-                <attribute name="invisible">1</attribute>
+                <attribute name="invisible">not is_company</attribute>
+                <attribute name="string">Contacts</attribute>
             </xpath>
+
 
             <!-- Make credit_limits group invisible in Accounting page -->
             <xpath expr="//page[@name='accounting']//group[@name='credit_limits']" position="attributes">
                 <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <!-- Add Divisions page after Accounting (companies only) -->
+            <xpath expr="//page[@name='accounting']" position="after">
+                <page name="divisions_page" string="Divisions" invisible="not is_company">
+                    <group>
+                        <field name="division_ids" nolabel="1">
+                            <list editable="bottom" string="Divisions">
+                                <field name="department"/>
+                                <field name="reference"/>
+                            </list>
+                        </field>
+                    </group>
+                </page>
             </xpath>
 
             <!-- Add credit_limits group before banks group in Accounting page -->
@@ -62,12 +79,13 @@
                 </group>
             </xpath>
 
-            <xpath expr="//page[@name='contact_addresses']" position="after">
+
+            <xpath expr="//page[@name='contact_addresses']" position="before">
                 <page name="basic_info_additional" string="Basic info">
                     <group>
                         <group>
                             <field name="name_from_parts" invisible="1"/>
-                            <field name="use_name_parts" invisible="is_company" 
+                            <field name="use_name_parts" invisible="is_company"
                                    widget="boolean_toggle"
                                    string="Use Name Details"/>
                             <span class="o_form_label" invisible="is_company or not use_name_parts">Full Name</span>
@@ -77,15 +95,17 @@
                                 <field name="gfather_name" nolabel="1" placeholder="Grandfather Name"/>
                                 <field name="sur_name" nolabel="1" placeholder="Surname"/>
                             </div>
-                            <field name="divisions" string="Divisions" invisible="not is_company"/>
+                            <field name="division_ids" invisible="1"/>
                             <field name="uid" string="UID" invisible="is_company"/>
                             <field name="vat" string="Tax ID" placeholder="e.g. BE0477472701"/>
-                            <field name="function" placeholder="e.g. Sales Director" invisible="is_company"/>
-
-                        </group>
-                        <group>
                             <field name="title" options="{&quot;no_open&quot;: True}" placeholder="e.g. Mister"
                                    invisible="is_company"/>
+                        </group>
+                        <group>
+                            <field name="function" placeholder="e.g. Sales Director" invisible="is_company"/>
+                            <field name="division_id" invisible="is_company" options="{'no_create': True}"/>
+
+
                             <field name="birth_date" string="Birth Date" invisible="is_company"/>
                             <field name="hiring_date" string="Hiring Date" invisible="is_company"/>
                             <field name="status" string="Status"/>
@@ -107,7 +127,7 @@
                                    placeholder="e.g. &quot;B2B&quot;, &quot;VIP&quot;, &quot;Consulting&quot;, ..."/>
                         </group>
 
-                        <group>
+                        <group invisible="1">
                             <span class="o_form_label o_td_label o_address_type" name="address_name">
                                 <field name="type" invisible="1" readonly="user_ids" required="not is_company"
                                        class="fw-bold"/>
@@ -137,7 +157,6 @@
                     </group>
 
                 </page>
-
                 <page name="addresses_page" string="Address">
                     <field name="contact_address_ids" nolabel="1">
                         <list string="Addresses" editable="bottom">

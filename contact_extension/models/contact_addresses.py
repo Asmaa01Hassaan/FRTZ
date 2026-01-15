@@ -23,6 +23,19 @@ class ContactAddresses(models.Model):
     name = fields.Char(string='Address Name', help='Name or description for this address')
     is_default = fields.Boolean(string='Default Address', default=False)
 
+    @api.onchange('is_default')
+    def _onchange_is_default(self):
+        """
+        UX helper: when marking a line as default inside the one2many,
+        unmark other default lines of the same partner in-memory.
+        The actual syncing to res.partner fields is done in res.partner onchange.
+        """
+        if not self.is_default:
+            return
+        siblings = self.partner_id.contact_address_ids.filtered(lambda l: l != self and l.is_default)
+        for line in siblings:
+            line.is_default = False
+
     @api.onchange('country_id')
     def _onchange_country_id(self):
         if self.country_id and self.country_id.state_ids:
