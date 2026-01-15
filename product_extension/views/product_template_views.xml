@@ -101,7 +101,6 @@
 
             <!-- Hide product_tooltip from General Information page -->
             <xpath expr="//field[@name='product_tooltip']" position="replace"/>
-
             <!-- Add invoice_policy and product_tooltip to Sales page -->
             <xpath expr="//page[@name='sales']//group[@name='sale']" position="inside">
                 <group name="invoice_policy_group" string="Invoicing">
@@ -115,6 +114,51 @@
         </field>
     </record>
 
+    <!-- Add Variants page after Attributes & Variants page -->
+    <record id="view_product_template_variants_page" model="ir.ui.view">
+        <field name="name">product.template.variants.page</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <!-- Locate the Attributes & Variants page by the field it contains -->
+            <xpath expr="//page[@name='sales']" position="before">
+                <page name="product_variants_list" string="Varints">
+                    <field name="product_variant_ids" nolabel="1">
+                        <list string="Product Variants">
+                            <field name="default_code" string="Internal Reference"/>
+                            <field name="barcode"/>
+                            <field name="active"/>
+                            <field name="standard_price" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="lst_price" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="product_template_attribute_value_ids" widget="many2many_tags" readonly="1"/>
+                        </list>
+                        <form>
+                            <sheet>
+                                <group>
+                                    <group>
+                                        <field name="default_code" string="Internal Reference"/>
+                                        <field name="barcode"/>
+                                        <field name="active"/>
+                                    </group>
+                                    <group>
+                                        <field name="standard_price" widget="monetary"
+                                               options="{'currency_field': 'currency_id'}"/>
+                                        <field name="lst_price" widget="monetary"
+                                               options="{'currency_field': 'currency_id'}"/>
+                                    </group>
+                                </group>
+                                <group>
+                                    <field name="product_template_attribute_value_ids" widget="many2many_tags"
+                                           readonly="1"/>
+                                </group>
+                            </sheet>
+                        </form>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
     <record id="view_product_template_reference" model="ir.ui.view">
         <field name="name">product.template.reference</field>
         <field name="model">product.template</field>
@@ -123,7 +167,7 @@
             <!-- internal_reference_new is now placed after name field in view_product_template_form_code -->
             <!-- This view only handles standard_price readonly attribute -->
             <xpath expr="//field[@name='standard_price']" position="attributes">
-                <attribute name="readonly"> cost_method != 'standard'</attribute>
+                <attribute name="readonly">cost_method != 'standard'</attribute>
             </xpath>
         </field>
     </record>
