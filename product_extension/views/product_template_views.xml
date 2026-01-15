@@ -102,7 +102,7 @@
             <!-- Hide product_tooltip from General Information page -->
             <xpath expr="//field[@name='product_tooltip']" position="replace"/>
             <!-- Add invoice_policy and product_tooltip to Sales page -->
-            <xpath expr="//page[@name='sales']//group[@name='sale']" position="inside">
+            <xpath expr="//page[@name='sales']//group[@name='sale']" position="before">
                 <group name="invoice_policy_group" string="Invoicing">
                     <field name="invoice_policy" required="1" invisible="not sale_ok or type == 'combo'"/>
                     <field name="product_tooltip"
