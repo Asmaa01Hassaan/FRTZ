@@ -201,6 +201,34 @@
                         </form>
                     </field>
                 </page>
+                <page name="attachments_page" string="Attachments">
+                    <field name="attachment_ids" nolabel="1">
+                        <list string="Attachments" editable="bottom">
+                            <field name="name"/>
+                            <field name="attachment_id" options="{'no_create': True}" readonly="1"/>
+                        </list>
+                        <form>
+                            <sheet>
+                                <group>
+                                    <group>
+                                        <field name="name" placeholder="e.g. Contract Document, ID Copy" required="1"/>
+                                        <field name="filename" invisible="1"/>
+                                        <field name="file" filename="filename" widget="binary" 
+                                               placeholder="Upload a file"
+                                               attrs="{'invisible': [('attachment_id', '!=', False)], 'required': [('attachment_id', '=', False)]}"/>
+                                        <field name="attachment_id" 
+                                               options="{'no_create': True}"
+                                               attrs="{'invisible': [('file', '!=', False)]}"/>
+                                    </group>
+                                    <group>
+                                        <field name="file_size" readonly="1"/>
+                                        <field name="mimetype" readonly="1"/>
+                                    </group>
+                                </group>
+                            </sheet>
+                        </form>
+                    </field>
+                </page>
             </xpath>
 
         </field>

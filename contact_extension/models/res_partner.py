@@ -27,6 +27,7 @@ class ResPartner(models.Model):
         domain="[('partner_id', '=', parent_id)]",
     )
     contact_address_ids = fields.One2many('contact.addresses', 'partner_id', string='Contact Addresses')
+    attachment_ids = fields.One2many('contact.attachment', 'partner_id', string='Attachments')
     max_salary_deduction = fields.Monetary(string='Max Salary Deduction', currency_field='currency_id')
     max_installments_amount = fields.Monetary(string='Max Installments Amount', currency_field='currency_id')
     max_grantees_amount = fields.Monetary(string='Max Grantees Amount', currency_field='currency_id')
